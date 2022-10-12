@@ -453,10 +453,14 @@ let senddata = async () => {
                     if (Sucss == 'Save data') {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Save your completed data.',
+                            title: 'บันทึกข้อมูลสำเร็จ',
+                            customClass: {
+                                container: 'ff-noto',
+                                title: 'ff-noto',
+                            },
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/manage/index.html';
+                                window.location.href = './../manage/index.html';
                             }
 
                         })
@@ -469,11 +473,15 @@ let senddata = async () => {
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
             ) {
-                Swal.fire(
-                    'Unsaved',
-                    'Your data has been unsaved.',
-                    'error'
-                )
+                Swal.fire({
+                    icon: 'error',
+                    title: 'บันทึกข้อมูลไม่สำเร็จ',
+                    text: 'ข้อมูลของคุณไม่ได้รับการบันทึก',
+                    customClass: {
+                        container: 'ff-noto',
+                        title: 'ff-noto',
+                    },
+                })
             }
         })
     } else {
@@ -516,7 +524,7 @@ $('#btn-send').click(function () {
 
 let logout = () => {
     localStorage.clear();
-    window.location.href = './../index.html';
+    window.location.href = './../dashboard/index.html';
 }
 
 $('.mobile-nav-toggle').on('click', function (e) {

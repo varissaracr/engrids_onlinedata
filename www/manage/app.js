@@ -2,7 +2,7 @@ var val1 = localStorage.getItem('value1');
 var val2 = localStorage.getItem('value2');
 
 $(document).ready(function () {
-    console.log(val2)
+    // console.log(val2)
     if (val1 && val2) {
         $('#username').text(val1)
         loadlistdata(val2)
@@ -74,7 +74,7 @@ let loadlistdata = (id, tool) => {
             { data: 'd_access' },
             { data: 'd_sd' },
             {
-                data: null, title: "tool",
+                data: null, title: "จัดการข้อมูล",
                 render: function (data, type, row, meta) {
                     if (id !== 'admin') {
                         return `<button class="btn btn-margin btn btn-warning font-Noto" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
@@ -113,22 +113,26 @@ let loadlistdata = (id, tool) => {
     // dtable.columns.adjust().draw();
 }
 let AddData = () => {
-    window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/input/index.html';
+    window.location.href = './../input/index.html';
 }
 let editData = (id) => {
     localStorage.setItem('id_data', id);
-    window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/edit/index.html';
+    window.location.href = './../edit/index.html';
 }
 
 let deleteData = (id) => {
     axios.post(`https://engrids.soc.cmu.ac.th/api/ds-api/deletedata`, { d_id: id }).then(r => {
         var Sucss = r.data.data;
         if (Sucss == 'success') {
-            Swal.fire(
-                'Deleted!',
-                'Your data has been deleted.',
-                'success'
-            ).then((result) => {
+            Swal.fire({
+                icon: 'success',
+                title: 'ลบข้อมูลสำเร็จ',
+                text: 'ข้อมูลของคุณถูกลบสำเร็จ',
+                customClass: {
+                    container: 'font-noto',
+                    title: 'font-noto',
+                },
+            }).then((result) => {
                 if (result.isConfirmed) {
                     dtable.ajax.reload();
                     // window.location.reload()
@@ -153,8 +157,8 @@ let accessDate = (id, name) => {
         html:
             `<select class="form-select" aria-label="Default select example" id="access">
                 <option hidden>เลือก...</option>
-                <option value="private">Private</option>
-                <option value="publish">Publish</option>
+                <option value="private">private</option>
+                <option value="publish">publish</option>
             </select>
             <button class="l-check text-primary mt-4" onclick="gotodownload('${id}')">ตรวจสอบข้อมูล</button>
             `,
@@ -181,7 +185,11 @@ let accessDate = (id, name) => {
                 if (r.data.data == 'access') {
                     Swal.fire({
                         icon: 'success',
-                        title: 'You selected ' + result.value.access
+                        title: 'เปลี่ยนสถานะเป็น ' + result.value.access + ' สำเร็จ',
+                        customClass: {
+                            container: 'font-noto',
+                            title: 'font-noto',
+                        },
                     })
                     dtable.ajax.reload();
                 }
@@ -269,7 +277,7 @@ let gotoinput = () => {
 
 let logout = () => {
     localStorage.clear();
-    window.location.href = './../index.html';
+    window.location.href = './../dashboard/index.html';
 }
 
 $('.mobile-nav-toggle').on('click', function (e) {
@@ -315,7 +323,7 @@ let gotodownload = (id_data) => {
     // var id = datauser.userid
     // localStorage.setItem('value1', name ? name : val1);
     // localStorage.setItem('value2', id ? id : val2);
-    window.open('https://engrids.soc.cmu.ac.th/onlinedata/detail/index.html', '_blank');
+    window.open('./../detail/index.html', '_blank');
     // window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/detail/index.html';
 
 }

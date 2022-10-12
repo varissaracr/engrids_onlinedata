@@ -291,7 +291,9 @@ let detail_file = (i1, i2, i3, url, name) => {
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <a href="${url}" target="_blank" class="btn-download mt-4"><sapn class="ff-noto">ไปสู้ทรัพยากร</sapn></a>
+        <a href="./../index.html" class="btn-download mt-4"><sapn class="ff-noto">ย้อนกลับ</sapn></a>&nbsp;&nbsp;
+            <a href="${url}" target="_blank" class="btn-download mt-4"><sapn class="ff-noto">ไปยังชุดข้อมูล</sapn></a> 
+            
         </div>
         </div>`)
         $(`#detaifile`).empty().append(content)
@@ -325,7 +327,8 @@ let detail_file = (i1, i2, i3, url, name) => {
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <a href="${url}" download="${name}" target="_blank" class="btn-download mt-4 ${val2 ? null : 'disabled'}" onclick="SD_download('${name}')" >Download</a>
+        <a href="./../index.html" class="btn-download mt-4"><sapn class="ff-noto">ย้อนกลับ</sapn></a>&nbsp;&nbsp;
+            <a href="${url}" download="${name}" target="_blank" class="btn-download mt-4 ${val2 ? null : 'disabled'}" onclick="SD_download('${name}')" ><span class="ff-noto">ดาวน์โหลด</span> </a>
         </div>
         ${val2 ? '' : '<p class="text-center text-danger m-auto p-3">*กรุณา login ก่อนเพื่อทำดาวน์โหลดข้อมูล / ติดต่อเจ้าหน้าที่เพื่อขอข้อมูล</p>'}
         </div>`)
@@ -456,7 +459,7 @@ const loginPopup = () => {
 
 let logout = () => {
     localStorage.clear();
-    window.location.href = './../index.html';
+    window.location.href = './../dashboard/index.html';
 }
 
 $('.mobile-nav-toggle').on('click', function (e) {

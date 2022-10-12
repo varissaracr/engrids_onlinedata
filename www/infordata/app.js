@@ -692,7 +692,7 @@ let gotodownload = (id_data) => {
     // var id = datauser.userid
     // localStorage.setItem('value1', name ? name : val1);
     // localStorage.setItem('value2', id ? id : val2);
-    window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/detail/index.html';
+    window.location.href = './../detail/index.html';
 
 }
 $('#login').click(function () { loginPopup() })
@@ -797,7 +797,7 @@ let gotomanage = (id_data) => {
         localStorage.setItem('value1', name ? name : val1);
         localStorage.setItem('value2', id ? id : val2);
         // window.open('./manage/index.html', '_blank');
-        window.location.href = './manage/index.html';
+        window.location.href = '././manage/index.html';
     } else {
         loginPopup()
     }
@@ -809,7 +809,7 @@ let gotoinput = (id_data) => {
         var id = datauser.userid
         localStorage.setItem('value1', name ? name : val1);
         localStorage.setItem('value2', id ? id : val2);
-        window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/input/index.html';
+        window.location.href = './../input/index.html';
     } else {
         loginPopup()
     }
@@ -817,7 +817,7 @@ let gotoinput = (id_data) => {
 }
 let logout = () => {
     localStorage.clear();
-    window.location.href = 'index.html'
+    window.location.href = './../dashboard/index.html'
 }
 
 

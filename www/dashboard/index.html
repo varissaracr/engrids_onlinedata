@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engrids Data</title>
+    <title>หน้าหลัก</title>
 
 
     <!-- Favicons -->
-    <link href="./assets/img/EnGRIDs-logo.png" rel="icon">
-    <link href="./assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="./../assets/img/EnGRIDs-logo.png" rel="icon">
+    <link href="./../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link
@@ -34,15 +34,15 @@
 
 
     <!-- Vendor CSS Files -->
-    <link href="./assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="./assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="./assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="./assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="./assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="./../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="./../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="./assets/css/style.css" rel="stylesheet">
+    <link href="./../assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -53,16 +53,18 @@
     <header id="header" class="fixed-top header-inner-pages">
         <div class="container d-flex align-items-center justify-content-between">
 
-            <h1 class="logo"><a href="index.html">Engrids</a></h1>
+            <h1 class="logo"><a href="./../dashboard/index.html">Engrids</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto " href="index.html">Home</a></li>
-                    <li><a class="active" href="index.html"><span class="ff-noto">ระบบฐานข้อมูลสารสนเทศ</span></a></li>
+                    <li><a class="nav-link scrollto active " href="./../dashboard/index.html"><span
+                                class="ff-noto">หน้าหลัก</span></a></li>
+                    <li><a class="" href="./../infordata/index.html"><span
+                                class="ff-noto">ระบบฐานข้อมูลสารสนเทศ</span></a></li>
                     <li id="login"><a href="#"><i class="bi bi-door-open"></i>&nbsp;&nbsp;<span
-                                class="ff-noto">Login</span></a>
+                                class="ff-noto">เข้าสู่ระบบ</span></a>
                     </li>
                     <li class="dropdown dp-none" id="Profile"><a href="#"><i class="bi bi-person-circle"
                                 style="font-size: 22px;"></i>
@@ -79,11 +81,12 @@
                                                 class="ff-noto">แก้ไข้ข้อมูล</span></a></li>
                                 </ul>
                             </li>
-                            <li><a onclick="logout()" style="cursor: pointer;">Log Out <i class="bi bi-door-closed"
-                                        style="font-size: 18px;"></i></a></li>
+                            <li><a onclick="logout()" style="cursor: pointer;"><span class="ff-noto">ออกจากระบบ</span>
+                                    <i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
                         </ul>
                     </li>
-                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                    <li><a class="nav-link scrollto" href="https://engrids.soc.cmu.ac.th/"><span
+                                class="ff-noto">ติดต่อเรา</span></a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -97,7 +100,7 @@
         <section id="breadcrumbs" class="breadcrumbs">
             <div class="container">
                 <ol>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html"><span class="ff-noto">หน้าหลัก</span></a></li>
                     <li class="ff-noto">ฐานข้อมูลสารสนเทศ</li>
                 </ol>
                 <h2 class="ff-noto">ฐานข้อมูลสารสนเทศ</h2>
@@ -226,7 +229,7 @@
         </section><!-- End Blog Section -->
         <div id="preloader">
             <div class="content-display">
-                <img src="./assets/img/19814-data-list.gif" alt="data-list" width="95%">
+                <img src="./../assets/img/19814-data-list.gif" alt="data-list" width="95%">
                 <h6 id="loading-text">กำลังโหลด...</h6>
             </div>
         </div>
@@ -239,14 +242,14 @@
 
             <div class="me-md-auto text-center text-md-start">
                 <div class="copyright">
-                    &copy; Copyright <strong><span>Tempo</span></strong>. All Rights Reserved
+                    &copy; Copyright 2022 <strong><span>EnGRIDs by GeoCMU</span></strong>. All Rights Reserved
                 </div>
                 <div class="credits">
                     <!-- All the links in the footer should remain intact. -->
                     <!-- You can delete the links only if you purchased the pro version. -->
                     <!-- Licensing information: https://bootstrapmade.com/license/ -->
                     <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/tempo-free-onepage-bootstrap-theme/ -->
-                    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    Designed by <a href="https://engrids.soc.cmu.ac.th/">EnGRIDs</a>
                 </div>
             </div>
             <div class="social-links text-center text-md-right pt-3 pt-md-0">
@@ -270,20 +273,20 @@
     <!-- lordicon -->
     <script src="https://cdn.lordicon.com/xdjxvujz.js"></script>
     <!-- fileinput -->
-    <script src="./assets/bootstrap-fileinput/js/fileinput.js"></script>
-    <script src="./assets/bootstrap-fileinput/js/fileinput.min.js"></script>
-    <script src="./assets/bootstrap-fileinput/js/plugins/buffer.js"></script>
-    <script src="./assets/bootstrap-fileinput/js/plugins/filetype.min.js"></script>
-    <script src="./assets/bootstrap-fileinput/js/plugins/piexif.min.js"></script>
-    <script src="./assets/bootstrap-fileinput/js/plugins/sortable.min.js"></script>
-    <script src="./assets/bootstrap-fileinput/js/locales/th.js"></script>
+    <script src="./../assets/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="./../assets/bootstrap-fileinput/js/fileinput.min.js"></script>
+    <script src="./../assets/bootstrap-fileinput/js/plugins/buffer.js"></script>
+    <script src="./../assets/bootstrap-fileinput/js/plugins/filetype.min.js"></script>
+    <script src="./../assets/bootstrap-fileinput/js/plugins/piexif.min.js"></script>
+    <script src="./../assets/bootstrap-fileinput/js/plugins/sortable.min.js"></script>
+    <script src="./../assets/bootstrap-fileinput/js/locales/th.js"></script>
 
     <!-- Vendor JS Files -->
-    <script src="./assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="./assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="./assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="./assets/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="./assets/vendor/php-email-form/validate.js"></script>
+    <script src="./../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./../assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="./../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="./../assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="./../assets/vendor/php-email-form/validate.js"></script>
     <script src="./app.js"></script>
 </body>
 

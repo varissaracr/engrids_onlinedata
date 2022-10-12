@@ -31,6 +31,7 @@ let load_data = (id) => {
             arrGroups.push($(this).val())
         })
         groups.map(i => {
+            // console.log(i)
             // $(`.label-container input[type=checkbox][value=${i}]`).prop("checked", true);
             var check = arrGroups.includes(i);
             if (check == true) {
@@ -53,7 +54,7 @@ let load_data = (id) => {
 
         if (data[0].d_bound) {
             $('#dbound').prop('disabled', false)
-            var bound = ['ระดับประเทศ', 'ระดับอำเภอ', 'ระดับตำบล', 'ไม่มี']
+            var bound = ['ระดับประเทศ', 'ระดับจังหวัด', 'ระดับอำเภอ', 'ระดับตำบล', 'ไม่มี']
             bound.map(i => {
                 var check = bound.includes(i);
                 if (check == true) {
@@ -531,10 +532,10 @@ let senddata = async () => {
         d_iduser: 'administrator',
         d_access: 'private'
     };
-    console.log(formDataObj)
+    // console.log(formDataObj)
     // console.log(obj_groups)
     // console.log(obj_keywords)
-    console.log(obj_datafiles)
+    // console.log(obj_datafiles)
     // console.log(check_data)
 
     var req = req_form()
@@ -562,27 +563,35 @@ let senddata = async () => {
                     if (Sucss == 'Update data') {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Update your completed data.',
+                            title: 'แก้ไขข้อมูลสำเร็จ',
+                            customClass: {
+                                container: 'ff-noto',
+                                title: 'ff-noto',
+                            },
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 sessionStorage.removeItem(id_data);
-                                window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/manage/index.html';
+                                window.location.href = './../manage/index.html';
                             }
                         })
                         $("#forminput").removeClass('was-validated');
                     }
-                    console.log(Sucss)
+                    // console.log(Sucss)
                 })
 
             } else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
             ) {
-                Swal.fire(
-                    'Unsaved',
-                    'Your data has been unsaved.',
-                    'error'
-                )
+                Swal.fire({
+                    icon: 'error',
+                    title: 'บันทึกข้อมูลไม่สำเร็จ',
+                    text: 'ข้อมูลของคุณไม่ได้รับการบันทึก',
+                    customClass: {
+                        container: 'ff-noto',
+                        title: 'ff-noto',
+                    },
+                })
             }
         })
     } else {
@@ -622,3 +631,8 @@ function isEmptyObject(obj) {
 $('#btn-send').click(function () {
     senddata()
 })
+
+let logout = () => {
+    localStorage.clear();
+    window.location.href = './../dashboard/index.html';
+}

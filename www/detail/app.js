@@ -29,7 +29,7 @@ const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
 $(document).ready(function () {
     // load_data('6EYcI0YX-u0ls-40j3-PTdy-oiVwb3UYlJk9')
     // console.log(id_data)
-    console.log(val1, val2)
+    // console.log(val1, val2)
     if (val1 !== null && val2 !== null) {
         $('#login').hide(function () {
             $('#Profile').show()
@@ -96,7 +96,7 @@ let load_data = (id) => {
             Swal.fire({
                 icon: 'error',
                 title: 'ไม่สามารถเข้าถึงข้อมูลได้',
-                text: "กรุณาลองอีกครั้งในภายหลัง",
+                text: "กรุณาเข้าสู่ระบบ",
                 customClass: {
                     container: 'ff-noto',
                     title: 'ff-noto',
@@ -105,7 +105,7 @@ let load_data = (id) => {
                 allowEscapeKey: false,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = './../index.html';
+                    window.location.href = './../infordata/index.html';
                 }
             })
         }
@@ -291,7 +291,7 @@ let detail_file = (i1, i2, i3, url, name) => {
             </div>
         </div>
         <div class="d-flex justify-content-center">
-        <a href="./../index.html" class="btn-download mt-4"><sapn class="ff-noto">ย้อนกลับ</sapn></a>&nbsp;&nbsp;
+        <a href="./../dashboard/index.html" class="btn-download mt-4"><sapn class="ff-noto">หน้าหลัก</sapn></a>&nbsp;&nbsp;
             <a href="${url}" target="_blank" class="btn-download mt-4"><sapn class="ff-noto">ไปยังชุดข้อมูล</sapn></a> 
             
         </div>
@@ -327,7 +327,7 @@ let detail_file = (i1, i2, i3, url, name) => {
             </div>
         </div>
         <div class="d-flex justify-content-center">
-        <a href="./../index.html" class="btn-download mt-4"><sapn class="ff-noto">ย้อนกลับ</sapn></a>&nbsp;&nbsp;
+        <a href="./../dashboard/index.html" class="btn-download mt-4"><sapn class="ff-noto">หน้าหลัก</sapn></a>&nbsp;&nbsp;
             <a href="${url}" download="${name}" target="_blank" class="btn-download mt-4 ${val2 ? null : 'disabled'}" onclick="SD_download('${name}')" ><span class="ff-noto">ดาวน์โหลด</span> </a>
         </div>
         ${val2 ? '' : '<p class="text-center text-danger m-auto p-3">*กรุณา login ก่อนเพื่อทำดาวน์โหลดข้อมูล / ติดต่อเจ้าหน้าที่เพื่อขอข้อมูล</p>'}
@@ -464,28 +464,42 @@ let logout = () => {
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (val1 && val2) {
+    if (val1 == 'administrator' && val2 == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="index.html"><i class="bi bi-house-door"></i> <span>Home</span></a>
-        <a class="btn-memu" href="index.html"><i class="bi bi-box"></i> <span>ระบบฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>Logout</span> </a>
-        <a class="btn-memu" href="#" disabled><i class="bi bi-phone"></i><span>Contact</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+       <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a> 
+       <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
+    } else if (val1 !== null && val2 !== null) {
+        content = `
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
     } else {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="index.html"><i class="bi bi-house-door"></i> <span>Home</span></a>
-        <a class="btn-memu" href="index.html"><i class="bi bi-box"></i> <span>ระบบฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>Login</span></a>
-        <a class="btn-memu" href="#" disabled><i class="bi bi-phone"></i><span>Contact</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>เข้าสู่ระบบ</span></a>
+       
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
     }
     Swal.fire({
-        title: '<h3><b>Memu</b></h3><hr>',
+        title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3><hr>',
         // icon: 'info',
         html: content + '<hr>',
-        confirmButtonText: 'close'
+        confirmButtonText: 'ปิด',
+        customClass: {
+            container: 'ff-noto',
+            title: 'ff-noto',
+        },
         // showConfirmButton: false,
         // showCloseButton: false,
         // showCancelButton: true,

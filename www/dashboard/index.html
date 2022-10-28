@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>หน้าหลัก</title>
+    <title>ระบบบริการข้อมูลสารสนเทศ - OnlineData</title>
 
 
     <!-- Favicons -->
@@ -25,12 +25,14 @@
     <!-- bootstrap-icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
-    <!-- animate -->
+    <!-- animate/aos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
 
 
     <!-- Vendor CSS Files -->
@@ -61,8 +63,8 @@
                 <ul>
                     <li><a class="nav-link scrollto active " href="./../dashboard/index.html"><span
                                 class="ff-noto">หน้าหลัก</span></a></li>
-                    <li><a class="" href="./../infordata/index.html"><span
-                                class="ff-noto">ระบบฐานข้อมูลสารสนเทศ</span></a></li>
+                    <li><a class="" href="./../infordata/index.html"><span class="ff-noto">ฐานข้อมูลสารสนเทศ</span></a>
+                    </li>
                     <li id="login"><a href="#"><i class="bi bi-door-open"></i>&nbsp;&nbsp;<span
                                 class="ff-noto">เข้าสู่ระบบ</span></a>
                     </li>
@@ -70,7 +72,7 @@
                                 style="font-size: 22px;"></i>
                             &nbsp; <span id="username">User</span><i class="bi bi-chevron-down"></i></a>
                         <ul>
-                            <li><a href="#">Your Profile</a></li>
+                            <li><a href="#"><span class="ff-noto">โปรไฟล์ของคุณ</span></a></li>
                             <li class="dropdown"><a onclick="gotomanage()" style="cursor: pointer;"><span
                                         class="ff-noto">การจัดการข้อมูล</span>
                                     <i class="bi bi-chevron-right"></i></a>
@@ -100,10 +102,11 @@
         <section id="breadcrumbs" class="breadcrumbs">
             <div class="container">
                 <ol>
-                    <li><a href="index.html"><span class="ff-noto">หน้าหลัก</span></a></li>
-                    <li class="ff-noto">ฐานข้อมูลสารสนเทศ</li>
+                    <li><a href="index.html"><span class="ff-noto">หน้าหลัก</span> </a>
+                    </li>
+                    <li class="ff-noto">ระบบบริการข้อมูลสารสนเทศ - OnlineData</li>
                 </ol>
-                <h2 class="ff-noto">ฐานข้อมูลสารสนเทศ</h2>
+                <!-- <h2 class="ff-noto">ระบบบริการข้อมูลสารสนเทศ - OnlineData</h2> -->
 
             </div>
         </section><!-- End Breadcrumbs -->
@@ -113,119 +116,213 @@
             <div class="container" data-aos="fade-up">
 
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col text-center">
+                        <h2>ระบบบริการข้อมูลสารสนเทศ - <span class="ff-noto" style="color: #50d49f;"> OnlineData</span>
+                        </h2>
+                        <br>
 
-                        <div class="sidebar">
+                        <p>ระบบบริการฐานข้อมูลสารสนเทศ - OnlineData
+                            โดยสตูดิโอวิจัยและพัฒนานวัตกรรมเชิงพื้นที่ด้านสิ่งแวดล้อม หรือเรียกว่า "EnGRIDs"
+                            <br>
+                            พัฒนาขึ้นเพื่อให้นักศึกษาของภาควิชาภูมิศาสตร์ มหาวิทยาลัยเชียงใหม่
+                            สามารถเข้าถึงข้อมูลจากแหล่งที่มาที่มีความน่าเชื่อถือ ทั้งรูปแบบของข้อมูลเชิงพื้นที่
+                            (Shapefile), <br> ข้อมูล API
+                            จากหน่วยงานภาครัฐที่เปิดให้บริการ รวมถึงข้อมูลสารสนเทศอื่นๆ เพื่อให้เกิดความสะดวก และรวดเร็ว
+                            ในการใช้งาน
 
-                            <h3 class="sidebar-title">Search</h3>
-                            <div class="sidebar-item search-form">
-                                <form action="">
-                                    <input type="text" id="txt_search">
-                                    <button type="button" onclick="search_data()"><i class="bi bi-search"></i></button>
-                                </form>
-                            </div><!-- End sidebar search formn-->
-
-                            <h3 class="sidebar-title">Categories</h3>
-                            <div class="sidebar-item categories">
-                                <ul id="listcategory">
-                                    <!-- <li><a href="#">General <span>(25)</span></a></li>
-                                    <li><a href="#">Lifestyle <span>(12)</span></a></li>
-                                    <li><a href="#">Travel <span>(5)</span></a></li>
-                                    <li><a href="#">Design <span>(22)</span></a></li>
-                                    <li><a href="#">Creative <span>(8)</span></a></li>
-                                    <li><a href="#">Educaion <span>(14)</span></a></li> -->
-                                </ul>
-                            </div><!-- End sidebar categories-->
-
-                            <h3 class="sidebar-title">Recent Data</h3>
-                            <div class="sidebar-item recent-posts" id="newpost">
-                                <!-- <div class="post-item clearfix">
-                                    <img src="assets/img/blog/blog-recent-1.jpg" alt="">
-                                    <h4><a href="blog-single.html">Nihil blanditiis at in nihil autem</a></h4>
-                                    <time datetime="2020-01-01">Jan 1, 2020</time>
-                                </div>
-
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/blog/blog-recent-2.jpg" alt="">
-                                    <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
-                                    <time datetime="2020-01-01">Jan 1, 2020</time>
-                                </div>
-
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/blog/blog-recent-3.jpg" alt="">
-                                    <h4><a href="blog-single.html">Id quia et et ut maxime similique occaecati ut</a>
-                                    </h4>
-                                    <time datetime="2020-01-01">Jan 1, 2020</time>
-                                </div>
-
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/blog/blog-recent-4.jpg" alt="">
-                                    <h4><a href="blog-single.html">Laborum corporis quo dara net para</a></h4>
-                                    <time datetime="2020-01-01">Jan 1, 2020</time>
-                                </div>
-
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/blog/blog-recent-5.jpg" alt="">
-                                    <h4><a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a></h4>
-                                    <time datetime="2020-01-01">Jan 1, 2020</time>
-                                </div> -->
-
-                            </div><!-- End sidebar recent posts-->
-
-                            <h3 class="sidebar-title">Tags</h3>
-                            <div class="sidebar-item tags">
-                                <ul id="listtag">
-                                    <!-- <li><a class="active" href="#">App</a></li> -->
-                                    <!--  <li><a href="#">IT</a></li>
-                                    <li><a href="#">Business</a></li>
-                                    <li><a href="#">Mac</a></li>
-                                    <li><a href="#">Design</a></li>
-                                    <li><a href="#">Office</a></li>
-                                    <li><a href="#">Creative</a></li>
-                                    <li><a href="#">Studio</a></li>
-                                    <li><a href="#">Smart</a></li>
-                                    <li><a href="#">Tips</a></li>
-                                    <li><a href="#">Marketing</a></li> -->
-                                </ul>
-                            </div><!-- End sidebar tags-->
-
-                            <h3 class="sidebar-title">File format</h3>
-                            <div class="sidebar-item categories">
-                                <ul id="listfileformat">
-                                    <!-- <li><a href="#">docx <span>(25)</span></a></li>
-                                    <li><a href="#">doc <span>(12)</span></a></li>
-                                    <li><a href="#">xls <span>(5)</span></a></li>
-                                    <li><a href="#">xlsx <span>(22)</span></a></li>
-                                    <li><a href="#" onclick="search_fileform('csv')">csv <span>(8)</span></a></li>
-                                    <li><a href="#">pdf <span>(14)</span></a></li> -->
-                                </ul>
-                            </div><!-- End sidebar categories-->
-
-                        </div><!-- End sidebar -->
-
-                    </div><!-- End blog sidebar -->
-
-                    <div class="col-lg-8 entries">
-                        <div class="d-flex justify-content-end text-end">
-                            <p>พบ <span id="data_val"></span> ชุดข้อมูล</p>
-                        </div>
-                        <div id="content-data"></div>
-
-
-                        <div class="blog-pagination">
-                            <ul class="justify-content-center" id="listpage">
-                                <!-- <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li> -->
-                            </ul>
-                        </div>
-
-                    </div><!-- End blog entries list -->
-
-
+                        </p>
+                    </div>
                 </div>
-
-            </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="row ">
+                            <div class="col-3">
+                                <div class="movefont d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('การเมืองและการปกครอง')">
+                                        <i class="fa-sharp fa-solid fa-landmark" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class=" text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>การเมืองและการปกครอง (<span class="ff-noto" id="politics">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('ทรัพยากรธรรมชาติและสิ่งแวดล้อม')">
+                                        <i class="fa-solid fa-tree" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>ทรัพยากรธรรมชาติและสิ่งแวดล้อม (<span class="ff-noto"
+                                                id="nature">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('เกษตกรรมและการเกษตร')">
+                                        <i class="fa-sharp fa-solid fa-tractor" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>เกษตกรรมและการเกษตร (<span class="ff-noto" id="agri">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('สถิติทางการ')">
+                                        <i class="fa-sharp fa-solid fa-chart-line" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>สถิติทางการ (<span class="ff-noto" id="stat">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('โครงสร้างพื้นฐานระบบและพลังงาน')">
+                                        <i class="fa-solid fa-gas-pump" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>โครงสร้างพื้นฐานระบบและพลังงาน (<span class="ff-noto"
+                                                id="energy">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('วิทยาศาสตร์เทคโนโลยีดิจิทัลและนวัตกรรม')">
+                                        <i class="fa-sharp fa-solid fa-atom" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>วิทยาศาสตร์เทคโนโลยีดิจิทัลและนวัตกรรม (<span class="ff-noto"
+                                                id="science">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('ศาสนาศิลปและวัฒนธรรม')">
+                                        <i class="fa-sharp fa-solid fa-hands-praying" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>ศาสนา ศิลป และวัฒนธรรม (<span class="ff-noto" id="religion">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('การคมนาคมและโลจิตจิกส์')">
+                                        <i class="fa-sharp fa-solid fa-truck" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>การคมนาคมและโลจิตจิกส์ (<span class="ff-noto" id="logistics">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('สังคมและสวัสดิการ')">
+                                        <i class="fa-sharp fa-solid fa-users" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>สังคมและสวัสดิการ (<span class="ff-noto" id="society">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('เมืองและภูมิภาค')">
+                                        <i class="fa-sharp fa-solid fa-building" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>เมืองและภูมิภาค (<span class="ff-noto" id="urban">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('เศรษฐกิจการเงินและอุตสาหกรรม')">
+                                        <i class="fa-sharp fa-solid fa-coins" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>เศรษฐกิจ การเงิน และอุตสาหกรรม (<span class="ff-noto"
+                                                id="economy">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('การศึกษา')">
+                                        <i class="fa-sharp fa-solid fa-user-graduate" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>การศึกษา (<span class="ff-noto" id="study">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('สาธาณสุขและสุขภาพ')">
+                                        <i class="fa-sharp fa-solid fa-stethoscope" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>สาธาณสุขและสุขภาพ (<span class="ff-noto" id="health">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-3 ">
+                                <div class="card-a d-flex justify-content-center align-items-center flex-column">
+                                    <div class="card-border d-flex justify-content-center align-items-center pointer"
+                                        style="width: 150px; height: 150px; border-radius: 30px;"
+                                        onclick="gotodata('การท่องเที่ยว')">
+                                        <i class="fa-sharp fa-solid fa-plane" style="font-size: 80px;"></i>
+                                    </div>
+                                    <p class="text-center mt-4" style="font-size: 16px; color: #888888;">
+                                        <b>การท่องเที่ยว (<span class="ff-noto" id="travel">0</span>)</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
         </section><!-- End Blog Section -->
         <div id="preloader">
             <div class="content-display">
@@ -267,6 +364,7 @@
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!-- sweetalert2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

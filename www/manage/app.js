@@ -11,8 +11,8 @@ $(document).ready(function () {
         }
     } else {
         Swal.fire({
-            title: 'ไม่สามารถเข้าสู่เข้าระบบไม่ถูกต้อง!',
-            text: 'กรุณาลองเข้าสู่เข้าระบบใหม่อีกครั้งหนึ่งให้ถูกต้อง',
+            title: 'ไม่สามารถเข้าสู่ระบบได้!',
+            text: 'กรุณาเข้าสู่ระบบใหม่อีกครั้งให้ถูกต้อง',
             icon: 'error',
             // iconColor: ''
             confirmButtonText: 'ปิด',
@@ -25,7 +25,7 @@ $(document).ready(function () {
             allowOutsideClick: false,
             allowEscapeKey: false,
             preConfirm: async () => {
-                window.location.href = "./../index.html"
+                window.location.href = "./../dashboard/index.html"
             }
         })
     }
@@ -282,30 +282,44 @@ let logout = () => {
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (val1 && val2) {
+    if (val1 == 'administrator' && val2 == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="index.html"><i class="bi bi-house-door"></i> <span>Home</span></a>
-        <a class="btn-memu" href="index.html"><i class="bi bi-box"></i> <span>ระบบฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>Logout</span> </a>
-        <a class="btn-memu" href="#" disabled><i class="bi bi-phone"></i><span>Contact</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
+        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
+    } else if (val1 !== null && val2 !== null) {
+        content = `
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
     } else {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="index.html"><i class="bi bi-house-door"></i> <span>Home</span></a>
-        <a class="btn-memu" href="index.html"><i class="bi bi-box"></i> <span>ระบบฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>Login</span></a>
-        <a class="btn-memu" href="#" disabled><i class="bi bi-phone"></i><span>Contact</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>เข้าสู่ระบบ</span></a>
+       
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
     }
 
     $('#navbar').css({ display: 'none' })
     Swal.fire({
-        title: '<h3><b>Memu</b></h3><hr>',
+        title: '<h3><span class="font-noto"><b>เมนู</b></span></h3><hr>',
         // icon: 'info',
         html: content + '<hr>',
-        confirmButtonText: 'close',
+        confirmButtonText: 'ปิด',
+        customClass: {
+            container: 'font-noto',
+            title: 'font-noto',
+        },
         allowOutsideClick: false,
         // allowEscapeKey: false,
         // showConfirmButton: false,

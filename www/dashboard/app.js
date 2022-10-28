@@ -1,6 +1,8 @@
 var val1 = localStorage.getItem('value1');
 var val2 = localStorage.getItem('value2');
 
+// console.log(val1, val2)
+
 const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
 
 const queryString = window.location.search;
@@ -76,7 +78,7 @@ let reset_Fileform = () => {
 $(document).ready(function () {
     var page = 1;
     load_data(page)
-
+    // console.log(val1)
     if (val1) {
         $('#login').hide(function () {
             $('#Profile').show()
@@ -88,10 +90,66 @@ $(document).ready(function () {
     // console.log(new Date(date).toLocaleDateString('th-TH'));
 
     let number2 = 1234.56789; // floating point example
-
-    // console.log(number2.toLocaleString('en-US', { maximumFractionDigits: 2 }));
-    // $('#navbar').css('')
 })
+
+let gotodata = (txt) => {
+    location.href = './../infordata/index.html?page=1&category=' + txt;
+}
+
+let numcategory = async (d) => {
+    // console.log(d)
+    let politics = 0;
+    let nature = 0;
+    let agri = 0;
+    let stat = 0;
+    let energy = 0;
+    let science = 0;
+    let religion = 0;
+    let logistics = 0;
+    let society = 0;
+    let urban = 0;
+    let economy = 0;
+    let study = 0;
+    let health = 0;
+    let travel = 0;
+
+    await d.map(i => {
+        // console.log(i)
+        i == "การเมืองและการปกครอง" ? politics += 1 : null;
+        i == "ทรัพยากรธรรมชาติและสิ่งแวดล้อม" ? nature += 1 : null;
+        i == "เกษตกรรมและการเกษตร" ? agri += 1 : null;
+        i == "สถิติทางการ" ? stat += 1 : null;
+        i == "โครงสร้างพื้นฐานระบบและพลังงาน" ? energy += 1 : null;
+        i == "วิทยาศาสตร์เทคโนโลยีดิจิทัลและนวัตกรรม" ? science += 1 : null;
+        i == "ศาสนาศิลปและวัฒนธรรม" ? religion += 1 : null;
+        i == "การคมนาคมและโลจิตจิกส์" ? logistics += 1 : null;
+        i == "สังคมและสวัสดิการ" ? society += 1 : null;
+        i == "เมืองและภูมิภาค" ? urban += 1 : null;
+        i == "เศรษฐกิจการเงินและอุตสาหกรรม" ? economy += 1 : null;
+        i == "การศึกษา" ? study += 1 : null;
+        i == "สาธาณสุขและสุขภาพ" ? health += 1 : null;
+        i == "การท่องเที่ยว" ? travel += 1 : null;
+        i == "" ? length += 1 : null;
+    })
+
+    // console.log(nature)
+    $('#all').text(d.length)
+    $('#politics').text(politics)
+    $('#nature').text(nature)
+    $('#agri').text(agri)
+    $('#stat').text(stat)
+    $('#energy').text(energy)
+    $('#science').text(science)
+    $('#religion').text(religion)
+    $('#logistics').text(logistics)
+    $('#society').text(society)
+    $('#urban').text(urban)
+    $('#economy').text(economy)
+    $('#study').text(study)
+    $('#health').text(health)
+    $('#travel').text(travel)
+
+}
 
 let valCategorys = []
 let load_data = (page) => {
@@ -348,7 +406,8 @@ let load_data = (page) => {
                 // })
             }
         })
-
+        // gotodata(category)
+        numcategory(category)
         genCategory(category)
         genKeyword(arrKeyword)
         genFileformat(arrfileform)
@@ -458,7 +517,7 @@ let load_data = (page) => {
 
 let genCategory = (data) => {
     let category = [
-        'การท่องเที่ยวและกีฬา', 'สาธาณสุขและสุขภาพ', 'การศึกษา', 'เศรษฐกิจการเงินและอุตสาหกรรม',
+        'การท่องเที่ยว', 'สาธาณสุขและสุขภาพ', 'การศึกษา', 'เศรษฐกิจการเงินและอุตสาหกรรม',
         'เมืองและภูมิภาค', 'สังคมและสวัสดิการ', 'การคมนาคมและโลจิตจิกส์', 'ศาสนาศิลปและวัฒนธรรม', 'วิทยาศาสตร์เทคโนโลยีดิจิทัลและนวัตกรรม',
         'โครงสร้างพื้นฐานระบบและพลังงาน', 'ทรัพยากรธรรมชาติและสิ่งแวดล้อม', 'การเมืองและการปกครอง', 'เกษตกรรมและการเกษตร', 'สถิติทางการ'
     ]
@@ -505,6 +564,7 @@ let genCategory = (data) => {
         $(`#listcategory li[value=${Categories}]`).append(content)
     }
 }
+
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
@@ -692,7 +752,7 @@ let gotodownload = (id_data) => {
     // var id = datauser.userid
     // localStorage.setItem('value1', name ? name : val1);
     // localStorage.setItem('value2', id ? id : val2);
-    window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/detail/index.html';
+    window.location.href = './../detail/index.html';
 
 }
 $('#login').click(function () { loginPopup() })
@@ -725,7 +785,7 @@ const loginPopup = () => {
         showCloseButton: false,
         confirmButtonText: 'เข้าสู่ระบบ',
         confirmButtonColor: '#3085d6',
-        footer: '<a href=""><b>ลืมรหัสผ่าน</b></a><hr class="perpendicular-line"><a href=""><b>สมัครผู้ใช้ใหม่</b></a>',
+        footer: '<a href=""><b>ลืมรหัสผ่าน</b></a><hr class="perpendicular-line"><a href="./../register/index.html"><b>สมัครผู้ใช้ใหม่</b></a>',
 
         showCancelButton: false,
         preConfirm: async () => {
@@ -751,6 +811,9 @@ const loginPopup = () => {
                     datauser["userid"] = userid
                     datauser["username"] = username
 
+                    localStorage.setItem('value1', username);
+                    localStorage.setItem('value2', userid);
+
                     // localStorage.setItem('userid', userid);
 
                     $('#login').fadeOut(function () {
@@ -760,7 +823,12 @@ const loginPopup = () => {
 
                     Toast.fire({
                         icon: 'success',
-                        title: 'Signed in successfully'
+                        title: 'เข้าสู่ระบบสำเร็จ',
+                        customClass: {
+                            container: 'ff-noto',
+                            title: 'ff-noto',
+                            confirmButton: 'btn btn-secondary',
+                        },
                     })
 
                 } else {
@@ -815,6 +883,7 @@ let gotoinput = (id_data) => {
     }
 
 }
+
 let logout = () => {
     localStorage.clear();
     window.location.href = './../dashboard/index.html'
@@ -826,31 +895,47 @@ let logout = () => {
    */
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (val1 && val2) {
+    if (val1 == 'administrator' && val2 == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="index.html"><i class="bi bi-house-door"></i> <span>Home</span></a>
-        <a class="btn-memu" href="index.html"><i class="bi bi-box"></i> <span>ระบบฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>Logout</span> </a>
-        <a class="btn-memu" href="#" disabled><i class="bi bi-phone"></i><span>Contact</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
+        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
+    } else if (val1 !== null && val2 !== null) {
+        content = `
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
     } else {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="index.html"><i class="bi bi-house-door"></i> <span>Home</span></a>
-        <a class="btn-memu" href="index.html"><i class="bi bi-box"></i> <span>ระบบฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>Login</span></a>
-        <a class="btn-memu" href="#" disabled><i class="bi bi-phone"></i><span>Contact</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>เข้าสู่ระบบ</span></a>
+       
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
     }
     Swal.fire({
-        title: '<h3><b>Memu</b></h3><hr>',
+        title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3><hr>',
         // icon: 'info',
         html: content + '<hr>',
-        confirmButtonText: 'close'
+        confirmButtonText: 'ปิด',
+        customClass: {
+            container: 'ff-noto',
+            title: 'ff-noto',
+        },
         // showConfirmButton: false,
         // showCloseButton: false,
         // showCancelButton: true,
     })
 })
 
+
+AOS.init();

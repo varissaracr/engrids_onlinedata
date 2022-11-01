@@ -448,7 +448,7 @@ let senddata = async () => {
             // timer: 1500
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await axios.post(`https://engrids.soc.cmu.ac.th/api/ds-api/save`, { data: formDataObj }).then(r => {
+                await axios.post(`http://localhost:3000/ds-api/save`, { data: formDataObj }).then(r => {
                     var Sucss = r.data.data;
                     if (Sucss == 'Save data') {
                         Swal.fire({

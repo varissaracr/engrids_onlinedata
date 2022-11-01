@@ -56,7 +56,7 @@ let loadlistdata = (id, tool) => {
         ajax: {
             async: true,
             type: "post",
-            url: 'https://engrids.soc.cmu.ac.th/api/ds-api/listdata',
+            url: 'http://localhost:3000/ds-api/listdata',
             data: { d_iduser: id == 'admin' ? 'administrator' : id },
             dataSrc: 'data'
         },
@@ -121,7 +121,7 @@ let editData = (id) => {
 }
 
 let deleteData = (id) => {
-    axios.post(`https://engrids.soc.cmu.ac.th/api/ds-api/deletedata`, { d_id: id }).then(r => {
+    axios.post(`http://localhost:3000/ds-api/deletedata`, { d_id: id }).then(r => {
         var Sucss = r.data.data;
         if (Sucss == 'success') {
             Swal.fire({
@@ -180,7 +180,7 @@ let accessDate = (id, name) => {
                 d_access: result.value.access
             }
 
-            axios.post("https://engrids.soc.cmu.ac.th/api/ds-api/access", data).then(r => {
+            axios.post("http://localhost:3000/ds-api/access", data).then(r => {
                 // console.log(r.data.data)
                 if (r.data.data == 'access') {
                     Swal.fire({
@@ -242,7 +242,7 @@ let HistoryData = (id) => {
         ajax: {
             async: true,
             type: "post",
-            url: 'https://engrids.soc.cmu.ac.th/api/ds-api/hitstory/getdata',
+            url: 'http://localhost:3000/ds-api/hitstory/getdata',
             data: { id_user: id },
             dataSrc: 'data'
         },

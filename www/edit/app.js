@@ -1,5 +1,6 @@
 const id_data = localStorage.getItem('id_data');
-const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
+// const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
+const urlapi = `http://localhost:3000/ds-api`
 
 var val1 = localStorage.getItem('value1');
 var val2 = localStorage.getItem('value2');
@@ -558,7 +559,7 @@ let senddata = async () => {
             // timer: 1500
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await axios.post(`https://engrids.soc.cmu.ac.th/api/ds-api/update`, { data: formDataObj }).then(r => {
+                await axios.post(`http://localhost:3000/ds-api/update`, { data: formDataObj }).then(r => {
                     var Sucss = r.data.data;
                     if (Sucss == 'Update data') {
                         Swal.fire({

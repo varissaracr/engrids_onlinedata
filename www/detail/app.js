@@ -3,6 +3,7 @@ var val1 = localStorage.getItem('value1');
 var val2 = localStorage.getItem('value2');
 
 const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
+// const urlapi = `http://localhost:3000/ds-api`
 
 // const queryString = window.location.search;
 // const urlParams = new URLSearchParams(queryString);

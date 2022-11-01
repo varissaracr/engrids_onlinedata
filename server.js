@@ -12,5 +12,5 @@ app.listen(port, () => {
     console.log(`http://localhost:${port}`)
 })
 
-const api = require('./service/api');
-app.use(api);
+const datapull = require('./service/datapull');
+app.use(datapull);

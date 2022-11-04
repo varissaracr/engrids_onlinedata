@@ -2,9 +2,21 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-// app.get('/', (req, res) => {
-//     res.send('Hello World!')
-// })
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+app.use(cors());
+app.options('*', cors());
+
+app.use(bodyParser.json({
+    limit: '50mb',
+    extended: true
+}));
+
+app.use(bodyParser.urlencoded({
+    limit: '50mb',
+    extended: true
+}));
 
 app.use('/', express.static('www'))
 

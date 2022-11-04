@@ -1,6 +1,24 @@
 const express = require('express');
 const app = express.Router();
 const datapool = require("./db").datapool;
+const qs = require("qs")
+const axios = require("axios")
+
+
+app.post('/ds_chekauth/gettoken', (req, res) => {
+    console.log(req);
+    // const { code } = req.body
+
+    // const data = {
+    //     code: code,
+    //     redirect_uri: "http://localhost:3000/login/",
+    //     client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
+    //     client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
+    //     grant_type: "authorization_code"
+    // };
+
+    // axios.post('https://oauth.cmu.ac.th/v1/GetToken.aspx', data).then(r => console.log(r))
+})
 
 ////formuser////
 app.post('/fuser-api/userid', (req, res) => {

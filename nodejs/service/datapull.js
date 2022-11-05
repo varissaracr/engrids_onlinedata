@@ -3,21 +3,49 @@ const app = express.Router();
 const datapool = require("./db").datapool;
 const qs = require("qs")
 const axios = require("axios")
+// const qs = require("querystring");
 
 
 app.post('/ds_chekauth/gettoken', (req, res) => {
-    console.log(req);
-    // const { code } = req.body
+    const { code } = req.body
 
-    // const data = {
-    //     code: code,
-    //     redirect_uri: "http://localhost:3000/login/",
-    //     client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
-    //     client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
-    //     grant_type: "authorization_code"
-    // };
+    const data = {
+        code: code,
+        redirect_uri: "http://localhost:3000/login/",
+        client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
+        client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
+        grant_type: "authorization_code"
+    };
+    const url = "https://oauth.cmu.ac.th/v1/GetToken.aspx"
+    const headers = { 'content-type': 'application/x-www-form-urlencoded' }
 
-    // axios.post('https://oauth.cmu.ac.th/v1/GetToken.aspx', data).then(r => console.log(r))
+    axios.post(url, qs.stringify(data), headers).then((r) => {
+        var config = {
+            method: 'get',
+            url: 'https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo',
+            headers: {
+                'Authorization': 'Bearer ' + r.data.access_token,
+                'Cookie': 'BIGipServermisapi_pool=536964618.20480.0000'
+            }
+        };
+
+        axios(config)
+            .then((response) => {
+                res.status(200).json({
+                    data: response.data
+                })
+            })
+            .catch((error) => {
+                res.status(200).json({
+                    data: "expire"
+                })
+            });
+    }).catch((error) => {
+        res.status(200).json({
+            data: "expire"
+        })
+    })
+
 })
 
 ////formuser////

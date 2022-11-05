@@ -4,10 +4,27 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const code = urlParams.get('code')
 
-if (code) {
-    console.log(code);
-    axios.post('/ds_chekauth/gettoken', { code }).then(r => console.log(r))
+const state = urlParams.get('state')
+
+
+let setCookie = (cvalue, gid, auth, usrname, exdays) => {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = "open_ustoken=" + cvalue + ";" + expires + ";path=/";
+    document.cookie = "open_gid=" + gid + ";" + expires + ";path=/";
+    document.cookie = "open_auth=" + auth + ";" + expires + ";path=/";
+    document.cookie = "open_usrname=" + usrname + ";" + expires + ";path=/";
 }
+
+if (code) {
+    axios.post('/ds_chekauth/gettoken', { code }).then(r => {
+        // setCookie(r.data.data, r.data.gid, r.data.auth, r.data.usrname, 1)
+        console.log(r.data.data);
+        // window.location.replace("./../" + state);
+    })
+}
+
 
 
 // POST /v1/GetToken.aspx HTTP/1.1

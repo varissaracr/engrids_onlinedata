@@ -3,19 +3,17 @@ const app = express.Router();
 const datapool = require("./db").datapool;
 const qs = require("qs")
 const axios = require("axios")
-// const qs = require("querystring");
+const crypto = require("crypto")
 
-
-app.post('/ds_chekauth/gettoken', (req, res) => {
-    const { code } = req.body
-
+const loginMiddleware = (req, res, next) => {
     const data = {
-        code: code,
+        code: req.body.code,
         redirect_uri: "http://localhost:3000/login/",
         client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
         client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
         grant_type: "authorization_code"
     };
+
     const url = "https://oauth.cmu.ac.th/v1/GetToken.aspx"
     const headers = { 'content-type': 'application/x-www-form-urlencoded' }
 
@@ -30,23 +28,27 @@ app.post('/ds_chekauth/gettoken', (req, res) => {
         };
 
         axios(config)
-            .then((response) => {
-                res.status(200).json({
-                    data: response.data
-                })
+            .then((resp) => {
+                const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
+                req.status = {
+                    token: hsah,
+                    data: resp.data
+                }
+                next()
             })
             .catch((error) => {
-                res.status(200).json({
-                    data: "expire"
-                })
+                req.status = "valid";
             });
     }).catch((error) => {
-        res.status(200).json({
-            data: "expire"
-        })
+        req.status = "valid";
     })
+}
 
+app.post("/ds_chekauth/gettoken", loginMiddleware, (req, res) => {
+    // console.log(req.status);
+    res.status(200).json(req.status)
 })
+
 
 ////formuser////
 app.post('/fuser-api/userid', (req, res) => {

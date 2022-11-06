@@ -1,12 +1,95 @@
+let val1
+let val2
+
+// const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
 const urlapi = `http://localhost:3000/ds-api`
 
+let getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
+const code = getCookie("open_code");
+const firstname_TH = getCookie("open_firstname_TH");
+const lastname_TH = getCookie("open_lastname_TH");
+const student_id = getCookie("open_student_id");
+const organization_name_TH = getCookie("open_organization_name_TH");
+
+let refreshPage = () => {
+    location.reload(true);
+}
+
+let gotoLogin = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost:3000/login/' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=dashboard'
+    window.location.href = url;
+}
+
+let gotoLogout = () => {
+    document.cookie = "open_code=; max-age=0; path=/;";
+    document.cookie = "open_firstname_TH=; max-age=0; path=/;";
+    document.cookie = "open_lastname_TH=; max-age=0; path=/;";
+    document.cookie = "open_student_id=; max-age=0; path=/;";
+    document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
+    gotoIndex()
+}
+
+const loginPopup = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost:3000/login/' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=dashboard'
+    window.location.href = url;
+};
+
+let gotoIndex = () => {
+    location.href = "./index.html";
+}
+
+if (code) {
+    $('#profile').html(`<a href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i><span class="ff-noto">${firstname_TH}</span></a>`)
+    $('#login').html(`<a href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>`)
+
+} else {
+    $('#login').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
+    // gotoLogin();
+
+}
+
+$(window).on('load', function () {
+    if ($('#preloader').length) {
+        $('#preloader').delay(100).fadeOut('slow', function () {
+            $(this).remove();
+        });
+    }
+});
+
+
+$(document).ready(function () {
+    load_data()
+})
 
 let gotodata = (txt) => {
     location.href = './../infordata/index.html?page=1&category=' + txt;
 }
 
 let numcategory = async (d) => {
+    // console.log(d)
     let politics = 0;
     let nature = 0;
     let agri = 0;
@@ -57,8 +140,10 @@ let numcategory = async (d) => {
     $('#study').text(study)
     $('#health').text(health)
     $('#travel').text(travel)
+
 }
 
+let valCategorys = []
 let load_data = () => {
     axios.get(urlapi + '/getdata').then(r => {
         var data = r.data.data;
@@ -67,8 +152,10 @@ let load_data = () => {
         var category = [];
         var arrKeyword = [];
         var arrfileform = [];
+        var New_post = data.slice(0, 4)
 
         data.map(i => {
+
             arr.push(i)
             var group = JSON.parse(i.d_groups)
             group.map(e => category.push(e))
@@ -79,34 +166,95 @@ let load_data = () => {
             var fileform = JSON.parse(i.d_datafiles)
             var dta = fileform[0]
             arrfileform.push(dta)
+            // dta.map(e => {
+            // })
+
+            numcategory(category)
         })
-        numcategory(category)
     })
 }
 
+
+let gotodownload = (id_data) => {
+    localStorage.setItem('id_data', id_data);
+    window.location.href = './../detail/index.html';
+
+}
+// $('#login').click(function () { loginPopup() })
+
 const datauser = {}
 
-const gotoLogin = () => {
-    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
-        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost:3000/login/' +
-        '&scope=cmuitaccount.basicinfo' +
-        '&state=dashboard'
 
-    window.location.href = url;
-};
 
-let logout = () => {
-    localStorage.clear();
-    window.location.href = './../dashboard/index.html'
+let gotomanage = (id_data) => {
+    if (Object.values(datauser).length !== 0 || val1 || val2) {
+        var name = datauser.username
+        var id = datauser.userid
+        localStorage.setItem('value1', name ? name : val1);
+        localStorage.setItem('value2', id ? id : val2);
+        // window.open('./manage/index.html', '_blank');
+        window.location.href = './../manage/index.html';
+    } else {
+        loginPopup()
+    }
+
+}
+let gotoinput = (id_data) => {
+    if (Object.values(datauser).length !== 0 || val1 || val2) {
+        var name = datauser.username
+        var id = datauser.userid
+        localStorage.setItem('value1', name ? name : val1);
+        localStorage.setItem('value2', id ? id : val2);
+        window.location.href = './../input/index.html';
+    } else {
+        loginPopup()
+    }
+
 }
 
-$(window).on('load', function () {
-    if ($('#preloader').length) {
-        $('#preloader').delay(100).fadeOut('slow', function () {
-            $(this).remove();
-            load_data()
-        });
+$('.mobile-nav-toggle').on('click', function (e) {
+    var content;
+    if (val1 == 'administrator' && val2 == 'admin') {
+        content = `
+        <div class="d-flex flex-column " id="memu_mobile">
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
+        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
+    } else if (val1 !== null && val2 !== null) {
+        content = `
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
+    } else {
+        content = `
+        <div class="d-flex flex-column " id="memu_mobile">
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>เข้าสู่ระบบ</span></a>
+       
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
     }
-});
+    Swal.fire({
+        title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3><hr>',
+        // icon: 'info',
+        html: content + '<hr>',
+        confirmButtonText: 'ปิด',
+        customClass: {
+            container: 'ff-noto',
+            title: 'ff-noto',
+        },
+        // showConfirmButton: false,
+        // showCloseButton: false,
+        // showCancelButton: true,
+    })
+})
+
+
 AOS.init();

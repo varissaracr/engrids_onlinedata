@@ -27,3 +27,15 @@ app.listen(port, () => {
 const datapull = require('./service/datapull');
 app.use(datapull);
 
+
+const requestTime = function (req, res, next) {
+    req.reqTime = Date.now()
+    next()
+}
+
+app.get('/a', requestTime, (req, res) => {
+    let responseText = 'Hello World!<br>'
+    responseText += `<small>Requested at: ${req.reqTime}</small>`
+    res.send(responseText)
+})
+

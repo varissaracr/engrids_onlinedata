@@ -3,22 +3,52 @@ const app = express.Router();
 const datapool = require("./db").datapool;
 const qs = require("qs")
 const axios = require("axios")
+const crypto = require("crypto")
 
+const loginMiddleware = (req, res, next) => {
+    const data = {
+        code: req.body.code,
+        redirect_uri: "http://localhost:3000/login/",
+        client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
+        client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
+        grant_type: "authorization_code"
+    };
 
-app.post('/ds_chekauth/gettoken', (req, res) => {
-    console.log(req);
-    // const { code } = req.body
+    const url = "https://oauth.cmu.ac.th/v1/GetToken.aspx"
+    const headers = { 'content-type': 'application/x-www-form-urlencoded' }
 
-    // const data = {
-    //     code: code,
-    //     redirect_uri: "http://localhost:3000/login/",
-    //     client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
-    //     client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
-    //     grant_type: "authorization_code"
-    // };
+    axios.post(url, qs.stringify(data), headers).then((r) => {
+        var config = {
+            method: 'get',
+            url: 'https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo',
+            headers: {
+                'Authorization': 'Bearer ' + r.data.access_token,
+                'Cookie': 'BIGipServermisapi_pool=536964618.20480.0000'
+            }
+        };
 
-    // axios.post('https://oauth.cmu.ac.th/v1/GetToken.aspx', data).then(r => console.log(r))
+        axios(config)
+            .then((resp) => {
+                const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
+                req.status = {
+                    token: hsah,
+                    data: resp.data
+                }
+                next()
+            })
+            .catch((error) => {
+                req.status = "valid";
+            });
+    }).catch((error) => {
+        req.status = "valid";
+    })
+}
+
+app.post("/ds_chekauth/gettoken", loginMiddleware, (req, res) => {
+    // console.log(req.status);
+    res.status(200).json(req.status)
 })
+
 
 ////formuser////
 app.post('/fuser-api/userid', (req, res) => {

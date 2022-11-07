@@ -99,7 +99,7 @@ $(document).ready(function () {
 let valCategorys = []
 let load_data = (page) => {
     axios.get(urlapi + '/getdata').then(r => {
-        console.log(r);
+        // console.log(r);
         var data = r.data.data;
 
         var arr = [];
@@ -361,7 +361,8 @@ let load_data = (page) => {
             var t = new Date(i.d_tnow).toISOString().split('T')
             var date = new Date(t).toLocaleDateString('th-TH')
             var content = $(`
-            <div class="post-item">
+            <div class="post-item clearfix">
+            <img src="./../assets/img/noimg.png" alt="">
             <h4><a class="ff-noto pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a></h4>
             <time datetime="${t}">${date}</time>
             </div>`)

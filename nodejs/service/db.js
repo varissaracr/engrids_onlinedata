@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool
 
 
-const datapull = new Pool({
+const datapool = new Pool({
     user: 'postgres',
     host: '172.16.0.2',
     database: 'end_form',
@@ -9,6 +9,6 @@ const datapull = new Pool({
     port: 5432,
 });
 
-exports.datapull = datapull;
+exports.datapool = datapool;
 
 

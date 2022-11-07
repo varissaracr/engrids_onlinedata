@@ -65,28 +65,8 @@
                                 class="ff-noto">หน้าหลัก</span></a></li>
                     <li><a class="" href="./../infordata/index.html"><span class="ff-noto">ฐานข้อมูลสารสนเทศ</span></a>
                     </li>
-                    <li id="login"><a href="#"><i class="bi bi-door-open"></i>&nbsp;&nbsp;<span
-                                class="ff-noto">เข้าสู่ระบบ</span></a>
-                    </li>
-                    <li class="dropdown dp-none" id="Profile"><a href="#"><i class="bi bi-person-circle"
-                                style="font-size: 22px;"></i>
-                            &nbsp; <span id="username">User</span><i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="#"><span class="ff-noto">โปรไฟล์ของคุณ</span></a></li>
-                            <li class="dropdown"><a onclick="gotomanage()" style="cursor: pointer;"><span
-                                        class="ff-noto">การจัดการข้อมูล</span>
-                                    <i class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a onclick="gotoinput()" style="cursor: pointer;"><span
-                                                class="ff-noto">นำเข้าข้อมูล</span></a></li>
-                                    <li><a onclick="gotomanage()" style="cursor: pointer;"><span
-                                                class="ff-noto">แก้ไข้ข้อมูล</span></a></li>
-                                </ul>
-                            </li>
-                            <li><a onclick="logout()" style="cursor: pointer;"><span class="ff-noto">ออกจากระบบ</span>
-                                    <i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
-                        </ul>
-                    </li>
+                    <li id="profile"></li>
+                    <li id="login"></li>
                     <li><a class="nav-link scrollto" href="https://engrids.soc.cmu.ac.th/"><span
                                 class="ff-noto">ติดต่อเรา</span></a></li>
                 </ul>
@@ -362,7 +342,6 @@
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
@@ -385,6 +364,7 @@
     <script src="./../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
     <script src="./../assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="./../assets/vendor/php-email-form/validate.js"></script>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     <script src="./app.js"></script>
 </body>
 

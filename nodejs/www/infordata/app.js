@@ -2,7 +2,7 @@ var val1
 var val2
 
 // const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
-const urlapi = `http://localhost:3000/ds-api`
+// const urlapi = `http://localhost:3000/ds-api`
 
 let getCookie = (cname) => {
     let name = cname + "=";
@@ -146,7 +146,7 @@ $(document).ready(function () {
 
 let valCategorys = []
 let load_data = (page) => {
-    axios.get(urlapi + '/getdata').then(r => {
+    axios.get('/ds-api/getdata').then(r => {
         // console.log(r);
         var data = r.data.data;
 

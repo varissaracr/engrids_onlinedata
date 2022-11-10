@@ -92,46 +92,44 @@
         </section><!-- End Breadcrumbs -->
 
         <!-- ======= Blog Section ======= -->
-        <section id="blog" class="blog">
-            <div class="container" data-aos="fade-up">
+        <section id="contact" class="contact" style="margin-top: -20px;">
+            <div class="container">
 
-                <div class="row">
-                    <div class="col text-center">
-                        <h2>ข้อมูลส่วนตัว - <span class="ff-noto" style="color: #50d49f;">Profile</span>
-                        </h2>
-                    </div>
+                <div class="section-title">
+                    <!-- <h2>Input Data</h2> -->
+                    <h3 class="ff-noto">ข้อมูล <span class="ff-noto">ผู้ใช้</span></h3>
+                    <p></p>
                 </div>
-                <br>
-                <br>
                 <div class="d-flex justify-content-center pt-5 pb-4"
                     style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; border-radius: 15px;">
                     <div class="col-lg-10 mt-5 mt-lg-0">
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">ชื่อ-สกุล: </label>
-                            <div class="col-sm-10">
+                        <form method="post" role="form" class="forms-input" id="forminput">
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label">ชื่อ-นามสกุล</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="std_name">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">รหัสนักศึกษา:</label>
-                            <div class="col-sm-10">
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label">รหัสนักศึกษา </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="std_id">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">คณะ:</label>
-                            <div class="col-sm-10">
+                            <div class="form-group row mb-2">
+                                <label class="col-sm-2 col-form-label">คณะ </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="std_org">
+                                </div>
                             </div>
-                        </div>
+
+
+                        </form>
+
                     </div>
                 </div>
             </div>
-            <br>
-        </section><!-- End Blog Section -->
-        <div id="preloader">
-            <div class="content-display">
-                <img src="./../assets/img/19814-data-list.gif" alt="data-list" width="95%">
-                <h6 id="loading-text">กำลังโหลด...</h6>
-            </div>
-        </div>
+        </section>
 
     </main><!-- End #main -->
 

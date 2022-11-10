@@ -3,9 +3,9 @@ const Pool = require('pg').Pool
 
 const datapool = new Pool({
     user: 'postgres',
-    host: '172.16.0.2',
-    database: 'end_form',
-    password: 'Eec-MIS2564db',
+    host: 'postgis',
+    database: 'geodb',
+    password: '1234',
     port: 5432,
 });
 

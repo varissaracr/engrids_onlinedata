@@ -49,14 +49,13 @@ let gotoLogout = () => {
     gotoIndex()
 }
 
-const loginPopup = () => {
-    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
-        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost:3000/login/' +
-        '&scope=cmuitaccount.basicinfo' +
-        '&state=infordata'
-    window.location.href = url;
-};
+let gotoProfile = () => {
+    location.href = "./../profile/index.html";
+}
+
+let gotoManage = () => {
+    location.href = "./../manage/index.html";
+}
 
 let gotoIndex = () => {
     location.href = "./index.html";
@@ -64,18 +63,17 @@ let gotoIndex = () => {
 
 if (code) {
     $('#profile').html(`
-    <li class=" dropdown" > <a class="active" href="#" onclick="gotoProfile()"> <i class="bx bxs-user-detail"></i> <span class="ff-noto">${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
-    <ul>
-    <li><a href="#"><span class="ff-noto">โปรไฟล์</span> </a></li>
-    <li><a href="./../manage/index.html"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
-    </ul>
+    <li class=" dropdown" > <a class="active" href="#" > <i class="bx bxs-user-detail"></i> <span class="ff-noto">${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+        <ul>
+            <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
+            <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
+        </ul>
     </li>`)
     $('#login').html(`<a href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>`)
 
 } else {
     $('#login').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
     // gotoLogin();
-
 }
 
 const queryString = window.location.search;
@@ -456,7 +454,7 @@ let load_data = (page) => {
                 </p>
                 <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                 <div class="read-more">
-                    <a class="pointer" onclick="gotodownload('${i.d_id}')"> Download </a>
+                    <a class="pointer" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}> Download </a>
                 </div>
             </div>`)
                     $(`#content-data`).append(content)
@@ -484,7 +482,7 @@ let load_data = (page) => {
                 </p>
                 <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                 <div class="read-more">
-                    <a class="pointer" style="background-color: #D0D3D4;" onclick="gotodownload('${i.d_id}')"> Download </a>
+                    <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}>Download</button>
                 </div>
             </div>`)
                     $(`#content-data`).append(content)
@@ -521,7 +519,7 @@ let load_data = (page) => {
                 </p>
                 <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                 <div class="read-more">
-                    <a class="pointer" onclick="gotodownload('${i.d_id}')"> Download </a>
+                    <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}>Download</button>
                 </div>
             </div>`)
                     $(`#content-data`).append(content)
@@ -794,7 +792,7 @@ let gotomanage = (id_data) => {
         // window.open('./manage/index.html', '_blank');
         window.location.href = '././manage/index.html';
     } else {
-        loginPopup()
+        gotoLogin()
     }
 
 }
@@ -806,7 +804,7 @@ let gotoinput = (id_data) => {
         localStorage.setItem('value2', id ? id : val2);
         window.location.href = './../input/index.html';
     } else {
-        loginPopup()
+        gotoLogin()
     }
 }
 /**

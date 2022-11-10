@@ -63,7 +63,13 @@ let gotoIndex = () => {
 }
 
 if (code) {
-    $('#profile').html(`<a href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i><span class="ff-noto">${firstname_TH}</span></a>`)
+    $('#profile').html(`
+    <li class=" dropdown" > <a class="active" href="#" onclick="gotoProfile()"> <i class="bx bxs-user-detail"></i> <span class="ff-noto">${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+    <ul>
+    <li><a href="#"><span class="ff-noto">โปรไฟล์</span> </a></li>
+    <li><a href="./../manage/index.html"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
+    </ul>
+    </li>`)
     $('#login').html(`<a href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>`)
 
 } else {
@@ -427,7 +433,8 @@ let load_data = (page) => {
                 var date = new Date(t).toLocaleDateString('th-TH')
                 var group = JSON.parse(i.d_groups)
                 // console.log(i.d_tnow)
-                var content = $(`
+                if (code) {
+                    var content = $(`
             <article class="entry">
             <h2 class="entry-title">
                 <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
@@ -449,21 +456,50 @@ let load_data = (page) => {
                 </p>
                 <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                 <div class="read-more">
-                    <a class="pointer" style="color: rgb(190, 190, 190);" onclick="gotodownload('${i.d_id}')"> Download1 </a>
+                    <a class="pointer" onclick="gotodownload('${i.d_id}')"> Download </a>
                 </div>
             </div>`)
-                $(`#content-data`).append(content)
+                    $(`#content-data`).append(content)
+                }
+                else {
+                    var content = $(`
+            <article class="entry">
+            <h2 class="entry-title">
+                <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
+            </h2>
 
+            <div class="entry-meta">
+                <ul>
+                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
+                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                    </li>
+                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                            href="blog-single.html">${i.d_sd} download</a></li>
+                </ul>
+            </div>
+
+            <div class="entry-content">
+                <p>
+                    ${i.d_detail}
+                </p>
+                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
+                <div class="read-more">
+                    <a class="pointer" style="background-color: #D0D3D4;" onclick="gotodownload('${i.d_id}')"> Download </a>
+                </div>
+            </div>`)
+                    $(`#content-data`).append(content)
+                }
             })
         } else {
             var select = arr.slice(0, 4)
             select.map(i => {
-                console.log(i)
+                // console.log(i)
                 var t = new Date(i.d_tnow).toISOString().split('T')
                 var date = new Date(t).toLocaleDateString('th-TH')
                 var group = JSON.parse(i.d_groups)
                 // console.log(i.d_tnow)
-                var content = $(`
+                if (code) {
+                    var content = $(`
             <article class="entry">
             <h2 class="entry-title">
                 <a class="pointer" id ="download_btn">${i.d_name}</a>
@@ -485,10 +521,40 @@ let load_data = (page) => {
                 </p>
                 <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                 <div class="read-more">
-                    <a class="pointer" style="background-color: aquamarine;" onclick="gotodownload('${i.d_id}')"> Download2 </a>
+                    <a class="pointer" onclick="gotodownload('${i.d_id}')"> Download </a>
                 </div>
             </div>`)
-                $(`#content-data`).append(content)
+                    $(`#content-data`).append(content)
+
+                }
+                else {
+                    var content = $(`
+            <article class="entry">
+            <h2 class="entry-title">
+                <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
+            </h2>
+
+            <div class="entry-meta">
+                <ul>
+                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
+                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                    </li>
+                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                            href="blog-single.html">${i.d_sd} download</a></li>
+                </ul>
+            </div>
+
+            <div class="entry-content">
+                <p>
+                    ${i.d_detail}
+                </p>
+                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
+                <div class="read-more">
+                    <a class="pointer" style="background-color: #D0D3D4;" onclick="gotodownload('${i.d_id}')"> Download </a>
+                </div>
+            </div>`)
+                    $(`#content-data`).append(content)
+                }
 
             })
         }

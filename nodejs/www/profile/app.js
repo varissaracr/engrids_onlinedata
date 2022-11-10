@@ -34,7 +34,7 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost:3000/login/' +
+        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=profile'
     window.location.href = url;

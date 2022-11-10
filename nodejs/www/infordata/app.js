@@ -34,7 +34,7 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost:3000/login/' +
+        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=infordata'
     window.location.href = url;
@@ -482,7 +482,7 @@ let load_data = (page) => {
                 </p>
                 <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                 <div class="read-more">
-                    <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}>Download</button>
+                    <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" >Download</button>
                 </div>
             </div>`)
                     $(`#content-data`).append(content)
@@ -519,7 +519,7 @@ let load_data = (page) => {
                 </p>
                 <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                 <div class="read-more">
-                    <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}>Download</button>
+                    <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')">Download</button>
                 </div>
             </div>`)
                     $(`#content-data`).append(content)
@@ -759,11 +759,33 @@ let pageLength = (number) => {
 }
 
 let gotodownload = (id_data) => {
+    console.log(id_data);
     if (code) {
         localStorage.setItem('id_data', id_data);
         window.location.href = './../detail/index.html';
     } else {
-        window.location.href = '##';
+        content = `
+        <div style="text-align: left;">
+            กรุณาเข้าสู่ระบบก่อนดาวน์โหลด
+            <p></p>
+            <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
+        </div>`
+
+        Swal.fire({
+            // title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3>',
+            // icon: 'info',
+            html: content + '',
+            confirmButtonText: 'ปิด',
+            confirmButtonColor: '#000000',
+            // background: '#50d49f',
+            customClass: {
+                container: 'ff-noto',
+                title: 'ff-noto',
+            },
+            // showConfirmButton: false,
+            // showCloseButton: false,
+            // showCancelButton: true,
+        })
     }
 }
 
@@ -807,56 +829,6 @@ let gotoinput = (id_data) => {
         gotoLogin()
     }
 }
-/**
-   * Mobile nav toggle
-   */
-$('.mobile-nav-toggle').on('click', function (e) {
-    var content;
-    if (val1 == 'administrator' && val2 == 'admin') {
-        content = `
-        <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-        <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i><span class="ff-noto">${firstname_TH}</span></a>
-        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
-        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
-        <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
-      </div>`
-    } else if (code) {
-        content = `
-        <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ </a>
-        <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i> ${firstname_TH} </a>
-        <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i> ออกจากระบบ </a>
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i> ติดต่อเรา </a>
-      </div>`
-    } else {
-        content = `
-        <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ</a>
-        <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i>ติดต่อเรา</a>
-      </div>`
-    }
-    Swal.fire({
-        title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3>',
-        // icon: 'info',
-        html: content + '',
-        confirmButtonText: 'ปิด',
-        confirmButtonColor: '#000000',
-        // background: '#50d49f',
-        customClass: {
-            container: 'ff-noto',
-            title: 'ff-noto',
-        },
-        // showConfirmButton: false,
-        // showCloseButton: false,
-        // showCancelButton: true,
-    })
-})
 
 
 

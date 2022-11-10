@@ -243,7 +243,7 @@ h6 {
 * Mobile Navigation 
 */
 .mobile-nav-toggle {
-  color: #fff;
+  color: rgb(255, 255, 255);
   font-size: 28px;
   cursor: pointer;
   display: none;

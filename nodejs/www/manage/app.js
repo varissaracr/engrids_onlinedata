@@ -1,9 +1,89 @@
+// var val1
+// var val2
+
 var val1 = localStorage.getItem('value1');
 var val2 = localStorage.getItem('value2');
 
+// const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
+const urlapi = `http://localhost:3000/ds-api`
+
+let getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+const id_data = localStorage.getItem('id_data');
+const code = getCookie("open_code");
+const firstname_TH = getCookie("open_firstname_TH");
+const lastname_TH = getCookie("open_lastname_TH");
+const student_id = getCookie("open_student_id");
+const organization_name_TH = getCookie("open_organization_name_TH");
+
+let refreshPage = () => {
+    location.reload(true);
+}
+
+let gotoLogin = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost:3000/login/' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=infordata'
+    window.location.href = url;
+}
+
+let gotoLogout = () => {
+    document.cookie = "open_code=; max-age=0; path=/;";
+    document.cookie = "open_firstname_TH=; max-age=0; path=/;";
+    document.cookie = "open_lastname_TH=; max-age=0; path=/;";
+    document.cookie = "open_student_id=; max-age=0; path=/;";
+    document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
+    gotoIndex()
+}
+
+const loginPopup = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost:3000/login/' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=infordata'
+    window.location.href = url;
+};
+
+let gotoIndex = () => {
+    location.href = "./index.html";
+}
+
+if (code) {
+    $('#profile').html(`
+    <li class=" dropdown" > <a class="active" href="#" onclick="gotoProfile()"> <i class="bx bxs-user-detail"></i> <span class="font-noto">${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+    <ul>
+    <li><a href="#"><span class="font-noto">โปรไฟล์</span> </a></li>
+    <li><a href="./../manage/index.html"><span class="font-noto">การจัดการข้อมูล</span></a></li>
+    </ul>
+    </li>`)
+    $('#login').html(`<a href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="font-noto">ออกจากระบบ</span></a>`)
+
+} else {
+    $('#login').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="font-noto">เข้าสู่ระบบ</span></a>`);
+    // gotoLogin();
+
+}
+
 $(document).ready(function () {
     // console.log(val2)
-    if (val1 && val2) {
+    if (code) {
         $('#username').text(val1)
         loadlistdata(val2)
         if (val2 == 'admin') {
@@ -78,12 +158,12 @@ let loadlistdata = (id, tool) => {
                 render: function (data, type, row, meta) {
                     if (id !== 'admin') {
                         return `<button class="btn btn-margin btn btn-warning font-Noto" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
-                        <button class="btn btn-margin btn btn-danger font-Noto" onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
+                        <button class="btn btn-margin style="background-color: #FA7070;" font-Noto" onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
                     } else {
                         return `
-                        <button class="btn btn-margin btn btn-success font-Noto" onclick="accessDate('${row.d_id}','${row.d_name}')">การเข้าถึง</button>
-                        <button class="btn btn-margin btn btn-warning font-Noto" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
-                        <button class="btn btn-margin btn btn-danger font-Noto" onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
+                        <button class="btn btn-margin font-Noto" style="background-color: #60d1be; color: #ffffff;" onclick="accessDate('${row.d_id}','${row.d_name}')">การเข้าถึง </button>
+                        <button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
+                        <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
                     }
 
                 },
@@ -160,14 +240,16 @@ let accessDate = (id, name) => {
                 <option value="private">private</option>
                 <option value="publish">publish</option>
             </select>
-            <button class="l-check text-primary mt-4" onclick="gotodownload('${id}')">ตรวจสอบข้อมูล</button>
+            <button class="l-check  mt-4" onclick="gotodownload('${id}')">ตรวจสอบข้อมูล</button>
             `,
         customClass: {
             container: 'font-noto',
             title: 'font-noto',
         },
         confirmButtonText: 'ยืนยัน',
+        confirmButtonColor: '#60d1be',
         cancelButtonText: 'ปิด',
+        cancelButtonColor: '#000000',
         showCancelButton: true,
         preConfirm: (value) => {
             const access = Swal.getPopup().querySelector('#access').value
@@ -186,6 +268,8 @@ let accessDate = (id, name) => {
                     Swal.fire({
                         icon: 'success',
                         title: 'เปลี่ยนสถานะเป็น ' + result.value.access + ' สำเร็จ',
+                        confirmButtonText: 'ปิด',
+                        confirmButtonColor: '#000000',
                         customClass: {
                             container: 'font-noto',
                             title: 'font-noto',
@@ -333,11 +417,6 @@ $('.mobile-nav-toggle').on('click', function (e) {
 
 let gotodownload = (id_data) => {
     localStorage.setItem('id_data', id_data);
-    // var name = datauser.username
-    // var id = datauser.userid
-    // localStorage.setItem('value1', name ? name : val1);
-    // localStorage.setItem('value2', id ? id : val2);
     window.open('./../detail/index.html', '_blank');
-    // window.location.href = 'https://engrids.soc.cmu.ac.th/onlinedata/detail/index.html';
 
 }

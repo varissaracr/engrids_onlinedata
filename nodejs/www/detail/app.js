@@ -1,51 +1,88 @@
+
+let val1
+let val2
+// console.log(val1, val2)
+
+// const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
+const urlapi = `http://localhost:3000/ds-api`
+
+let getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 const id_data = localStorage.getItem('id_data');
-var val1 = localStorage.getItem('value1');
-var val2 = localStorage.getItem('value2');
+const code = getCookie("open_code");
+const firstname_TH = getCookie("open_firstname_TH");
+const lastname_TH = getCookie("open_lastname_TH");
+const student_id = getCookie("open_student_id");
+const organization_name_TH = getCookie("open_organization_name_TH");
 
-const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
-// const urlapi = `http://localhost:3000/ds-api`
+let refreshPage = () => {
+    location.reload(true);
+}
 
-// const queryString = window.location.search;
-// const urlParams = new URLSearchParams(queryString);
-// // let params = new URLSearchParams(url.search);
-// const baz = urlParams.get('baz')
-// const keyword = urlParams.get('keyword')
-// console.log(baz);
-// console.log(keyword);
+let gotoLogin = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost:3000/login/' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=dashboard'
+    window.location.href = url;
+}
 
-// const url = new URL(window.location.href);
-// url.searchParams.set('keyword', 'คำสำคัญ');
-// console.log(url.search.toString())
+let gotoLogout = () => {
+    document.cookie = "open_code=; max-age=0; path=/;";
+    document.cookie = "open_firstname_TH=; max-age=0; path=/;";
+    document.cookie = "open_lastname_TH=; max-age=0; path=/;";
+    document.cookie = "open_student_id=; max-age=0; path=/;";
+    document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
+    gotoIndex()
+}
 
-// let url2 = new URL('https://example.com?foo=1&bar=2');
-// let params = new URLSearchParams(url.search);
+const loginPopup = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost:3000/login/' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=dashboard'
+    window.location.href = url;
+};
 
-// Add a third parameter.
-// params.set('baz', 3);
-// params.toString();
+let gotoIndex = () => {
+    location.href = "./index.html";
+}
 
-// console.log(params)
-// console.log(params.toString())
+if (code) {
+    $('#profile').html(`<a href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i><span class="ff-noto">${firstname_TH}</span></a>`)
+    $('#login').html(`<a href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>`)
+
+} else {
+    $('#login').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
+    // gotoLogin();
+
+}
 
 $(document).ready(function () {
-    // load_data('6EYcI0YX-u0ls-40j3-PTdy-oiVwb3UYlJk9')
-    // console.log(id_data)
-    // console.log(val1, val2)
-    if (val1 !== null && val2 !== null) {
-        $('#login').hide(function () {
-            $('#Profile').show()
-            $('#username').text(val1)
-        })
-    } else {
-        $('#Profile').hide()
-    }
     load_data(id_data)
 })
+
 let load_data = (id) => {
     axios.post(urlapi + '/loaddata', { d_id: id }).then(r => {
         var data = r.data.data;
         // console.log(data[0])
-        if (data[0].d_access == 'publish' && val2) {
+        if (code) {
             document.title = data[0].d_name;
             var t = new Date(data[0].d_tnow).toISOString().split('T')
             var date = new Date(t[0]).toLocaleDateString('th-TH')
@@ -292,7 +329,7 @@ let detail_file = (i1, i2, i3, url, name) => {
             </div>
         </div>
         <div class="d-flex justify-content-center">
-        <a href="./../dashboard/index.html" class="btn-download mt-4"><sapn class="ff-noto">หน้าหลัก</sapn></a>&nbsp;&nbsp;
+        <a onclick="history.back()" class="btn-download mt-4"><sapn class="ff-noto">ย้อนกลับ</sapn></a>&nbsp;&nbsp;
             <a href="${url}" target="_blank" class="btn-download mt-4"><sapn class="ff-noto">ไปยังชุดข้อมูล</sapn></a> 
             
         </div>
@@ -328,10 +365,10 @@ let detail_file = (i1, i2, i3, url, name) => {
             </div>
         </div>
         <div class="d-flex justify-content-center">
-        <a href="./../dashboard/index.html" class="btn-download mt-4"><sapn class="ff-noto">หน้าหลัก</sapn></a>&nbsp;&nbsp;
-            <a href="${url}" download="${name}" target="_blank" class="btn-download mt-4 ${val2 ? null : 'disabled'}" onclick="SD_download('${name}')" ><span class="ff-noto">ดาวน์โหลด</span> </a>
+        <a onclick="history.back()" class="btn-download mt-4"><sapn class="ff-noto">ย้อนกลับ</sapn></a>&nbsp;&nbsp;
+            <a href="${url}" download="${name}" target="_blank" class="btn-download mt-4 ${code ? null : 'disabled'}" onclick="SD_download('${name}')" ><span class="ff-noto">ดาวน์โหลด</span> </a>
         </div>
-        ${val2 ? '' : '<p class="text-center text-danger m-auto p-3">*กรุณา login ก่อนเพื่อทำดาวน์โหลดข้อมูล / ติดต่อเจ้าหน้าที่เพื่อขอข้อมูล</p>'}
+        ${code ? '' : '<p class="text-center text-danger m-auto p-3">*กรุณา login ก่อนเพื่อทำดาวน์โหลดข้อมูล / ติดต่อเจ้าหน้าที่เพื่อขอข้อมูล</p>'}
         </div>`)
         $(`#detaifile`).empty().append(content)
     }
@@ -361,7 +398,7 @@ let SD_download = async (namefile) => {
 
 }
 
-$('#login').click(function () { loginPopup() })
+// $('#login').click(function () { loginPopup() })
 
 const Toast = Swal.mixin({
     toast: true,
@@ -375,94 +412,6 @@ const Toast = Swal.mixin({
     }
 })
 
-
-const loginPopup = () => {
-    Swal.fire({
-        title: 'เข้าสู่ระบบ',
-        html:
-            '<input id="username" class="swal2-input" type="text" placeholder="Username">' +
-            '<input id="password" class="swal2-input" type="password" placeholder="Password">',
-        focusConfirm: true,
-        customClass: {
-            container: 'ff-noto',
-            title: 'ff-noto',
-        },
-        showCloseButton: false,
-        confirmButtonText: 'เข้าสู่ระบบ',
-        confirmButtonColor: '#3085d6',
-        footer: '<a href=""><b>ลืมรหัสผ่าน</b></a><hr class="perpendicular-line"><a href=""><b>สมัครผู้ใช้ใหม่</b></a>',
-
-        showCancelButton: false,
-        preConfirm: async () => {
-            const username = Swal.getPopup().querySelector('#username').value
-            const password = Swal.getPopup().querySelector('#password').value
-            if (!loginPopup || !password) {
-                Swal.showValidationMessage(`Please enter username and password`)
-            }
-            return { username: username, password: password }
-
-        },
-    }).then((result) => {
-        if (result.isConfirmed) {
-            let data = {
-                username: result.value.username,
-                password: result.value.password
-            }
-            axios.post("https://engrids.soc.cmu.ac.th/api/fuser-api/userid", data).then(r => {
-                // console.log(r.data.data)
-                if (r.data.data !== 'false') {
-                    var userid = r.data.data[0].id_user
-                    var username = r.data.data[0].username
-
-                    localStorage.setItem('value1', username);
-                    localStorage.setItem('value2', userid);
-
-                    // $('#login').fadeOut(function () {
-                    //     $('#Profile').fadeIn(2500)
-                    //     $('#username').text(username)
-                    // })
-
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Signed in successfully'
-                    })
-
-                    setTimeout(function () {
-                        window.location.reload()
-                    }, 2400)
-
-                } else {
-                    Swal.fire({
-                        title: 'ไม่สามารถเข้าสู่เข้าระบบได้!',
-                        text: 'กรุณาตรวจสอบชื่อผู้ใช่/รหัสผ่าน ให้ถูกต้อง',
-                        icon: 'error',
-                        // iconColor: ''
-                        confirmButtonText: 'ปิด',
-                        // footer: '<a href=""><b>เข้าสู้ระบบ</b></a>',
-                        customClass: {
-                            container: 'ff-noto',
-                            title: 'ff-noto',
-                            confirmButton: 'btn btn-secondary',
-                        },
-                        preConfirm: async () => {
-                            loginPopup()
-                        }
-                    })
-                }
-            })
-        } else if (
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            window.location.reload()
-        }
-    })
-};
-
-let logout = () => {
-    localStorage.clear();
-    window.location.href = './../dashboard/index.html';
-}
-
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
     if (val1 == 'administrator' && val2 == 'admin') {
@@ -470,33 +419,37 @@ $('.mobile-nav-toggle').on('click', function (e) {
         <div class="d-flex flex-column " id="memu_mobile">
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
         <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-       <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a> 
-       <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
-        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i><span class="ff-noto">${firstname_TH}</span></a>
+        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
+        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
+        <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>
         <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
-    } else if (val1 !== null && val2 !== null) {
+    } else if (code) {
         content = `
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+        <div class="d-flex flex-column " id="memu_mobile">
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ </a>
+        <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i> ${firstname_TH} </a>
+        <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i> ออกจากระบบ </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i> ติดต่อเรา </a>
       </div>`
     } else {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>เข้าสู่ระบบ</span></a>
-       
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ</a>
+        <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i>ติดต่อเรา</a>
       </div>`
     }
     Swal.fire({
-        title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3><hr>',
+        title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3>',
         // icon: 'info',
-        html: content + '<hr>',
+        html: content + '',
         confirmButtonText: 'ปิด',
+        confirmButtonColor: '#000000',
+        // background: '#50d49f',
         customClass: {
             container: 'ff-noto',
             title: 'ff-noto',
@@ -506,3 +459,4 @@ $('.mobile-nav-toggle').on('click', function (e) {
         // showCancelButton: true,
     })
 })
+

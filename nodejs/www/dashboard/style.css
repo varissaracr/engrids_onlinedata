@@ -216,11 +216,14 @@ p {
     width: 100%;
     height: 48px;
     margin-bottom: 12px;
+    border-radius: 10px;
     /* background-color: #e43c5c; */
     display: flex;
     justify-content: start;
     align-items: center;
-    color: black;
+    color: rgb(0, 0, 0);
+    transition: 0.2s;
+    font-family: 'Noto Sans Thai', sans-serif;
 }
 
 .btn-memu i {
@@ -232,10 +235,15 @@ p {
 .btn-memu span {
     font-size: 16px;
     font-weight: 500;
-    color: black;
+    color: rgb(0, 0, 0);
     font-family: 'Noto Sans Thai', sans-serif;
 }
 
+.btn-memu:hover {
+    box-shadow: 8px 8px 12px 0 rgba(187, 187, 187, 0.2);
+    background-color: #cecece;
+    color: #ffffff;
+}
 
 .card-border {
     width: fit-content;
@@ -248,7 +256,16 @@ p {
 }
 
 .card-border:hover {
-    box-shadow: 8px 8px 12px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 8px 8px 12px 0 rgba(0, 0, 0.2, 0);
     background-color: #50d49f;
     color: #ffffff;
+}
+
+hr {
+    height: 10px;
+    width: 150px;
+    color: #50d49f;
+    background: #50d49f;
+    /* text-align: center; */
+    position: absolute;
 }

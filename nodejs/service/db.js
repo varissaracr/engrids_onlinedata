@@ -1,6 +1,5 @@
 const Pool = require('pg').Pool
 
-
 const datapool = new Pool({
     user: 'postgres',
     host: 'postgis',

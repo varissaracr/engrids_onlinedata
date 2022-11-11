@@ -37,7 +37,7 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost/login/' +
+        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=manage'
     window.location.href = url;
@@ -55,7 +55,7 @@ let gotoLogout = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost/login/' +
+        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=manage'
     window.location.href = url;

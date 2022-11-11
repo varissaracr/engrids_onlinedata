@@ -4,7 +4,7 @@ let val2
 // console.log(val1, val2)
 
 // const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
-const urlapi = `http://localhost:3000/ds-api`
+// const urlapi = `http://localhost:3000/ds-api`
 
 let getCookie = (cname) => {
     let name = cname + "=";
@@ -36,9 +36,9 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost:3000/login/' +
+        '&redirect_uri=http://localhost/login/' +
         '&scope=cmuitaccount.basicinfo' +
-        '&state=dashboard'
+        '&state=detail'
     window.location.href = url;
 }
 
@@ -54,9 +54,9 @@ let gotoLogout = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost:3000/login/' +
+        '&redirect_uri=http://localhost/login/' +
         '&scope=cmuitaccount.basicinfo' +
-        '&state=dashboard'
+        '&state=detail'
     window.location.href = url;
 };
 
@@ -70,7 +70,7 @@ if (code) {
 
 } else {
     $('#login').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
-    // gotoLogin();
+    gotoLogin();
 
 }
 
@@ -79,7 +79,7 @@ $(document).ready(function () {
 })
 
 let load_data = (id) => {
-    axios.post(urlapi + '/loaddata', { d_id: id }).then(r => {
+    axios.post('/ds-api/loaddata', { d_id: id }).then(r => {
         var data = r.data.data;
         // console.log(data[0])
         if (code) {
@@ -376,7 +376,7 @@ let detail_file = (i1, i2, i3, url, name) => {
 
 let SD_download = async (namefile) => {
 
-    await axios.post(urlapi + '/sd', { d_id: id_data }).then(r => {
+    await axios.post('/sd', { d_id: id_data }).then(r => {
         console.log(r.data.data)
     })
 
@@ -392,7 +392,7 @@ let SD_download = async (namefile) => {
         d_tdate: new Date().toLocaleDateString('th-TH') + ' ' + time,
     }
 
-    await axios.post(urlapi + '/hitstory', { data: data }).then(r => {
+    await axios.post('/hitstory', { data: data }).then(r => {
         console.log(r.data.data)
     })
 

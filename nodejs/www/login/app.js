@@ -17,6 +17,7 @@ let setCookie = (code, firstname_TH, lastname_TH, student_id, organization_name_
 
 if (code) {
     axios.post('/ds_chekauth/gettoken', { code }).then(r => {
+        console.log(code);
         setCookie(code, r.data.data.firstname_TH, r.data.data.lastname_TH, r.data.data.student_id, r.data.data.organization_name_TH, 30)
         window.location.replace("./../" + state);
     })

@@ -14,7 +14,7 @@ let setCookie = (code, firstname_TH, lastname_TH, student_id, organization_name_
     document.cookie = "open_student_id=" + student_id + ";" + expires + ";path=/";
     document.cookie = "open_organization_name_TH=" + organization_name_TH + ";" + expires + ";path=/";
 }
-
+console.log(code);
 if (code) {
     axios.post('/ds_chekauth/gettoken', { code }).then(r => {
         console.log(code);

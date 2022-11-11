@@ -61,24 +61,31 @@ const loginPopup = () => {
     window.location.href = url;
 };
 
+let gotoProfile = () => {
+    location.href = "./../profile/index.html";
+}
+
+let gotoManage = () => {
+    location.href = "./../manage/index.html";
+}
+
 let gotoIndex = () => {
     location.href = "./index.html";
 }
 
 if (code) {
     $('#profile').html(`
-    <li class=" dropdown" > <a class="active" href="#" onclick="gotoProfile()"> <i class="bx bxs-user-detail"></i> <span class="font-noto">${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
-    <ul>
-    <li><a href="#"><span class="font-noto">โปรไฟล์</span> </a></li>
-    <li><a href="./../manage/index.html"><span class="font-noto">การจัดการข้อมูล</span></a></li>
-    </ul>
+    <li class=" dropdown" > <a class="active" href="#" > <i class="bx bxs-user-detail"></i> <span class="ff-noto">${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+        <ul>
+            <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
+            <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
+        </ul>
     </li>`)
-    $('#login').html(`<a href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="font-noto">ออกจากระบบ</span></a>`)
+    $('#login').html(`<a href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>`)
 
 } else {
-    $('#login').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="font-noto">เข้าสู่ระบบ</span></a>`);
+    $('#login').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
     // gotoLogin();
-
 }
 
 $(document).ready(function () {

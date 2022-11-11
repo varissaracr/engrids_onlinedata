@@ -5,7 +5,7 @@ var val1 = localStorage.getItem('value1');
 var val2 = localStorage.getItem('value2');
 
 // const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
-const urlapi = `http://localhost:3000/ds-api`
+// const urlapi = `http://localhost:3000/ds-api`
 
 let getCookie = (cname) => {
     let name = cname + "=";
@@ -37,9 +37,9 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost:3000/login/' +
+        '&redirect_uri=http://localhost/login/' +
         '&scope=cmuitaccount.basicinfo' +
-        '&state=infordata'
+        '&state=manage'
     window.location.href = url;
 }
 
@@ -55,9 +55,9 @@ let gotoLogout = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=http://localhost:3000/login/' +
+        '&redirect_uri=http://localhost/login/' +
         '&scope=cmuitaccount.basicinfo' +
-        '&state=infordata'
+        '&state=manage'
     window.location.href = url;
 };
 
@@ -136,7 +136,7 @@ let loadlistdata = (id, tool) => {
         ajax: {
             async: true,
             type: "post",
-            url: 'http://localhost:3000/ds-api/listdata',
+            url: '/ds-api/listdata',
             data: { d_iduser: id == 'admin' ? 'administrator' : id },
             dataSrc: 'data'
         },
@@ -201,7 +201,7 @@ let editData = (id) => {
 }
 
 let deleteData = (id) => {
-    axios.post(`http://localhost:3000/ds-api/deletedata`, { d_id: id }).then(r => {
+    axios.post(`/ds-api/deletedata`, { d_id: id }).then(r => {
         var Sucss = r.data.data;
         if (Sucss == 'success') {
             Swal.fire({
@@ -262,7 +262,7 @@ let accessDate = (id, name) => {
                 d_access: result.value.access
             }
 
-            axios.post("http://localhost:3000/ds-api/access", data).then(r => {
+            axios.post("/ds-api/access", data).then(r => {
                 // console.log(r.data.data)
                 if (r.data.data == 'access') {
                     Swal.fire({
@@ -326,7 +326,7 @@ let HistoryData = (id) => {
         ajax: {
             async: true,
             type: "post",
-            url: 'http://localhost:3000/ds-api/hitstory/getdata',
+            url: '/ds-api/hitstory/getdata',
             data: { id_user: id },
             dataSrc: 'data'
         },

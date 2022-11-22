@@ -425,5 +425,4 @@ $('.mobile-nav-toggle').on('click', function (e) {
 let gotodownload = (id_data) => {
     localStorage.setItem('id_data', id_data);
     window.open('./../detail/index.html', '_blank');
-
 }

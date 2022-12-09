@@ -11,7 +11,8 @@ services:
     ports:
       - 5433:5432
     volumes:
-      - ./postgres/geodb.sql:/docker-entrypoint-initdb.d/geodb.sql
+      # - ./postgres/geodb.sql:/docker-entrypoint-initdb.d/geodb.sql
+      - ./postgres/:/docker-entrypoint-initdb.d
   nodejs:
     image: node
     container_name: ds_nodejs

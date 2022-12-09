@@ -3,10 +3,10 @@ const urlParams = new URLSearchParams(queryString);
 const code = urlParams.get('code')
 const state = urlParams.get('state')
 
-let setCookie = (code, firstname_TH, lastname_TH, student_id, organization_name_TH, exdays) => {
+let setCookie = (code, firstname_TH, lastname_TH, student_id, organization_name_TH, minute) => {
     const d = new Date();
     // d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    d.setTime(d.getTime() + (exdays * 60 * 1000));
+    d.setTime(d.getTime() + (minute * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
     document.cookie = "open_code=" + code + ";" + expires + ";path=/";
     document.cookie = "open_firstname_TH=" + firstname_TH + ";" + expires + ";path=/";
@@ -26,20 +26,10 @@ $(window).on('load', function () {
 if (code) {
     axios.post('/ds_chekauth/gettoken', { code }).then(r => {
         console.log(code);
-        setCookie(code, r.data.data.firstname_TH, r.data.data.lastname_TH, r.data.data.student_id, r.data.data.organization_name_TH, 30)
-        window.location.replace("./../" + state);
+        setCookie(code, r.data.data.firstname_TH, r.data.data.lastname_TH, r.data.data.student_id, r.data.data.organization_name_TH, 2)
+        // window.location.replace("./../" + state);
     })
 }
 
 
-
-// POST /v1/GetToken.aspx HTTP/1.1
-// Host: oauth.cmu.ac.th
-// content-type: application/x-www-form-urlencoded
-
-// code=63153448415548317175
-// &redirect_uri=https://yourclientapp.com/callback
-// &client_id=7J5H7qzHYC7UA3GhYzywyuwcY9wjxgA77yu9bPBb
-// &client_secret=JvgfjEACUvh2hrnXujZsEAPbkBxnKYV3a2J4u28j
-// &grant_type=authorization_code
 

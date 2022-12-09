@@ -5,10 +5,23 @@ const qs = require("qs")
 const axios = require("axios")
 const crypto = require("crypto")
 
+let insertMember = () => {
+    let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, dt)
+    VALUES('student_id','firstname_th','lastname_th','cmuitaccount','organization_code','organization_name','itaccounttype_th', now())`
+    datapool.query()
+}
+
+let selectMemberOne = (cmuitaccount) => {
+    let sql = `SELECT * FROM formmember WHERE cmuitaccount='${cmuitaccount}'`
+    datapool.query(sql).then(r => {
+        console.log(r.rows);
+    })
+}
+
 const loginMiddleware = (req, res, next) => {
     const data = {
         code: req.body.code,
-        redirect_uri: "https://open.engrids.soc.cmu.ac.th/login/",
+        redirect_uri: "http://localhost/login/index.html",
         client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
         client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
         grant_type: "authorization_code"
@@ -30,6 +43,9 @@ const loginMiddleware = (req, res, next) => {
         axios(config)
             .then((resp) => {
                 const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
+                console.log(resp.data);
+                selectMemberOne(resp.data.cmuitaccount);
+
                 req.status = {
                     token: hsah,
                     data: resp.data
@@ -45,7 +61,7 @@ const loginMiddleware = (req, res, next) => {
 }
 
 app.post("/ds_chekauth/gettoken", loginMiddleware, (req, res) => {
-    // console.log(req.status);
+    console.log(req.status);
     res.status(200).json(req.status)
 })
 
@@ -92,6 +108,7 @@ app.get('/ds-api/get', (req, res) => {
 app.get('/ds-api/getdata', (req, res) => {
     // const { staid } = req.body
     datapool.query(`SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_datafiles  FROM datasource where d_access='publish' order by d_tnow desc;`, (e, r) => {
+        console.log(r);
         res.status(200).json({
             data: r.rows
         })

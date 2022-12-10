@@ -90,32 +90,32 @@ if (code) {
 
 $(document).ready(function () {
     // console.log(val2)
-    if (code) {
-        $('#username').text(val1)
-        loadlistdata(val2)
-        if (val2 == 'admin') {
-            HistoryData(val2)
-        }
-    } else {
-        Swal.fire({
-            title: 'ไม่สามารถเข้าสู่ระบบได้!',
-            text: 'กรุณาเข้าสู่ระบบใหม่อีกครั้งให้ถูกต้อง',
-            icon: 'error',
-            // iconColor: ''
-            confirmButtonText: 'ปิด',
-            // footer: '<a href=""><b>เข้าสู้ระบบ</b></a>',
-            customClass: {
-                container: 'font-noto',
-                title: 'font-noto',
-                confirmButton: 'btn btn-secondary',
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            preConfirm: async () => {
-                window.location.href = "./../dashboard/index.html"
-            }
-        })
-    }
+    // if (code) {
+    //     $('#username').text(val1)
+    //     loadlistdata(val2)
+    //     if (val2 == 'admin') {
+    //         HistoryData(val2)
+    //     }
+    // } else {
+    //     Swal.fire({
+    //         title: 'ไม่สามารถเข้าสู่ระบบได้!',
+    //         text: 'กรุณาเข้าสู่ระบบใหม่อีกครั้งให้ถูกต้อง',
+    //         icon: 'error',
+    //         // iconColor: ''
+    //         confirmButtonText: 'ปิด',
+    //         // footer: '<a href=""><b>เข้าสู้ระบบ</b></a>',
+    //         customClass: {
+    //             container: 'font-noto',
+    //             title: 'font-noto',
+    //             confirmButton: 'btn btn-secondary',
+    //         },
+    //         allowOutsideClick: false,
+    //         allowEscapeKey: false,
+    //         preConfirm: async () => {
+    //             window.location.href = "./../dashboard/index.html"
+    //         }
+    //     })
+    // }
 })
 let dtable
 let loadlistdata = (id, tool) => {

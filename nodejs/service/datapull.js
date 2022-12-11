@@ -43,7 +43,7 @@ const loginMiddleware = (req, res, next) => {
         axios(config)
             .then((resp) => {
                 const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
-                console.log(resp.data);
+                // console.log(resp.data);
                 selectMemberOne(resp.data.cmuitaccount);
 
                 req.status = {
@@ -61,7 +61,7 @@ const loginMiddleware = (req, res, next) => {
 }
 
 app.post("/ds_chekauth/gettoken", loginMiddleware, (req, res) => {
-    console.log(req.status);
+    // console.log(req.status);
     res.status(200).json(req.status)
 })
 
@@ -108,7 +108,7 @@ app.get('/ds-api/get', (req, res) => {
 app.get('/ds-api/getdata', (req, res) => {
     // const { staid } = req.body
     datapool.query(`SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_datafiles  FROM datasource where d_access='publish' order by d_tnow desc;`, (e, r) => {
-        console.log(r);
+        // console.log(r);
         res.status(200).json({
             data: r.rows
         })

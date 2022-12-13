@@ -3,18 +3,23 @@ const app = express.Router();
 const datapool = require("./db").datapool;
 const qs = require("qs")
 const axios = require("axios")
-const crypto = require("crypto")
+const crypto = require("crypto");
+const { log } = require('console');
 
-let insertMember = () => {
+let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
     let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, dt)
-    VALUES('student_id','firstname_th','lastname_th','cmuitaccount','organization_code','organization_name','itaccounttype_th', now())`
-    datapool.query()
+    VALUES('${student_id}','${firstname_th}','${lastname_th}','${cmuitaccount}','${organization_code}','${organization_name}','${itaccounttype_th}', now())`
+    datapool.query(sql).then(() => console.log("insert ok"))
 }
 
-let selectMemberOne = (cmuitaccount) => {
-    let sql = `SELECT * FROM formmember WHERE cmuitaccount='${cmuitaccount}'`
+let selectMemberOne = (profile) => {
+    let sql = `SELECT * FROM formmember WHERE cmuitaccount='${profile.cmuitaccount}'`
     datapool.query(sql).then(r => {
-        console.log(r.rows);
+        if (r.rows.length < 1) {
+            insertMember(profile.student_id, profile.firstname_TH, profile.lastname_TH, profile.cmuitaccount, profile.organization_code, profile.organization_name_TH, profile.itaccounttype_TH);
+        } else {
+            console.log("already account");
+        }
     })
 }
 
@@ -44,8 +49,7 @@ const loginMiddleware = (req, res, next) => {
             .then((resp) => {
                 const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
                 // console.log(resp.data);
-                selectMemberOne(resp.data.cmuitaccount);
-
+                selectMemberOne(resp.data);
                 req.status = {
                     token: hsah,
                     data: resp.data

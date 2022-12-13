@@ -1,5 +1,4 @@
 
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -16,7 +15,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 225 (class 1259 OID 16476)
+-- TOC entry 225 (class 1259 OID 16483)
 -- Name: formmember; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -29,6 +28,7 @@ CREATE TABLE public.formmember (
     organization_code text,
     organization_name text,
     itaccounttype_th text,
+    auth text,
     dt timestamp without time zone
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE public.formmember (
 ALTER TABLE public.formmember OWNER TO postgres;
 
 --
--- TOC entry 224 (class 1259 OID 16475)
+-- TOC entry 224 (class 1259 OID 16482)
 -- Name: formmember_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -61,7 +61,7 @@ ALTER SEQUENCE public.formmember_gid_seq OWNED BY public.formmember.gid;
 
 
 --
--- TOC entry 3195 (class 2604 OID 16479)
+-- TOC entry 3195 (class 2604 OID 16486)
 -- Name: formmember gid; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -69,11 +69,12 @@ ALTER TABLE ONLY public.formmember ALTER COLUMN gid SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3339 (class 0 OID 16476)
+-- TOC entry 3339 (class 0 OID 16483)
 -- Dependencies: 225
 -- Data for Name: formmember; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.formmember (gid, student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th, auth, dt) VALUES (1, '', 'ศักดิ์ดา', 'หอมหวล', 'sakda.homhuan@cmu.ac.th', '04', 'คณะสังคมศาสตร์', 'บุคลากร', NULL, '2022-12-13 10:39:16.087218');
 
 
 --
@@ -82,10 +83,10 @@ ALTER TABLE ONLY public.formmember ALTER COLUMN gid SET DEFAULT nextval('public.
 -- Name: formmember_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.formmember_gid_seq', 1, false);
+SELECT pg_catalog.setval('public.formmember_gid_seq', 1, true);
 
 
--- Completed on 2022-12-11 07:58:27 +07
+-- Completed on 2022-12-13 17:46:27 +07
 
 --
 -- PostgreSQL database dump complete

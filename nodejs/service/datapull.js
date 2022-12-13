@@ -13,13 +13,20 @@ let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organiz
 }
 
 let selectMemberOne = (profile) => {
-    let sql = `SELECT * FROM formmember WHERE cmuitaccount='${profile.cmuitaccount}'`
-    datapool.query(sql).then(r => {
-        if (r.rows.length < 1) {
-            insertMember(profile.student_id, profile.firstname_TH, profile.lastname_TH, profile.cmuitaccount, profile.organization_code, profile.organization_name_TH, profile.itaccounttype_TH);
-        } else {
-            console.log("already account");
-        }
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * FROM formmember WHERE cmuitaccount='${profile.cmuitaccount}'`;
+        datapool.query(sql).then(r => {
+            if (r.rows.length < 1) {
+                insertMember(profile.student_id, profile.firstname_TH, profile.lastname_TH, profile.cmuitaccount, profile.organization_code, profile.organization_name_TH, profile.itaccounttype_TH);
+                resolve("user");
+            } else {
+                if (r.rows[0].auth == "admin") {
+                    resolve("admin");
+                } else {
+                    resolve("user");
+                }
+            }
+        })
     })
 }
 
@@ -48,13 +55,15 @@ const loginMiddleware = (req, res, next) => {
         axios(config)
             .then((resp) => {
                 const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
-                // console.log(resp.data);
-                selectMemberOne(resp.data);
-                req.status = {
-                    token: hsah,
-                    data: resp.data
-                }
-                next()
+                selectMemberOne(resp.data).then(r => {
+                    console.log(r);
+                    req.status = {
+                        token: hsah,
+                        data: resp.data,
+                        auth: r
+                    }
+                    next()
+                });
             })
             .catch((error) => {
                 req.status = "valid";

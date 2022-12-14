@@ -119,8 +119,17 @@ app.get('/ds-api/get', (req, res) => {
     })
 })
 app.get('/ds-api/getdata', (req, res) => {
+    let sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_meta  FROM datasource where d_access='publish' order by d_tnow desc;`;
+    datapool.query(sql, (e, r) => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post('/ds-api/postdata', (req, res) => {
     // const { staid } = req.body
-    let sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_datafiles  FROM datasource where d_access='publish' order by d_tnow desc;`;
+    let sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd FROM datasource where d_access='publish' order by d_tnow desc;`;
     datapool.query(sql, (e, r) => {
         // console.log(r);
         res.status(200).json({
@@ -128,11 +137,11 @@ app.get('/ds-api/getdata', (req, res) => {
         })
     })
 })
+
 app.post('/ds-api/save', async (req, res) => {
     const { data } = req.body;
     // console.log(data)
-    await datapool.query(`INSERT INTO datasource(d_id)VALUES('${data.d_id}');`)
-    await datapool.query(`UPDATE datasource SET d_tnow=now() WHERE d_id ='${data.d_id}';`)
+    await datapool.query(`INSERT INTO datasource(d_id, d_tnow)VALUES('${data.d_id}', now());`);
     let d;
     for (d in data) {
         if (data[d] !== '' && d !== 'd_id') {
@@ -144,7 +153,17 @@ app.post('/ds-api/save', async (req, res) => {
     res.status(200).json({
         data: 'Save data'
     })
+})
 
+app.post('/ds-api/listdata', (req, res) => {
+    const { d_iduser } = req.body;
+    // console.log(d_iduser);
+    const sql = `select d_name,d_id,d_access,d_tnow,d_sd from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`
+    datapool.query(sql, (e, r) => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
 })
 
 app.post('/ds-api/listmember', (req, res) => {

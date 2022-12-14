@@ -23,6 +23,7 @@ const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
 const lastname_TH = getCookie("open_lastname_TH");
 const student_id = getCookie("open_student_id");
+const cmuitaccount = getCookie("open_cmuitaccount");
 const organization_name_TH = getCookie("open_organization_name_TH");
 
 let refreshPage = () => {
@@ -145,36 +146,29 @@ dtable = $('#TableData').DataTable({
         async: true,
         type: "post",
         url: '/ds-api/listdata',
-        data: { d_iduser: "aa" },
+        data: { d_iduser: cmuitaccount },
         dataSrc: 'data'
     },
 
     columns: [
         { data: null, title: "No.", width: '50px' },
-        { data: 'firstname_th' },
-        { data: 'lastname_th' },
-        { data: 'organization_name' },
         {
-            data: 'dt', render: function (data, type, row, meta) {
-                console.log(row.ndate);
-                var t = new Date(row.ndate).toISOString()
+            data: 'd_tnow', render: function (data, type, row, meta) {
+                var t = new Date(row.d_tnow).toISOString().split('T')
                 var date = new Date(t).toLocaleDateString('th-TH')
                 return date
             }
         },
+        { data: 'd_name', width: '300px' },
+        { data: 'd_access' },
+        { data: 'd_sd' },
         {
-            data: null, title: "จัดการข้อมูล",
+            data: null, title: "tool",
             render: function (data, type, row, meta) {
-                if (id !== 'admin') {
-                    return `<button class="btn btn-margin btn btn-warning font-Noto" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
-                        <button class="btn btn-margin style="background-color: #FA7070;" font-Noto" onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
-                } else {
-                    return `
-                        <button class="btn btn-margin font-Noto" style="background-color: #60d1be; color: #ffffff;" onclick="accessDate('${row.d_id}','${row.d_name}')">การเข้าถึง </button>
-                        <button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
-                        <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
-                }
-
+                return `
+                    <button class="btn btn-margin btn btn-success font-Noto" onclick="accessDate('${row.d_id}','${row.d_name}')">การเข้าถึง</button>
+                    <button class="btn btn-margin btn btn-warning font-Noto" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
+                    <button class="btn btn-margin btn btn-danger font-Noto" onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
             },
         },
     ],
@@ -289,7 +283,6 @@ let accessDate = (id, name) => {
             })
         }
     })
-
 }
 
 let Htable;

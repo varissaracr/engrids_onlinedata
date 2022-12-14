@@ -1,3 +1,4 @@
+
 var val1
 var val2
 
@@ -20,7 +21,6 @@ let getCookie = (cname) => {
     return "";
 }
 
-const id_data = localStorage.getItem('id_data');
 const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
 const lastname_TH = getCookie("open_lastname_TH");
@@ -86,7 +86,6 @@ if (code) {
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-// let params = new URLSearchParams(url.search);
 const Search = urlParams.get('search')
 if (Search) { $('#txt_search').val(Search) }
 
@@ -95,13 +94,38 @@ const Categories = urlParams.get('category')
 const Keyword = urlParams.get('keyword')
 const Fileform = urlParams.get('fileform')
 
-$(window).on('load', function () {
-    if ($('#preloader').length) {
-        $('#preloader').delay(100).fadeOut('slow', function () {
-            $(this).remove();
-        });
+const id_data = localStorage.getItem('id_data');
+
+let gotodownload = (id_data) => {
+    console.log(id_data);
+    if (code) {
+        localStorage.setItem('id_data', id_data);
+        window.location.href = './../detail/index.html';
+    } else {
+        content = `
+        <div style="text-align: left;">
+            กรุณาเข้าสู่ระบบก่อนดาวน์โหลด
+            <p></p>
+            <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
+        </div>`
+
+        Swal.fire({
+            // title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3>',
+            // icon: 'info',
+            html: content + '',
+            confirmButtonText: 'ปิด',
+            confirmButtonColor: '#000000',
+            // background: '#50d49f',
+            customClass: {
+                container: 'ff-noto',
+                title: 'ff-noto',
+            },
+            // showConfirmButton: false,
+            // showCloseButton: false,
+            // showCancelButton: true,
+        })
     }
-});
+}
 
 const url = new URL(window.location.href);
 let search_data = () => {
@@ -110,6 +134,7 @@ let search_data = () => {
     url.searchParams.set('search', value);
     window.location.href = url
 }
+
 let search_page = (value) => {
     url.searchParams.set('page', value);
     window.location.href = url
@@ -147,13 +172,20 @@ let reset_Fileform = () => {
     window.location.href = url
 }
 
-$(document).ready(function () {
-    var page = 1;
-    load_data(page)
-})
-
 let valCategorys = []
-let load_data = (page) => {
+
+let load_data = () => {
+    console.log(Page, Categories, Keyword, Fileform, Search);
+    let dataObj = {
+        type: "",
+        keyword: ""
+    }
+    axios.post('/ds-api/postdata', dataObj).then(r => {
+
+    })
+}
+
+let load_data2 = (page) => {
     axios.get('/ds-api/getdata').then(r => {
         // console.log(r);
         var data = r.data.data;
@@ -166,6 +198,7 @@ let load_data = (page) => {
 
         data.map(i => {
             if (Search || Categories || Keyword || Fileform) {
+                console.log(i);
                 if (Search && Categories && Keyword && Fileform) {
                     var filsearch = i.d_name.search(Search);
                     var filgroup = i.d_groups.search(Categories);
@@ -412,6 +445,8 @@ let load_data = (page) => {
         genCategory(category)
         genKeyword(arrKeyword)
         genFileformat(arrfileform)
+
+        // console.log(New_post);
 
         New_post.map(i => {
             var t = new Date(i.d_tnow).toISOString().split('T')
@@ -766,37 +801,6 @@ let pageLength = (number) => {
     }
 }
 
-let gotodownload = (id_data) => {
-    console.log(id_data);
-    if (code) {
-        localStorage.setItem('id_data', id_data);
-        window.location.href = './../detail/index.html';
-    } else {
-        content = `
-        <div style="text-align: left;">
-            กรุณาเข้าสู่ระบบก่อนดาวน์โหลด
-            <p></p>
-            <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
-        </div>`
-
-        Swal.fire({
-            // title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3>',
-            // icon: 'info',
-            html: content + '',
-            confirmButtonText: 'ปิด',
-            confirmButtonColor: '#000000',
-            // background: '#50d49f',
-            customClass: {
-                container: 'ff-noto',
-                title: 'ff-noto',
-            },
-            // showConfirmButton: false,
-            // showCloseButton: false,
-            // showCancelButton: true,
-        })
-    }
-}
-
 // $('#login').click(function () { loginPopup() })
 
 const Toast = Swal.mixin({
@@ -838,5 +842,17 @@ let gotoinput = (id_data) => {
     }
 }
 
+$(window).on('load', function () {
+    if ($('#preloader').length) {
+        $('#preloader').delay(100).fadeOut('slow', function () {
+            $(this).remove();
+        });
+    }
+});
+
+$(document).ready(function () {
+    var page = 1;
+    load_data(page)
+})
 
 

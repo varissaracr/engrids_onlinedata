@@ -20,6 +20,7 @@ const firstname_TH = getCookie("open_firstname_TH");
 const lastname_TH = getCookie("open_lastname_TH");
 const student_id = getCookie("open_student_id");
 const organization_name_TH = getCookie("open_organization_name_TH");
+const auth = getCookie("open_auth");
 
 let refreshPage = () => {
     location.reload(true);
@@ -95,9 +96,6 @@ $(window).on('load', function () {
     }
 });
 
-$(document).ready(function () {
-    load_data()
-})
 
 let gotodata = (txt) => {
     location.href = './../infordata/index.html?page=1&category=' + txt;
@@ -121,7 +119,6 @@ let numcategory = async (d) => {
     let travel = 0;
 
     await d.map(i => {
-        // console.log(i)
         i == "การเมืองและการปกครอง" ? politics += 1 : null;
         i == "ทรัพยากรธรรมชาติและสิ่งแวดล้อม" ? nature += 1 : null;
         i == "เกษตกรรมและการเกษตร" ? agri += 1 : null;
@@ -155,39 +152,25 @@ let numcategory = async (d) => {
     $('#study').text(study)
     $('#health').text(health)
     $('#travel').text(travel)
-
 }
 
 let valCategorys = []
 let load_data = () => {
     axios.get('/ds-api/getdata').then(r => {
+        console.log(r);
         var data = r.data.data;
 
         var arr = [];
         var category = [];
-        var arrKeyword = [];
-        var arrfileform = [];
 
         data.map(i => {
-
             arr.push(i)
             var group = JSON.parse(i.d_groups)
             group.map(e => category.push(e))
-
-            var keyword = JSON.parse(i.d_keywords)
-            keyword.map(e => arrKeyword.push(e))
-
-            var fileform = JSON.parse(i.d_datafiles)
-            var dta = fileform[0]
-            arrfileform.push(dta)
-            // dta.map(e => {
-            // })
-
-            numcategory(category)
         })
+        numcategory(category)
     })
 }
-
 
 let gotodownload = (id_data) => {
     localStorage.setItem('id_data', id_data);
@@ -197,8 +180,6 @@ let gotodownload = (id_data) => {
 // $('#login').click(function () { loginPopup() })
 
 const datauser = {}
-
-
 
 let gotomanage = (id_data) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
@@ -213,6 +194,7 @@ let gotomanage = (id_data) => {
     }
 
 }
+
 let gotoinput = (id_data) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
@@ -228,7 +210,7 @@ let gotoinput = (id_data) => {
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (val1 == 'administrator' && val2 == 'admin') {
+    if (code && auth == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
@@ -274,5 +256,8 @@ $('.mobile-nav-toggle').on('click', function (e) {
     })
 })
 
-
 AOS.init();
+
+$(document).ready(function () {
+    load_data()
+})

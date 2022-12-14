@@ -31,7 +31,7 @@ let gotoLogin = () => {
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
         '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
-        '&state=dashboard'
+        '&state=input'
     window.location.href = url;
 }
 
@@ -417,6 +417,7 @@ let senddata = async () => {
     var obj_keywords = [];
     var obj_datafiles = {};
 
+    var obj_meta = [];
     // await $("#pre_form").children(".form-group").each(async function (e, i) { })
     await $(".label-container").children("input[type=checkbox]:checked").each(async function (e, i) {
         var value = $(this).attr("value");
@@ -451,6 +452,7 @@ let senddata = async () => {
 
                 name.map((d, index) => {
                     arrFiles.push({ filename: d, type: types[index], file: files[index], date: date[index] })
+                    obj_meta.push({ name: d, type: types[index], date: date[index] })
                 })
                 // console.log(arrFiles)
                 if (arrFiles.length > 0) {
@@ -466,6 +468,7 @@ let senddata = async () => {
                     var linkname = $('#linkname_' + i).val()
                     var date = Date.now();
                     arrLinks.push({ name: linkname, type: type, link: link, date: date })
+                    obj_meta.push({ name: linkname, type: type, date: date })
                 }
                 // console.log(arrLinks)
                 if (arrLinks.length > 0) {
@@ -489,7 +492,7 @@ let senddata = async () => {
     // var m2 = $('#dmeta').val()
     // var bound 
 
-    var meta = new Date().toLocaleDateString('th-TH')
+    // var meta = new Date().toLocaleDateString('th-TH')
     var check_data = isEmptyObject(obj_datafiles)
 
     const formDataObj = {
@@ -501,7 +504,7 @@ let senddata = async () => {
         d_type: dtype,
         d_bound: $('#dbound').val() !== 'other' ? $('#dbound').val() !== 'เลือก...' ? $('#dbound').val() : "" : $("#geo_other").val(),
         d_keywords: obj_keywords.length > 0 ? JSON.stringify(obj_keywords) : "",
-        d_tmeta: meta,
+        d_tmeta: new Date().toLocaleDateString('th-TH'),
         // d_tnow: Date.now(),
         d_source: $('#dsource').val(),
         d_datafiles: check_data == true ? JSON.stringify([obj_datafiles]) : "",
@@ -509,6 +512,8 @@ let senddata = async () => {
         d_iduser: open_cmuitaccount,
         d_access: 'private',
         d_sd: 0,
+        d_meta: JSON.stringify(obj_meta),
+        d_auth: "editor"
     };
     // console.log(formDataObj)
     // console.log(obj_groups)
@@ -536,7 +541,7 @@ let senddata = async () => {
             // timer: 1500
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await axios.post(`http://localhost:3000/ds-api/save`, { data: formDataObj }).then(r => {
+                await axios.post(`/ds-api/save`, { data: formDataObj }).then(r => {
                     var Sucss = r.data.data;
                     if (Sucss == 'Save data') {
                         Swal.fire({

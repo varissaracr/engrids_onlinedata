@@ -53,8 +53,16 @@ let gotoProfile = () => {
     location.href = "./../profile/index.html";
 }
 
+let gotoManage_user = () => {
+    location.href = "./../manage_user/index.html";
+}
+
 let gotoManage = () => {
     location.href = "./../manage/index.html";
+}
+
+let gotoInput = () => {
+    location.href = "./../input/index.html";
 }
 
 let gotoIndex = () => {
@@ -69,18 +77,17 @@ let loadData = () => {
 
 if (code) {
     $('#profile').html(`
-    <li class=" dropdown" > <a class="active" href="#" > <i class="bx bxs-user-detail"></i> <span class="ff-noto">${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+    <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
         <ul>
             <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
+            <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
             <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
+            <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
         </ul>
     </li>`)
-    $('#login').html(`<a href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>`)
-    loadData()
 } else {
-    $('#login').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
-    loadData()
+    $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
+    gotoLogin()
 }
-
 
 // AOS.init();

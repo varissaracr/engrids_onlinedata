@@ -120,7 +120,8 @@ app.get('/ds-api/get', (req, res) => {
 })
 app.get('/ds-api/getdata', (req, res) => {
     // const { staid } = req.body
-    datapool.query(`SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_datafiles  FROM datasource where d_access='publish' order by d_tnow desc;`, (e, r) => {
+    let sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_datafiles  FROM datasource where d_access='publish' order by d_tnow desc;`;
+    datapool.query(sql, (e, r) => {
         // console.log(r);
         res.status(200).json({
             data: r.rows
@@ -145,22 +146,34 @@ app.post('/ds-api/save', async (req, res) => {
     })
 
 })
-app.post('/ds-api/listdata', (req, res) => {
+
+app.post('/ds-api/listmember', (req, res) => {
     const { d_iduser } = req.body
-    if (d_iduser !== 'administrator') {
-        datapool.query(`select d_name,d_id,d_access,d_tnow,d_sd from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`, (e, r) => {
-            res.status(200).json({
-                data: r.rows
-            })
+    // console.log(d_iduser);
+    const sql = `SELECT firstname_th, lastname_th, organization_name, cmuitaccount, auth, 
+                    TO_CHAR(dt, 'YYYY-MM-DD') as ndate FROM formmember`;
+
+    datapool.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
         })
-    } else {
-        datapool.query(`select d_name,d_id,d_access,d_tnow,d_sd from datasource order by d_tnow desc;`, (e, r) => {
-            res.status(200).json({
-                data: r.rows
-            })
-        })
-    }
+    })
+
+    // if (d_iduser !== 'administrator') {
+    //     datapool.query(`select d_name,d_id,d_access,d_tnow,d_sd from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`, (e, r) => {
+    //         res.status(200).json({
+    //             data: r.rows
+    //         })
+    //     })
+    // } else {
+    //     datapool.query(`select d_name,d_id,d_access,d_tnow,d_sd from datasource order by d_tnow desc;`, (e, r) => {
+    //         res.status(200).json({
+    //             data: r.rows
+    //         })
+    //     })
+    // }
 })
+
 app.post('/ds-api/editdata', (req, res) => {
     const { d_id } = req.body
     datapool.query(`select * from datasource where d_id='${d_id}';`, (e, r) => {

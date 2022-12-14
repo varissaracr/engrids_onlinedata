@@ -2,11 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบริการข้อมูลสารสนเทศ - EnGRIDs DSC</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
+    <title>จัดการข้อมูล</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
     <!-- Favicons -->
     <link href="./../assets/img/EnGRIDs-logo.png" rel="icon">
@@ -25,16 +26,37 @@
     <!-- bootstrap-icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
-    <!-- animate/aos -->
+    <!-- animate -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css"
+        crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" media="all"
+        rel="stylesheet" type="text/css" />
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+
+    <!-- datatables -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"> -->
+
+    <!-- fileinput -->
+    <link href="./../assets/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
     <!-- Vendor CSS Files -->
     <link href="./../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="./../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -45,9 +67,15 @@
 
     <!-- Template Main CSS File -->
     <link href="./../assets/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="./style.css">
 
+    <!-- =======================================================
+  * Template Name: Tempo - v4.7.0
+  * Template URL: https://bootstrapmade.com/tempo-free-onepage-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
 
 <body>
 
@@ -61,13 +89,14 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto active " href="./../dashboard/index.html"><span
-                                class="ff-noto">หน้าหลัก</span></a></li>
-                    <li><a class="" href="./../infordata/index.html"><span class="ff-noto">ฐานข้อมูลสารสนเทศ</span></a>
+                    <li><a class="nav-link scrollto  " href="./../dashboard/index.html"><span
+                                class="font-noto">หน้าหลัก</span></a></li>
+                    <li><a class="" href="./../infordata/index.html"><span
+                                class="font-noto">ฐานข้อมูลสารสนเทศ</span></a>
                     </li>
-                    <li id="profile"></li>
+                    <li class="active" id="profile"></li>
                     <li><a class="nav-link scrollto" href="https://engrids.soc.cmu.ac.th/"><span
-                                class="ff-noto">ติดต่อเรา</span></a></li>
+                                class="font-noto">ติดต่อเรา</span></a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -80,54 +109,59 @@
         <!-- ======= Breadcrumbs ======= -->
         <section id="breadcrumbs" class="breadcrumbs">
             <div class="container">
+
                 <ol>
-                    <li><a href="index.html"><span class="ff-noto">หน้าหลัก</span> </a>
-                    </li>
-                    <li class="ff-noto">ระบบบริการข้อมูลสารสนเทศ - EnGRIDs DSC</li>
+                    <li><a href="./../dashboard/index.html">หน้าหลัก</a></li>
+                    <li><a href="./../index.html">ฐานข้อมูลสารสนเทศ</a></li>
+                    <li>จัดการข้อมูล</li>
                 </ol>
-                <!-- <h2 class="ff-noto">ระบบบริการข้อมูลสารสนเทศ - OnlineData</h2> -->
+                <h2 class="font-noto">จัดการข้อมูล</h2>
 
             </div>
         </section><!-- End Breadcrumbs -->
 
         <!-- ======= Blog Section ======= -->
-        <section id="contact" class="contact" style="margin-top: -20px;">
-            <div class="container">
+        <section id="blog" class="blog">
+            <div class="container" data-aos="fade-up">
 
-                <div class="section-title">
-                    <!-- <h2>Input Data</h2> -->
-                    <h3 class="ff-noto">ข้อมูล <span class="ff-noto">ผู้ใช้</span></h3>
-                    <p></p>
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <article class="entry">
+                            <div class="d-flex justify-content-between mb-2">
+                                <h2 class="entry-title font-noto">
+                                    ตารางรายการข้อมูล
+                                </h2>
+                                <button type="button" class="btn btn-success" onclick="AddData()"><i
+                                        class="bi bi-plus-circle"></i> เพิ่มข้อมูล</button>
+                            </div>
+
+                            <div class="entry-content">
+                                <table id="TableData" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ลำดับ</th>
+                                            <th>ชื่อ</th>
+                                            <th>นามสกุล</th>
+                                            <th>คณะ</th>
+                                            <th>วันที่บันทึก</th>
+                                            <th>จัดการข้อมูล</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <br>
+                            <hr>
+                            <div class="entry-content" id="History-data">
+
+                            </div>
+
+                        </article><!-- End blog entry -->
+                    </div><!-- End blog entries list -->
                 </div>
-                <div class="d-flex justify-content-center pt-5 pb-4"
-                    style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; border-radius: 15px;">
-                    <div class="col-lg-10 mt-5 mt-lg-0">
-                        <form method="post" role="form" class="forms-input" id="forminput">
-                            <div class="form-group row mb-2">
-                                <label class="col-sm-2 col-form-label">ชื่อ-นามสกุล</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="std_name">
-                                </div>
-                            </div>
-                            <div class="form-group row mb-2">
-                                <label class="col-sm-2 col-form-label">รหัสนักศึกษา </label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="std_id">
-                                </div>
-                            </div>
-                            <div class="form-group row mb-2">
-                                <label class="col-sm-2 col-form-label">คณะ </label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="std_org">
-                                </div>
-                            </div>
 
-                        </form>
-
-                    </div>
-                </div>
             </div>
-        </section>
+        </section><!-- End Blog Section -->
 
     </main><!-- End #main -->
 
@@ -160,13 +194,25 @@
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!-- sweetalert2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- lordicon -->
-    <script src="https://cdn.lordicon.com/xdjxvujz.js"></script>
+
+    <!-- datatables -->
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.2.4/js/dataTables.fixedHeader.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/fixedColumns.bootstrap4.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script> -->
+
+
     <!-- fileinput -->
     <script src="./../assets/bootstrap-fileinput/js/fileinput.js"></script>
     <script src="./../assets/bootstrap-fileinput/js/fileinput.min.js"></script>
@@ -182,8 +228,11 @@
     <script src="./../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
     <script src="./../assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="./../assets/vendor/php-email-form/validate.js"></script>
-    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="./../assets/js/main.js"></script>
     <script src="./app.js"></script>
+
 </body>
 
 </html>

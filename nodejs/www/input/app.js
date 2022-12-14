@@ -1,36 +1,124 @@
-var val1 = localStorage.getItem('value1');
-var val2 = localStorage.getItem('value2');
-// console.log(val1)
-// console.log(val2)
+
+let getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+const code = getCookie("open_code");
+const firstname_TH = getCookie("open_firstname_TH");
+const lastname_TH = getCookie("open_lastname_TH");
+const student_id = getCookie("open_student_id");
+const organization_name_TH = getCookie("open_organization_name_TH");
+const open_cmuitaccount = getCookie("open_cmuitaccount");
+
+let refreshPage = () => {
+    location.reload(true);
+}
+
+let gotoLogin = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost/login/index.html' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=dashboard'
+    window.location.href = url;
+}
+
+let gotoLogout = () => {
+    document.cookie = "open_code=; max-age=0; path=/;";
+    document.cookie = "open_firstname_TH=; max-age=0; path=/;";
+    document.cookie = "open_lastname_TH=; max-age=0; path=/;";
+    document.cookie = "open_student_id=; max-age=0; path=/;";
+    document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
+    gotoIndex()
+}
+
+let gotoProfile = () => {
+    location.href = "./../profile/index.html";
+}
+
+let gotoManage_user = () => {
+    location.href = "./../manage_user/index.html";
+}
+
+let gotoManage = () => {
+    location.href = "./../manage/index.html";
+}
+
+let gotoInput = () => {
+    location.href = "./../input/index.html";
+}
+
+const loginPopup = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost/login/index.html' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=dashboard'
+    window.location.href = url;
+};
+
+let gotoIndex = () => {
+    location.href = "./index.html";
+}
+
+if (code) {
+    $('#profile').html(`
+    <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+        <ul>
+            <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
+            <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
+            <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
+            <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
+        </ul>
+    </li>`)
+
+} else {
+    $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
+    gotoLogin();
+}
+
+$(window).on('load', function () {
+    if ($('#preloader').length) {
+        $('#preloader').delay(100).fadeOut('slow', function () {
+            $(this).remove();
+        });
+    }
+});
 
 $(document).ready(function () {
-    if (!val1 && !val2) {
-        Swal.fire({
-            title: 'ไม่สามารถเข้าสู่ระบบได้!',
-            text: 'กรุณาเข้าสู่ระบบใหม่อีกครั้งให้ถูกต้อง',
-            icon: 'error',
-            // iconColor: ''
-            confirmButtonText: 'ปิด',
-            // footer: '<a href=""><b>เข้าสู้ระบบ</b></a>',
-            customClass: {
-                container: 'ff-noto',
-                title: 'ff-noto',
-                confirmButton: 'btn btn-secondary',
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            preConfirm: async () => {
-                window.location.href = "./../dashboard/index.html"
-            }
-        })
-    }
+    // if (!val1 && !val2) {
+    //     Swal.fire({
+    //         title: 'ไม่สามารถเข้าสู่ระบบได้!',
+    //         text: 'กรุณาเข้าสู่ระบบใหม่อีกครั้งให้ถูกต้อง',
+    //         icon: 'error',
+    //         // iconColor: ''
+    //         confirmButtonText: 'ปิด',
+    //         // footer: '<a href=""><b>เข้าสู้ระบบ</b></a>',
+    //         customClass: {
+    //             container: 'ff-noto',
+    //             title: 'ff-noto',
+    //             confirmButton: 'btn btn-secondary',
+    //         },
+    //         allowOutsideClick: false,
+    //         allowEscapeKey: false,
+    //         preConfirm: async () => {
+    //             window.location.href = "./../dashboard/index.html"
+    //         }
+    //     })
+    // }
 
-    $('#username').text(val1)
-    // var krajeeGetCount = function (id) {
-    //     var cnt = $('#' + 'input-fcount-1').fileinput('getFilesCount');
-    //     return cnt === 0 ? 'You have no files remaining.' :
-    //         'You have ' + cnt + ' file' + (cnt > 1 ? 's' : '') + ' remaining.';
-    // };
     $('#input-fcount-1').fileinput({
         // uploadUrl: "/site/upload-file-chunks",
         enableResumableUpload: true,
@@ -417,8 +505,8 @@ let senddata = async () => {
         // d_tnow: Date.now(),
         d_source: $('#dsource').val(),
         d_datafiles: check_data == true ? JSON.stringify([obj_datafiles]) : "",
-        d_username: val1,
-        d_iduser: val2,
+        d_username: firstname_TH,
+        d_iduser: open_cmuitaccount,
         d_access: 'private',
         d_sd: 0,
     };

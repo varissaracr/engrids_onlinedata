@@ -4,7 +4,26 @@ const datapool = require("./db").datapool;
 const qs = require("qs")
 const axios = require("axios")
 const crypto = require("crypto");
-const { log } = require('console');
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './www/uploads/')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, uniqueSuffix + '-' + file.originalname)
+    }
+})
+
+const upload = multer({ storage: storage })
+app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
+    console.log(req.file.filename, req.body.d_id)
+    const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
+    datapool.query(sql).then(() => {
+        console.log("insert ok");
+    })
+})
 
 let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
     let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, dt)
@@ -127,15 +146,17 @@ app.get('/ds-api/getdata', (req, res) => {
     })
 })
 
+// app.get('/', function (req, res) {
+//     res.sendFile(__dirname + '/index.html')
+// })
+
 app.post('/ds-api/save', async (req, res) => {
     const { data } = req.body;
-    // console.log(data)
     await datapool.query(`INSERT INTO datasource(d_id, d_tnow)VALUES('${data.d_id}', now());`);
     let d;
     for (d in data) {
         if (data[d] !== '' && d !== 'd_id') {
             let sql = `UPDATE datasource SET ${d}='${data[d]}' WHERE d_id ='${data.d_id}'`;
-            // console.log(sql)
             await datapool.query(sql)
         }
     }

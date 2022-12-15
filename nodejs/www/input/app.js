@@ -1,4 +1,3 @@
-
 let getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -75,6 +74,16 @@ let gotoIndex = () => {
     location.href = "./index.html";
 }
 
+let pass = n => [...crypto.getRandomValues(new Uint8Array(n))]
+    .map((x, i) => (i = x / 255 * 61 | 0, String.fromCharCode(i + (i > 9 ? i > 35 ? 61 : 55 : 48)))).join``
+
+
+let createid = () => {
+    var n = pass(32);
+    var d_id = n.slice(0, 8) + '-' + n.slice(8, 12) + '-' + n.slice(12, 16) + '-' + n.slice(16, 20) + '-' + n.slice(20, 32);
+    document.getElementById("d_id").value = d_id;
+}
+
 if (code) {
     $('#profile').html(`
     <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
@@ -84,8 +93,9 @@ if (code) {
             <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
             <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
         </ul>
-    </li>`)
+    </li>`);
 
+    createid();
 } else {
     $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
     gotoLogin();
@@ -342,19 +352,7 @@ let delete_link = () => {
     $("#listlink-file").children(".form-inline").last().remove();
 }
 
-
-let pass = n => [...crypto.getRandomValues(new Uint8Array(n))]
-    .map((x, i) => (i = x / 255 * 61 | 0, String.fromCharCode(i + (i > 9 ? i > 35 ? 61 : 55 : 48)))).join``
-// console.log(pass(32));
-let createid = () => {
-    var n = pass(32);
-    var d_id = n.slice(0, 8) + '-' + n.slice(8, 12) + '-' + n.slice(12, 16) + '-' + n.slice(16, 20) + '-' + n.slice(20, 32);
-
-    return d_id
-}
-
 let senddata = async () => {
-
     var obj_groups = [];
     var obj_keywords = [];
     var obj_datafiles = {};
@@ -431,14 +429,11 @@ let senddata = async () => {
             dtype = $('#DT_other').val();
         }
     })
-    // var m2 = $('#dmeta').val()
-    // var bound 
 
-    // var meta = new Date().toLocaleDateString('th-TH')
     var check_data = isEmptyObject(obj_datafiles)
 
     const formDataObj = {
-        d_id: createid(),
+        d_id: $('#d_id').val(),
         d_name: $('#dname').val(),
         d_agency: $('#dagency').val(),
         d_detail: $('#ddetail').val(),
@@ -449,7 +444,7 @@ let senddata = async () => {
         d_tmeta: new Date().toLocaleDateString('th-TH'),
         // d_tnow: Date.now(),
         d_source: $('#dsource').val(),
-        d_datafiles: check_data == true ? JSON.stringify([obj_datafiles]) : "",
+        // d_datafiles: check_data == true ? JSON.stringify([obj_datafiles]) : "",
         d_username: firstname_TH,
         d_iduser: cmuitaccount,
         d_access: 'private',
@@ -548,8 +543,9 @@ function isEmptyObject(obj) {
     return false;
 }
 
-$('#btn-send').click(function () {
-    senddata()
+$('#forminput').submit(function (evt) {
+    // evt.preventDefault();
+    senddata();
 })
 
 let logout = () => {

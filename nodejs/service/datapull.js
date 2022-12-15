@@ -127,17 +127,6 @@ app.get('/ds-api/getdata', (req, res) => {
     })
 })
 
-app.post('/ds-api/postdata', (req, res) => {
-    // const { staid } = req.body
-    let sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd FROM datasource where d_access='publish' order by d_tnow desc;`;
-    datapool.query(sql, (e, r) => {
-        // console.log(r);
-        res.status(200).json({
-            data: r.rows
-        })
-    })
-})
-
 app.post('/ds-api/save', async (req, res) => {
     const { data } = req.body;
     // console.log(data)
@@ -152,6 +141,17 @@ app.post('/ds-api/save', async (req, res) => {
     }
     res.status(200).json({
         data: 'Save data'
+    })
+})
+
+app.post('/ds-api/postdata', (req, res) => {
+    // const { staid } = req.body
+    let sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_meta as d_datafiles FROM datasource WHERE d_access='publish' order by d_tnow desc;`;
+    datapool.query(sql, (e, r) => {
+        // console.log(r);
+        res.status(200).json({
+            data: r.rows
+        })
     })
 })
 

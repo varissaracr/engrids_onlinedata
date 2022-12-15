@@ -102,7 +102,7 @@ let gotodata = (txt) => {
 }
 
 let numcategory = async (d) => {
-    // console.log(d)
+    console.log(d)
     let politics = 0;
     let nature = 0;
     let agri = 0;

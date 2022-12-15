@@ -20,7 +20,8 @@ const firstname_TH = getCookie("open_firstname_TH");
 const lastname_TH = getCookie("open_lastname_TH");
 const student_id = getCookie("open_student_id");
 const organization_name_TH = getCookie("open_organization_name_TH");
-const open_cmuitaccount = getCookie("open_cmuitaccount");
+const cmuitaccount = getCookie("open_cmuitaccount");
+const auth = getCookie("open_auth");
 
 let refreshPage = () => {
     location.reload(true);
@@ -40,6 +41,7 @@ let gotoLogout = () => {
     document.cookie = "open_firstname_TH=; max-age=0; path=/;";
     document.cookie = "open_lastname_TH=; max-age=0; path=/;";
     document.cookie = "open_student_id=; max-age=0; path=/;";
+    document.cookie = "open_auth=; max-age=0; path=/;";
     document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
     gotoIndex()
 }
@@ -98,27 +100,6 @@ $(window).on('load', function () {
 });
 
 $(document).ready(function () {
-    // if (!val1 && !val2) {
-    //     Swal.fire({
-    //         title: 'ไม่สามารถเข้าสู่ระบบได้!',
-    //         text: 'กรุณาเข้าสู่ระบบใหม่อีกครั้งให้ถูกต้อง',
-    //         icon: 'error',
-    //         // iconColor: ''
-    //         confirmButtonText: 'ปิด',
-    //         // footer: '<a href=""><b>เข้าสู้ระบบ</b></a>',
-    //         customClass: {
-    //             container: 'ff-noto',
-    //             title: 'ff-noto',
-    //             confirmButton: 'btn btn-secondary',
-    //         },
-    //         allowOutsideClick: false,
-    //         allowEscapeKey: false,
-    //         preConfirm: async () => {
-    //             window.location.href = "./../dashboard/index.html"
-    //         }
-    //     })
-    // }
-
     $('#input-fcount-1').fileinput({
         // uploadUrl: "/site/upload-file-chunks",
         enableResumableUpload: true,
@@ -197,42 +178,12 @@ $(document).ready(function () {
             $(`#datafile${index}_name`).val(file.name);
             $(`#datafile${index}_date`).val(Date.now());
 
-            // var ff = dataURLtoFile(reader.result, file.name)
-            // var icon = conTypeFile(ff.type)
-            // var url = window.URL.createObjectURL(ff);
-            // var a = 'ce7f4a78-71db-4754-9084-edca971903bd'
-            // var code = url.split('/').pop()
-            // // console.log(a.length, code.length)
-            // var content = $(`
-            // <div class="card">
-            // ${icon}
-            // <a href="${url}" download="${file.name}" target="_blank"><h6>${file.name}</h6></a>
-            // </div>`)
-            // $(`#filedownload`).append(content)
 
-
-            // console.log(`loadend`)
         }
         reader.readAsDataURL(file);
     }).on('fileclear', function (event) {
         $(`#listdata-file`).empty()
-        // $(`#filedownload`).empty()
-        // console.log("fileclear");
     })
-
-    // for (var n = 0; n < val_file; n++) {
-    //     var c = `<input type="hidden" id="datafile${n}_${i.nid}" name="data-files" value="">
-    //     <input type="hidden" id="datafile${n}_${i.nid}_name" name="data-name" value="">`
-    //     $(`#listdata-${i.nid}`).append(c)
-    // }
-
-    // }).on('fileuploaded', function (event, previewId, index, fileId) {
-    //     console.log('File Uploaded', 'ID: ' + fileId + ', Thumb ID: ' + previewId);
-    // }).on('fileuploaderror', function (event, previewId, index, fileId) {
-    //     console.log('File Upload Error', 'ID: ' + fileId + ', Thumb ID: ' + previewId);
-    // }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {
-    //     console.log('File Batch Uploaded', preview, config, tags, extraData);
-    // });
 })
 
 
@@ -258,12 +209,6 @@ let conTypeFile = (type) => {
     else if (sp[1] == 'xls' || sp[1] == 'xlsx' || sp[1] == 'vnd.ms-excel') { return '<i class="fas fa-file-excel text-success"></i>' }
     else if (sp[1] == 'ppt') { return '<i class="fas fa-file-powerpoint text-danger"></i>' }
     else { return '<i class="fas fa-file text-secondary"></i>' }
-
-    // 'zip': '<i class="fas fa-file-archive text-muted"></i>',
-    // 'htm': '<i class="fas fa-file-code text-info"></i>',
-    // 'txt': '<i class="fas fa-file-alt text-info"></i>',
-    // 'mov': '<i class="fas fa-file-video text-warning"></i>',
-    // 'mp3': '<i class="fas fa-file-audio text-warning"></i>',
 
 }
 
@@ -404,12 +349,9 @@ let pass = n => [...crypto.getRandomValues(new Uint8Array(n))]
 let createid = () => {
     var n = pass(32);
     var d_id = n.slice(0, 8) + '-' + n.slice(8, 12) + '-' + n.slice(12, 16) + '-' + n.slice(16, 20) + '-' + n.slice(20, 32);
-    // console.log(n, n.length)
-    // console.log(d_id, d_id.length)
+
     return d_id
 }
-// var uid = createid()
-// console.log(uid)
 
 let senddata = async () => {
 
@@ -509,17 +451,12 @@ let senddata = async () => {
         d_source: $('#dsource').val(),
         d_datafiles: check_data == true ? JSON.stringify([obj_datafiles]) : "",
         d_username: firstname_TH,
-        d_iduser: open_cmuitaccount,
+        d_iduser: cmuitaccount,
         d_access: 'private',
         d_sd: 0,
         d_meta: JSON.stringify(obj_meta),
         d_auth: "editor"
     };
-    // console.log(formDataObj)
-    // console.log(obj_groups)
-    // console.log(obj_keywords)
-    // console.log(obj_datafiles)
-    // console.log(check_data)
 
     var req = req_form()
     if (req == true) {
@@ -622,7 +559,7 @@ let logout = () => {
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (val1 == 'administrator' && val2 == 'admin') {
+    if (auth == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
@@ -632,7 +569,7 @@ $('.mobile-nav-toggle').on('click', function (e) {
         <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
         <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
-    } else if (val1 !== null && val2 !== null) {
+    } else if (code) {
         content = `
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
         <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>

@@ -1,7 +1,4 @@
 
-var val1 = localStorage.getItem('value1');
-var val2 = localStorage.getItem('value2');
-
 let getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -25,6 +22,7 @@ const lastname_TH = getCookie("open_lastname_TH");
 const student_id = getCookie("open_student_id");
 const cmuitaccount = getCookie("open_cmuitaccount");
 const organization_name_TH = getCookie("open_organization_name_TH");
+const auth = getCookie("open_auth");
 
 let refreshPage = () => {
     location.reload(true);
@@ -88,35 +86,6 @@ if (code) {
     $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
     gotoLogin()
 }
-
-
-// console.log(val2)
-// if (code) {
-//     $('#username').text(val1)
-//     loadlistdata(val2)
-//     if (val2 == 'admin') {
-//         HistoryData(val2)
-//     }
-// } else {
-//     Swal.fire({
-//         title: 'ไม่สามารถเข้าสู่ระบบได้!',
-//         text: 'กรุณาเข้าสู่ระบบใหม่อีกครั้งให้ถูกต้อง',
-//         icon: 'error',
-//         // iconColor: ''
-//         confirmButtonText: 'ปิด',
-//         // footer: '<a href=""><b>เข้าสู้ระบบ</b></a>',
-//         customClass: {
-//             container: 'font-noto',
-//             title: 'font-noto',
-//             confirmButton: 'btn btn-secondary',
-//         },
-//         allowOutsideClick: false,
-//         allowEscapeKey: false,
-//         preConfirm: async () => {
-//             window.location.href = "./../dashboard/index.html"
-//         }
-//     })
-// }
 
 let dtable;
 let id;
@@ -368,7 +337,7 @@ let logout = () => {
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (val1 == 'administrator' && val2 == 'admin') {
+    if (auth == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
@@ -378,7 +347,7 @@ $('.mobile-nav-toggle').on('click', function (e) {
         <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
         <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
-    } else if (val1 !== null && val2 !== null) {
+    } else if (code) {
         content = `
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
         <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>

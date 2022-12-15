@@ -1,11 +1,4 @@
 
-let val1
-let val2
-// console.log(val1, val2)
-
-// const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
-// const urlapi = `http://localhost:3000/ds-api`
-
 let getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -23,11 +16,14 @@ let getCookie = (cname) => {
 }
 
 const id_data = localStorage.getItem('id_data');
+
 const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
 const lastname_TH = getCookie("open_lastname_TH");
 const student_id = getCookie("open_student_id");
 const organization_name_TH = getCookie("open_organization_name_TH");
+const cmuitaccount = getCookie("open_cmuitaccount");
+const auth = getCookie("open_auth");
 
 let refreshPage = () => {
     location.reload(true);
@@ -63,6 +59,7 @@ let gotoLogout = () => {
     document.cookie = "open_firstname_TH=; max-age=0; path=/;";
     document.cookie = "open_lastname_TH=; max-age=0; path=/;";
     document.cookie = "open_student_id=; max-age=0; path=/;";
+    document.cookie = "open_auth=; max-age=0; path=/;";
     document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
     gotoIndex()
 }
@@ -70,7 +67,8 @@ let gotoLogout = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
+        // '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=detail'
     window.location.href = url;
@@ -94,10 +92,6 @@ if (code) {
     $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
     gotoLogin()
 }
-
-$(document).ready(function () {
-    load_data(id_data)
-})
 
 let load_data = (id) => {
     axios.post('/ds-api/loaddata', { d_id: id }).then(r => {
@@ -127,7 +121,7 @@ let load_data = (id) => {
                 $(`#v3`).append(content)
             })
             genFiles(data[0].d_datafiles, data[0].d_type, date)
-        } else if (data[0].d_access !== 'publish' && val2 == 'admin') {
+        } else if (data[0].d_access !== 'publish' && auth == 'admin') {
             document.title = data[0].d_name;
             var t = new Date(data[0].d_tnow).toISOString().split('T')
             var date = new Date(t[0]).toLocaleDateString('th-TH')
@@ -397,7 +391,7 @@ let detail_file = (i1, i2, i3, url, name) => {
 
 let SD_download = async (namefile) => {
 
-    await axios.post('/sd', { d_id: id_data }).then(r => {
+    await axios.post('/ds-api/sd', { d_id: id_data }).then(r => {
         console.log(r.data.data)
     })
 
@@ -405,15 +399,15 @@ let SD_download = async (namefile) => {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
     var data = {
-        username: val1,
-        id_user: val2,
+        username: firstname_TH,
+        id_user: cmuitaccount,
         dataid: id_data,
         dataname: document.title,
         datafile: namefile,
         d_tdate: new Date().toLocaleDateString('th-TH') + ' ' + time,
     }
 
-    await axios.post('/hitstory', { data: data }).then(r => {
+    await axios.post('/ds-api/hitstory', { data: data }).then(r => {
         console.log(r.data.data)
     })
 
@@ -435,7 +429,7 @@ const Toast = Swal.mixin({
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (val1 == 'administrator' && val2 == 'admin') {
+    if (auth == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
@@ -481,3 +475,6 @@ $('.mobile-nav-toggle').on('click', function (e) {
     })
 })
 
+$(document).ready(function () {
+    load_data(id_data)
+})

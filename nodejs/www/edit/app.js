@@ -1,26 +1,105 @@
+
+let getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 const id_data = localStorage.getItem('id_data');
-// const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
-const urlapi = `http://localhost:3000/ds-api`
 
-var val1 = localStorage.getItem('value1');
-var val2 = localStorage.getItem('value2');
-// console.log(val1)
-// console.log(val2)
-
-$('#username').text(val1)
-
+const code = getCookie("open_code");
+const firstname_TH = getCookie("open_firstname_TH");
+const lastname_TH = getCookie("open_lastname_TH");
+const student_id = getCookie("open_student_id");
+const organization_name_TH = getCookie("open_organization_name_TH");
+const cmuitaccount = getCookie("open_cmuitaccount");
+const auth = getCookie("open_auth");
 
 
-$(document).ready(function () {
-    load_data(id_data)
-})
+let refreshPage = () => {
+    location.reload(true);
+}
+
+let gotoProfile = () => {
+    location.href = "./../profile/index.html";
+}
+
+let gotoManage_user = () => {
+    location.href = "./../manage_user/index.html";
+}
+
+let gotoManage = () => {
+    location.href = "./../manage/index.html";
+}
+
+let gotoInput = () => {
+    location.href = "./../input/index.html";
+}
+
+let gotoLogin = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        '&redirect_uri=http://localhost/login/index.html' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=detail'
+    window.location.href = url;
+}
+
+let gotoLogout = () => {
+    document.cookie = "open_code=; max-age=0; path=/;";
+    document.cookie = "open_firstname_TH=; max-age=0; path=/;";
+    document.cookie = "open_lastname_TH=; max-age=0; path=/;";
+    document.cookie = "open_student_id=; max-age=0; path=/;";
+    document.cookie = "open_auth=; max-age=0; path=/;";
+    document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
+    gotoIndex()
+}
+
+const loginPopup = () => {
+    let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
+        '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
+        // '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
+        '&redirect_uri=http://localhost/login/index.html' +
+        '&scope=cmuitaccount.basicinfo' +
+        '&state=detail'
+    window.location.href = url;
+};
+
+let gotoIndex = () => {
+    location.href = "./index.html";
+}
+
+if (code) {
+    $('#profile').html(`
+    <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+        <ul>
+            <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
+            <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
+            <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
+            <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
+        </ul>
+    </li>`)
+} else {
+    $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
+    gotoLogin()
+}
+
+
+$('#username').text(firstname_TH + " " + lastname_TH)
 
 let load_data = (id) => {
-    axios.post(urlapi + '/editdata', { d_id: id }).then(r => {
+    axios.post('/ds-api/editdata', { d_id: id }).then(r => {
         var data = r.data.data;
-        // console.log(data)
-        // var t = new Date(data[0].d_tnow).toISOString().split('T')
-        // var date = new Date(t[0]).toLocaleDateString('th-TH')
         $('#dname').val(data[0].d_name)
         $('#ddetail').val(data[0].d_detail)
         $('#dagency').val(data[0].d_agency)
@@ -92,13 +171,6 @@ let genFiles = async (data, type, time) => {
         $('input[datafile_type=file]').prop('checked', 'true').change()
         valFiles = Files.length
         Files.map((i, index) => {
-            // console.log(index)
-            //         var ff = dataURLtoFile(i.file, i.filename)
-            //         console.log(ff)
-            //         var url = window.URL.createObjectURL(ff);
-            //         var code = url.split('/').pop()
-
-            //         var icon = conTypeFile(i.type, type)
             var content_deplay = $(`
                 <div class="d-flex justify-content-between w-100 p-2" id="file_${index + 1}">${index + 1}. ${i.filename}
                     <button type="button" class="btn btn-danger"
@@ -289,13 +361,6 @@ let conTypeFile = (type) => {
     else if (sp[1] == 'xls' || sp[1] == 'xlsx' || sp[1] == 'vnd.ms-excel') { return '<i class="fas fa-file-excel text-success"></i>' }
     else if (sp[1] == 'ppt') { return '<i class="fas fa-file-powerpoint text-danger"></i>' }
     else { return '<i class="fas fa-file text-secondary"></i>' }
-
-    // 'zip': '<i class="fas fa-file-archive text-muted"></i>',
-    // 'htm': '<i class="fas fa-file-code text-info"></i>',
-    // 'txt': '<i class="fas fa-file-alt text-info"></i>',
-    // 'mov': '<i class="fas fa-file-video text-warning"></i>',
-    // 'mp3': '<i class="fas fa-file-audio text-warning"></i>',
-
 }
 
 $('#btn-keyword').click(async function () {
@@ -349,6 +414,7 @@ $('#dbound').on('change', function () {
         $(`#geo_other`).hide().removeAttr('required');
     }
 })
+
 let inputFile = (target, type) => {
     $(target).children("input[type=checkbox]").each(function () {
         var datafile_type = $(this).attr("datafile_type");
@@ -421,10 +487,10 @@ let add_link = () => {
     </div>`).hide().fadeIn(1000);
     $('#listlink-file').append(content)
 }
+
 let delete_link = () => {
     $("#listlink-file").children(".form-inline").last().remove();
 }
-
 
 let pass = n => [...crypto.getRandomValues(new Uint8Array(n))]
     .map((x, i) => (i = x / 255 * 61 | 0, String.fromCharCode(i + (i > 9 ? i > 35 ? 61 : 55 : 48)))).join``
@@ -533,11 +599,6 @@ let senddata = async () => {
         d_iduser: 'administrator',
         d_access: 'private'
     };
-    // console.log(formDataObj)
-    // console.log(obj_groups)
-    // console.log(obj_keywords)
-    // console.log(obj_datafiles)
-    // console.log(check_data)
 
     var req = req_form()
     if (req == true) {
@@ -559,7 +620,7 @@ let senddata = async () => {
             // timer: 1500
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await axios.post(`http://localhost:3000/ds-api/update`, { data: formDataObj }).then(r => {
+                await axios.post(`/ds-api/update`, { data: formDataObj }).then(r => {
                     var Sucss = r.data.data;
                     if (Sucss == 'Update data') {
                         Swal.fire({
@@ -640,7 +701,7 @@ let logout = () => {
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (val1 == 'administrator' && val2 == 'admin') {
+    if (auth == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
@@ -650,7 +711,7 @@ $('.mobile-nav-toggle').on('click', function (e) {
         <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
         <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
-    } else if (val1 !== null && val2 !== null) {
+    } else if (code) {
         content = `
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
         <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
@@ -685,4 +746,8 @@ $('.mobile-nav-toggle').on('click', function (e) {
         // showCloseButton: false,
         // showCancelButton: true,
     })
+})
+
+$(document).ready(function () {
+    load_data(id_data)
 })

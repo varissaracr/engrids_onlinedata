@@ -444,7 +444,7 @@ let senddata = async () => {
         d_tmeta: new Date().toLocaleDateString('th-TH'),
         // d_tnow: Date.now(),
         d_source: $('#dsource').val(),
-        // d_datafiles: check_data == true ? JSON.stringify([obj_datafiles]) : "",
+        d_datafiles: check_data == true ? JSON.stringify([obj_datafiles]) : "",
         d_username: firstname_TH,
         d_iduser: cmuitaccount,
         d_access: 'private',

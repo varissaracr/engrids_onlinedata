@@ -86,48 +86,22 @@ if (code) {
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+
 const Search = urlParams.get('search')
 if (Search) { $('#txt_search').val(Search) }
-
 const Page = urlParams.get('page')
 const Categories = urlParams.get('category')
 const Keyword = urlParams.get('keyword')
 const Fileform = urlParams.get('fileform')
 
-const id_data = localStorage.getItem('id_data');
+const id_data = urlParams.get('id_data')
 
-let gotodownload = (id_data) => {
-    // console.log(id_data);
-    if (code) {
-        localStorage.setItem('id_data', id_data);
-        window.location.href = './../detail/index.html';
-    } else {
-        content = `
-        <div style="text-align: left;">
-            กรุณาเข้าสู่ระบบก่อนดาวน์โหลด
-            <p></p>
-            <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
-        </div>`
+// console.log(Search, Categories, Keyword, Fileform);
+// const id_data = localStorage.getItem('id_data');
 
-        Swal.fire({
-            // title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3>',
-            // icon: 'info',
-            html: content + '',
-            confirmButtonText: 'ปิด',
-            confirmButtonColor: '#000000',
-            // background: '#50d49f',
-            customClass: {
-                container: 'ff-noto',
-                title: 'ff-noto',
-            },
-            // showConfirmButton: false,
-            // showCloseButton: false,
-            // showCancelButton: true,
-        })
-    }
-}
 
 const url = new URL(window.location.href);
+// console.log(url);
 let search_data = () => {
     var value = $('#txt_search').val();
     url.searchParams.set('page', 1);
@@ -173,11 +147,12 @@ let reset_Fileform = () => {
 }
 
 let valCategorys = []
+let load_data = (page) => {
+    axios.get('/ds-api/getdata').then(r => {
 
-let load_data = () => {
-    axios.post('/ds-api/postdata').then(r => {
-        // console.log(r);
         var data = r.data.data;
+
+        console.log(data);
 
         var arr = [];
         var category = [];
@@ -417,166 +392,122 @@ let load_data = () => {
             } else {
                 arr.push(i)
                 var group = JSON.parse(i.d_groups)
+                console.log(group);
                 group.map(e => category.push(e))
 
                 var keyword = JSON.parse(i.d_keywords)
+                console.log(keyword);
                 keyword.map(e => arrKeyword.push(e))
 
                 var fileform = JSON.parse(i.d_datafiles)
+                console.log(fileform);
                 var dta = fileform[0]
                 arrfileform.push(dta)
                 // dta.map(e => {
                 // })
             }
-            genCategory(category)
-            genKeyword(arrKeyword)
-            genFileformat(arrfileform)
+        })
 
-            // console.log(New_post);
+        genCategory(category)
+        genKeyword(arrKeyword)
+        genFileformat(arrfileform)
 
-            New_post.map(i => {
+        New_post.map(i => {
+            var t = new Date(i.d_tnow).toISOString().split('T')
+            var date = new Date(t).toLocaleDateString('th-TH')
+            var content = $(`
+            <div class="post-item">
+            <h4><a class="ff-noto pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a></h4>
+            <time datetime="${t}">${date}</time>
+            </div>`)
+            $(`#newpost`).append(content)
+        })
+
+        if (Page) {
+            var a, b;
+            a = (Page - 1) * 6
+            b = (Page * 6) - 1
+            var select;
+            if (Page == 1) { select = arr.slice(a, b) }
+            else {
+                select = arr.slice(Number(a - 1), b)
+            }
+            select.map(i => {
                 var t = new Date(i.d_tnow).toISOString().split('T')
                 var date = new Date(t).toLocaleDateString('th-TH')
-                $(`#newpost`).append(`<div class="post-item clearfix">
-                    <img src="./../assets/img/noimg.png" alt="">
-                    <h4><a class="ff-noto pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a></h4>
-                    <time datetime="${t}">${date}</time>
-                    </div>`)
+                var group = JSON.parse(i.d_groups)
+                // console.log(i.d_tnow)
+                var content = $(`
+            <article class="entry">
+            <h2 class="entry-title">
+                <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
+            </h2>
+            <div class="entry-meta">
+                <ul>
+                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
+                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                    </li>
+                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                            href="blog-single.html">${i.d_sd} download</a></li>
+                </ul>
+            </div>
+            <div class="entry-content">
+                <p>
+                    ${i.d_detail}
+                </p>
+                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
+                <div class="read-more">
+                    <a class="pointer" onclick="gotodownload('${i.d_id}')">Download</a>
+                </div>
+            </div>`)
+                $(`#content-data`).append(content)
+
             })
+        } else {
+            var select = arr.slice(0, 4)
+            select.map(i => {
+                var t = new Date(i.d_tnow).toISOString().split('T')
+                var date = new Date(t).toLocaleDateString('th-TH')
+                var group = JSON.parse(i.d_groups)
+                // console.log(i.d_tnow)
+                var content = $(`
+            <article class="entry">
+            <h2 class="entry-title">
+                <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
+            </h2>
+            <div class="entry-meta">
+                <ul>
+                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
+                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                    </li>
+                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                            href="blog-single.html">${i.d_sd} download</a></li>
+                </ul>
+            </div>
+            <div class="entry-content">
+                <p>
+                    ${i.d_detail}
+                </p>
+                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
+                <div class="read-more">
+                    <a class="pointer" onclick="gotodownload('${i.d_id}')">Download</a>
+                </div>
+            </div>`)
+                $(`#content-data`).append(content)
 
-            if (Page) {
-                var a, b;
-                a = (Page - 1) * 6
-                b = (Page * 6) - 1
-                var select;
-                if (Page == 1) { select = arr.slice(a, b) }
-                else {
-                    select = arr.slice(Number(a - 1), b)
-                }
-                select.map(i => {
-                    var t = new Date(i.d_tnow).toISOString().split('T')
-                    var date = new Date(t).toLocaleDateString('th-TH')
-                    var group = JSON.parse(i.d_groups)
-                    // console.log(i.d_tnow)
-                    if (code) {
-                        $(`#content-data`).append(`<article class="entry">
-                            <h2 class="entry-title">
-                                <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
-                            </h2> 
-                            <div class="entry-meta">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
-                                    </li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
-                                            href="blog-single.html">${i.d_sd} download</a></li>
-                                </ul>
-                            </div>
-                            <div class="entry-content">
-                                <p>
-                                    ${i.d_detail}
-                                </p>
-                                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
-                                <div class="read-more">
-                                    <a class="pointer" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}> Download </a>
-                                </div>
-                            </div>`)
-                    }
-                    else {
-                        $(`#content-data`).append(`<article class="entry">
-                        <h2 class="entry-title">
-                            <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
-                        </h2>
-                        <div class="entry-meta">
-                            <ul>
-                                <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
-                                </li>
-                                <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
-                                        href="blog-single.html">${i.d_sd} download</a></li>
-                            </ul>
-                        </div>
-                        <div class="entry-content">
-                            <p>
-                                ${i.d_detail}
-                            </p>
-                            <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
-                            <div class="read-more">
-                                <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" >Download</button>
-                            </div>
-                        </div>`)
-                    }
-                })
-            } else {
-                var select = arr.slice(0, 4)
-                select.map(i => {
-                    // console.log(i)
-                    var t = new Date(i.d_tnow).toISOString().split('T')
-                    var date = new Date(t).toLocaleDateString('th-TH')
-                    var group = JSON.parse(i.d_groups)
-                    // console.log(i.d_tnow)
-                    if (code) {
+            })
+        }
+        if (arr.length == 0) {
+            var content = $(`
+            <div class="section-title">
+            <h3><span class="ff-noto">ไม่พบข้อมูล</span></h3>
+            </div>`)
+            $(`#content-data`).append(content)
+        }
 
-                        $(`#content-data`).append(`<article class="entry">
-                            <h2 class="entry-title">
-                                <a class="pointer" id ="download_btn">${i.d_name}</a>
-                            </h2>
-                            <div class="entry-meta">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
-                                    </li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
-                                            href="blog-single.html">${i.d_sd} download</a></li>
-                                </ul>
-                            </div>
-                            <div class="entry-content">
-                                <p>
-                                    ${i.d_detail}
-                                </p>
-                                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
-                                <div class="read-more">
-                                    <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')">Download</button>
-                                </div>
-                            </div>`)
-                    }
-                    else {
+        $('#data_val').text(arr.length)
+        pageLength(arr.length)
 
-                        $(`#content-data`).append(`<article class="entry">
-                            <h2 class="entry-title">
-                                <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
-                            </h2>
-                            <div class="entry-meta">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
-                                    </li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
-                                            href="blog-single.html">${i.d_sd} download</a></li>
-                                </ul>
-                            </div>
-                            <div class="entry-content">
-                                <p>
-                                    ${i.d_detail}
-                                </p>
-                                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
-                                <div class="read-more">
-                                    <a class="pointer" style="background-color: #D0D3D4;" onclick="gotodownload('${i.d_id}')"> Download </a>
-                                </div>
-                            </div>`)
-                    }
-
-                })
-            }
-            if (arr.length == 0) {
-                $(`#content-data`).append(`<div class="section-title">
-                <h3><span class="ff-noto">ไม่พบข้อมูล</span></h3>
-                </div>`)
-            }
-
-            $('#data_val').text(arr.length)
-            pageLength(arr.length)
-        })
     })
 }
 
@@ -708,7 +639,39 @@ let genFileformat = (data) => {
                 })
             })
         }
+        // if (!Fileform) {
+        // } else {
+        //     if (i.Files) {
+        //         var f = i.Files
+        //         f.map(e => {
+        //             var type = e.type
+        //             if (type.match(Fileform)) {
+        //                 arr.push(type)
+        //             }
+        //         })
+        //     } else if (i.Links) {
+        //         var l = i.Links
+        //         l.map(e => {
+        //             var type = e.type
+        //             if (type.match(Fileform)) {
+        //                 arr.push(type)
+        //             }
+        //         })
+        //     }
+        // }
     })
+    // if (arrFiles.length > 0) {
+    //     Files.map(e => {
+    //         var filter = arrFiles.filter(i => i == e)
+    //         arr1.push({ category: e, value: filter.length })
+    //     })
+    // }
+    // if (arrLinks.length > 0) {
+    //     Links.map(e => {
+    //         var filter = arrLinks.filter(i => i == e)
+    //         arr2.push({ category: e, value: filter.length })
+    //     })
+    // }
     if (arr.length > 0) {
         Files.map(e => {
             var filter = arr.filter(i => i == e)
@@ -767,8 +730,29 @@ let pageLength = (number) => {
         $(`#listpage li:first-child`).addClass('active')
     }
 }
+// let search_data = () => {
+//     var data = show_data;
+//     var value = $('#txt_search').val();
+//     console.log(value)
+//     var arr = [];
+//     data.map(i => {
 
-// $('#login').click(function () { loginPopup() })
+//         var search = i.d_name.search(value)
+//         if (search >= 0) {
+//             arr.push(i)
+//         }
+//     })
+// }
+let gotodownload = (id_data) => {
+    localStorage.setItem('id_data', id_data);
+    // var name = datauser.username
+    // var id = datauser.userid
+    // localStorage.setItem('value1', name ? name : val1);
+    // localStorage.setItem('value2', id ? id : val2);
+    window.location.href = './../detail/index.html';
+
+}
+$('#login').click(function () { loginPopup() })
 
 const Toast = Swal.mixin({
     toast: true,
@@ -784,6 +768,93 @@ const Toast = Swal.mixin({
 
 const datauser = {}
 
+const loginPopup = () => {
+    Swal.fire({
+        title: 'เข้าสู่ระบบ',
+        html:
+            '<input id="username" class="swal2-input" type="text" placeholder="Username">' +
+            '<input id="password" class="swal2-input" type="password" placeholder="Password">',
+        focusConfirm: true,
+        customClass: {
+            container: 'ff-noto',
+            title: 'ff-noto',
+        },
+        showCloseButton: false,
+        confirmButtonText: 'เข้าสู่ระบบ',
+        confirmButtonColor: '#3085d6',
+        footer: '<a href=""><b>ลืมรหัสผ่าน</b></a><hr class="perpendicular-line"><a href="./../register/index.html"><b>สมัครผู้ใช้ใหม่</b></a>',
+
+        showCancelButton: false,
+        preConfirm: async () => {
+            const username = Swal.getPopup().querySelector('#username').value
+            const password = Swal.getPopup().querySelector('#password').value
+            if (!loginPopup || !password) {
+                Swal.showValidationMessage(`Please enter username and password`)
+            }
+            return { username: username, password: password }
+
+        },
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let data = {
+                username: result.value.username,
+                password: result.value.password
+            }
+            axios.post("https://engrids.soc.cmu.ac.th/api/fuser-api/userid", data).then(r => {
+                // console.log(r.data.data)
+                if (r.data.data !== 'false') {
+                    var userid = r.data.data[0].id_user
+                    var username = r.data.data[0].username
+                    datauser["userid"] = userid
+                    datauser["username"] = username
+
+                    localStorage.setItem('value1', username);
+                    localStorage.setItem('value2', userid);
+
+                    // localStorage.setItem('userid', userid);
+
+                    $('#login').fadeOut(function () {
+                        $('#Profile').fadeIn(2500)
+                        $('#username').text(username)
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'เข้าสู่ระบบสำเร็จ',
+                        customClass: {
+                            container: 'ff-noto',
+                            title: 'ff-noto',
+                            confirmButton: 'btn btn-secondary',
+                        },
+                    })
+
+                } else {
+                    Swal.fire({
+                        title: 'ไม่สามารถเข้าสู่เข้าระบบได้!',
+                        text: 'กรุณาตรวจสอบชื่อผู้ใช่/รหัสผ่าน ให้ถูกต้อง',
+                        icon: 'error',
+                        // iconColor: ''
+                        confirmButtonText: 'ปิด',
+                        // footer: '<a href=""><b>เข้าสู้ระบบ</b></a>',
+                        customClass: {
+                            container: 'ff-noto',
+                            title: 'ff-noto',
+                            confirmButton: 'btn btn-secondary',
+                        },
+                        preConfirm: async () => {
+                            loginPopup()
+                        }
+                    })
+                }
+            })
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            window.location.reload()
+        }
+    })
+};
+
 let gotomanage = (id_data) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
@@ -793,7 +864,7 @@ let gotomanage = (id_data) => {
         // window.open('./manage/index.html', '_blank');
         window.location.href = '././manage/index.html';
     } else {
-        gotoLogin()
+        loginPopup()
     }
 
 }
@@ -805,17 +876,62 @@ let gotoinput = (id_data) => {
         localStorage.setItem('value2', id ? id : val2);
         window.location.href = './../input/index.html';
     } else {
-        gotoLogin()
+        loginPopup()
     }
+
+}
+let logout = () => {
+    localStorage.clear();
+    window.location.href = './../dashboard/index.html'
 }
 
-$(window).on('load', function () {
-    if ($('#preloader').length) {
-        $('#preloader').delay(100).fadeOut('slow', function () {
-            $(this).remove();
-        });
+
+/**
+   * Mobile nav toggle
+   */
+$('.mobile-nav-toggle').on('click', function (e) {
+    var content;
+    if (val1 == 'administrator' && val2 == 'admin') {
+        content = `
+        <div class="d-flex flex-column " id="memu_mobile">
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
+        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
+    } else if (val1 !== null && val2 !== null) {
+        content = `
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
+    } else {
+        content = `
+        <div class="d-flex flex-column " id="memu_mobile">
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
+        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>เข้าสู่ระบบ</span></a>
+       
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+      </div>`
     }
-});
+    Swal.fire({
+        title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3><hr>',
+        // icon: 'info',
+        html: content + '<hr>',
+        confirmButtonText: 'ปิด',
+        customClass: {
+            container: 'ff-noto',
+            title: 'ff-noto',
+        },
+        // showConfirmButton: false,
+        // showCloseButton: false,
+        // showCancelButton: true,
+    })
+})
 
 $(document).ready(function () {
     var page = 1;

@@ -174,7 +174,7 @@ let load_data = () => {
 
 let gotodownload = (id_data) => {
     localStorage.setItem('id_data', id_data);
-    window.location.href = './../detail/index.html';
+    window.location.href = `./../detail/index.html?id_data=${id_data}`;
 
 }
 // $('#login').click(function () { loginPopup() })

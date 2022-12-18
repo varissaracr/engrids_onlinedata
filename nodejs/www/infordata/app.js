@@ -107,8 +107,6 @@ let gotodownload = (id_data) => {
         </div>`
 
         Swal.fire({
-            // title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3>',
-            // icon: 'info',
             html: content + '',
             confirmButtonText: 'ปิด',
             confirmButtonColor: '#000000',

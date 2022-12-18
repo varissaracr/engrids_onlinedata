@@ -56,6 +56,7 @@ let gotoLogin = () => {
 }
 
 let gotoLogout = () => {
+    sessionStorage.clear();
     document.cookie = "open_code=; max-age=0; path=/;";
     document.cookie = "open_firstname_TH=; max-age=0; path=/;";
     document.cookie = "open_lastname_TH=; max-age=0; path=/;";
@@ -693,11 +694,6 @@ function isEmptyObject(obj) {
 $('#btn-send').click(function () {
     senddata()
 })
-
-let logout = () => {
-    sessionStorage.clear();
-    window.location.href = './../dashboard/index.html';
-}
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;

@@ -1,4 +1,3 @@
-
 let getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -15,7 +14,7 @@ let getCookie = (cname) => {
     return "";
 }
 
-const id_data = localStorage.getItem('id_data');
+const id_data = sessionStorage.getItem('id_data');
 
 const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
@@ -55,13 +54,14 @@ let gotoLogin = () => {
 }
 
 let gotoLogout = () => {
+    sessionStorage.clear();
     document.cookie = "open_code=; max-age=0; path=/;";
     document.cookie = "open_firstname_TH=; max-age=0; path=/;";
     document.cookie = "open_lastname_TH=; max-age=0; path=/;";
     document.cookie = "open_student_id=; max-age=0; path=/;";
     document.cookie = "open_auth=; max-age=0; path=/;";
     document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
-    gotoIndex()
+    gotoIndex();
 }
 
 const loginPopup = () => {
@@ -75,7 +75,7 @@ const loginPopup = () => {
 };
 
 let gotoIndex = () => {
-    location.href = "./index.html";
+    location.href = "./../dashboard/index.html";
 }
 
 if (code) {
@@ -96,7 +96,7 @@ if (code) {
 let load_data = (id) => {
     axios.post('/ds-api/loaddata', { d_id: id }).then(r => {
         var data = r.data.data;
-        // console.log(data[0])
+        console.log(data[0])
         if (code) {
             document.title = data[0].d_name;
             var t = new Date(data[0].d_tnow).toISOString().split('T')
@@ -178,13 +178,6 @@ let genFiles = async (data, type, time) => {
             var icon = conTypeFile(i.type, type)
             var datetime
             if (i.date) {
-                // console.log(i.date)
-                // console.log(new Date(Date(i.date)).toLocaleDateString('th-TH'))
-                // var t = Date(i.date).toISOString().split('T')
-                // var date = new Date(t[0]).toLocaleDateString('th-TH')
-                // var today = new Date(Date(i.date));
-                // var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-                // console.log(date)
                 datetime = new Date(Date(i.date)).toLocaleDateString('th-TH')
             } else {
                 datetime = time
@@ -210,13 +203,11 @@ let genFiles = async (data, type, time) => {
                 datetime = time
             }
 
-            var content = $(`
-        <div class="item-file" name="${i.name}" src="${i.link}" type="${i.type}" code="-" date="${datetime}">
-        <img src="./../assets/img/icon-file/url.png" alt="icon-file-url"
-        width="60px">&nbsp;&nbsp;&nbsp;
-        <span class="m-auto">${i.name}</span>
-        </div>`)
-            $(`#listfiles`).append(content)
+            $(`#listfiles`).append(` <div class="item-file" name="${i.name}" src="${i.link}" type="${i.type}" code="-" date="${datetime}">
+            <img src="./../assets/img/icon-file/url.png" alt="icon-file-url"
+            width="60px">&nbsp;&nbsp;&nbsp;
+            <span class="m-auto">${i.name}</span>
+            </div>`)
         })
     }
 

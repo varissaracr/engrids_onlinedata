@@ -1,3 +1,4 @@
+sessionStorage.clear()
 
 let getCookie = (cname) => {
     let name = cname + "=";
@@ -173,7 +174,7 @@ let load_data = () => {
 }
 
 let gotodownload = (id_data) => {
-    localStorage.setItem('id_data', id_data);
+    sessionStorage.setItem('id_data', id_data);
     window.location.href = `./../detail/index.html?id_data=${id_data}`;
 
 }
@@ -185,8 +186,8 @@ let gotomanage = (id_data) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
         var id = datauser.userid
-        localStorage.setItem('value1', name ? name : val1);
-        localStorage.setItem('value2', id ? id : val2);
+        sessionStorage.setItem('value1', name ? name : val1);
+        sessionStorage.setItem('value2', id ? id : val2);
         // window.open('./manage/index.html', '_blank');
         window.location.href = './../manage/index.html';
     } else {
@@ -199,8 +200,8 @@ let gotoinput = (id_data) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
         var id = datauser.userid
-        localStorage.setItem('value1', name ? name : val1);
-        localStorage.setItem('value2', id ? id : val2);
+        sessionStorage.setItem('value1', name ? name : val1);
+        sessionStorage.setItem('value2', id ? id : val2);
         window.location.href = './../input/index.html';
     } else {
         loginPopup()

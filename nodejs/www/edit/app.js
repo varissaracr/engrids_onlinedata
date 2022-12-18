@@ -1,4 +1,3 @@
-
 let getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -15,7 +14,7 @@ let getCookie = (cname) => {
     return "";
 }
 
-const id_data = localStorage.getItem('id_data');
+const id_data = sessionStorage.getItem('id_data');
 
 const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
@@ -47,6 +46,7 @@ let gotoInput = () => {
 }
 
 let gotoLogin = () => {
+    sessionStorage.clear();
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
         '&redirect_uri=http://localhost/login/index.html' +
@@ -695,7 +695,7 @@ $('#btn-send').click(function () {
 })
 
 let logout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = './../dashboard/index.html';
 }
 
@@ -708,14 +708,14 @@ $('.mobile-nav-toggle').on('click', function (e) {
         <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
         <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
         <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
-        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a type="button" class="btn-memu" onclick="gotoLogout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
         <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
     } else if (code) {
         content = `
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
         <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="logout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
+        <a type="button" class="btn-memu" onclick="gotoLogout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
         <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
       </div>`
     } else {

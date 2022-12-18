@@ -49,6 +49,19 @@ let selectMemberOne = (profile) => {
     })
 }
 
+const checkUser = (req, res, next) => {
+    const { cmuitaccount } = req.body;
+    const sql = `SELECT gid FROM formmember WHERE cmuitaccount='${cmuitaccount}'`;
+    datapool.query(sql, (e, r) => {
+        console.log(r.rows.length);
+        if (r.rows.length > 0) {
+            next()
+        } else {
+            console.log("not row");
+        }
+    })
+}
+
 const loginMiddleware = (req, res, next) => {
     const data = {
         code: req.body.code,
@@ -138,7 +151,7 @@ app.get('/ds-api/get', (req, res) => {
     })
 })
 
-app.post('/ds-api/getdata', (req, res) => {
+app.get('/ds-api/getdata', (req, res) => {
     // const { staid } = req.body
     const sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd, d_meta as d_datafiles  
     FROM datasource WHERE d_access='publish' ORDER BY d_tnow desc;`

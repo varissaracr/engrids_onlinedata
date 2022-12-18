@@ -1,3 +1,5 @@
+sessionStorage.clear();
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const code = urlParams.get('code')

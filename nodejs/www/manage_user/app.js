@@ -1,6 +1,6 @@
 
-var val1 = localStorage.getItem('value1');
-var val2 = localStorage.getItem('value2');
+var val1 = sessionStorage.getItem('value1');
+var val2 = sessionStorage.getItem('value2');
 
 let getCookie = (cname) => {
     let name = cname + "=";
@@ -18,7 +18,7 @@ let getCookie = (cname) => {
     return "";
 }
 
-const id_data = localStorage.getItem('id_data');
+const id_data = sessionStorage.getItem('id_data');
 const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
 const lastname_TH = getCookie("open_lastname_TH");
@@ -168,7 +168,7 @@ let AddData = () => {
     window.location.href = './../input/index.html';
 }
 let editData = (id) => {
-    localStorage.setItem('id_data', id);
+    sessionStorage.setItem('id_data', id);
     window.location.href = './../edit/index.html';
 }
 

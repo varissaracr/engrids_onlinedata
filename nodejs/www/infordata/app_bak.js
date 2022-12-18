@@ -97,12 +97,12 @@ const Fileform = urlParams.get('fileform')
 const id_data = urlParams.get('id_data')
 
 // console.log(Search, Categories, Keyword, Fileform);
-// const id_data = localStorage.getItem('id_data');
+// const id_data = sessionStorage.getItem('id_data');
 
 let gotodownload = (id_data) => {
     // console.log(id_data);
     if (code) {
-        localStorage.setItem('id_data', id_data);
+        sessionStorage.setItem('id_data', id_data);
         window.location.href = './../detail/index.html';
     } else {
         content = `
@@ -485,8 +485,7 @@ let load_data = () => {
                                     <a class="pointer" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}> Download </a>
                                 </div>
                             </div>`)
-                    }
-                    else {
+                    } else {
                         $(`#content-data`).append(`<article class="entry">
                         <h2 class="entry-title">
                             <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
@@ -543,8 +542,7 @@ let load_data = () => {
                                     <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')">Download</button>
                                 </div>
                             </div>`)
-                    }
-                    else {
+                    } else {
 
                         $(`#content-data`).append(`<article class="entry">
                             <h2 class="entry-title">
@@ -792,8 +790,8 @@ let gotomanage = (id_data) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
         var id = datauser.userid
-        localStorage.setItem('value1', name ? name : val1);
-        localStorage.setItem('value2', id ? id : val2);
+        sessionStorage.setItem('value1', name ? name : val1);
+        sessionStorage.setItem('value2', id ? id : val2);
         // window.open('./manage/index.html', '_blank');
         window.location.href = '././manage/index.html';
     } else {
@@ -805,8 +803,8 @@ let gotoinput = (id_data) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
         var id = datauser.userid
-        localStorage.setItem('value1', name ? name : val1);
-        localStorage.setItem('value2', id ? id : val2);
+        sessionStorage.setItem('value1', name ? name : val1);
+        sessionStorage.setItem('value2', id ? id : val2);
         window.location.href = './../input/index.html';
     } else {
         gotoLogin()

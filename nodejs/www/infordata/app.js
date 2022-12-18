@@ -1,5 +1,4 @@
-var val1
-var val2
+sessionStorage.clear();
 
 let getCookie = (cname) => {
     let name = cname + "=";
@@ -93,8 +92,37 @@ const Fileform = urlParams.get('fileform')
 
 const id_data = urlParams.get('id_data')
 
-// console.log(Search, Categories, Keyword, Fileform);
-// const id_data = localStorage.getItem('id_data');
+
+let gotodownload = (id_data) => {
+    // console.log(id_data);
+    if (code) {
+        sessionStorage.setItem('id_data', id_data);
+        window.location.href = './../detail/index.html';
+    } else {
+        content = `
+        <div style="text-align: left;">
+            กรุณาเข้าสู่ระบบก่อนดาวน์โหลด
+            <p></p>
+            <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
+        </div>`
+
+        Swal.fire({
+            // title: '<h3><span class="ff-noto"><b>เมนู</b></span></h3>',
+            // icon: 'info',
+            html: content + '',
+            confirmButtonText: 'ปิด',
+            confirmButtonColor: '#000000',
+            // background: '#50d49f',
+            customClass: {
+                container: 'ff-noto',
+                title: 'ff-noto',
+            },
+            // showConfirmButton: false,
+            // showCloseButton: false,
+            // showCancelButton: true,
+        })
+    }
+}
 
 const url = new URL(window.location.href);
 // console.log(url);
@@ -145,7 +173,7 @@ let reset_Fileform = () => {
 let valCategorys = []
 
 let load_data = (page) => {
-    axios.post('/ds-api/getdata', { cmuitaccount }).then(r => {
+    axios.get('/ds-api/getdata').then(r => {
         // console.log(r);
         var data = r.data.data;
 
@@ -400,12 +428,11 @@ let load_data = (page) => {
         New_post.map(i => {
             var t = new Date(i.d_tnow).toISOString().split('T')
             var date = new Date(t).toLocaleDateString('th-TH')
-            var content = $(`
-            <div class="post-item">
+            $(`#newpost`).append(`<div class="post-item clearfix">
+            <img src="./../assets/img/noimg.png" alt="">
             <h4><a class="ff-noto pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a></h4>
             <time datetime="${t}">${date}</time>
             </div>`)
-            $(`#newpost`).append(content)
         })
 
         if (Page) {
@@ -422,31 +449,54 @@ let load_data = (page) => {
                 var date = new Date(t).toLocaleDateString('th-TH')
                 var group = JSON.parse(i.d_groups)
                 // console.log(i.d_tnow)
-                var content = $(`
-            <article class="entry">
-            <h2 class="entry-title">
-                <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
-            </h2>
-            <div class="entry-meta">
-                <ul>
-                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
-                    </li>
-                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
-                            href="blog-single.html">${i.d_sd} download</a></li>
-                </ul>
-            </div>
-            <div class="entry-content">
-                <p>
-                    ${i.d_detail}
-                </p>
-                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
-                <div class="read-more">
-                    <a class="pointer" onclick="gotodownload('${i.d_id}')">Download</a>
-                </div>
-            </div>`)
-                $(`#content-data`).append(content)
-
+                if (!code) {
+                    console.log(code);
+                    $(`#content-data`).append(`<article class="entry">
+                        <h2 class="entry-title">
+                            <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
+                        </h2> 
+                        <div class="entry-meta">
+                            <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                                </li>
+                                <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                                        href="blog-single.html">${i.d_sd} download</a></li>
+                            </ul>
+                        </div>
+                        <div class="entry-content">
+                            <p>
+                                ${i.d_detail}
+                            </p>
+                            <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
+                            <div class="read-more">
+                                <a class="pointer" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}> Download </a>
+                            </div>
+                        </div>`)
+                } else {
+                    $(`#content-data`).append(`<article class="entry">
+                    <h2 class="entry-title">
+                        <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
+                    </h2>
+                    <div class="entry-meta">
+                        <ul>
+                            <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
+                            <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                            </li>
+                            <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                                    href="blog-single.html">${i.d_sd} download</a></li>
+                        </ul>
+                    </div>
+                    <div class="entry-content">
+                        <p>
+                            ${i.d_detail}
+                        </p>
+                        <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
+                        <div class="read-more">
+                            <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" >Download</button>
+                        </div>
+                    </div>`)
+                }
             })
         } else {
             var select = arr.slice(0, 4)
@@ -455,33 +505,57 @@ let load_data = (page) => {
                 var date = new Date(t).toLocaleDateString('th-TH')
                 var group = JSON.parse(i.d_groups)
                 // console.log(i.d_tnow)
-                var content = $(`
-            <article class="entry">
-            <h2 class="entry-title">
-                <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
-            </h2>
-            <div class="entry-meta">
-                <ul>
-                    <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
-                    </li>
-                    <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
-                            href="blog-single.html">${i.d_sd} download</a></li>
-                </ul>
-            </div>
-            <div class="entry-content">
-                <p>
-                    ${i.d_detail}
-                </p>
-                <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
-                <div class="read-more">
-                    <a class="pointer" onclick="gotodownload('${i.d_id}')">Download</a>
-                </div>
-            </div>`)
-                $(`#content-data`).append(content)
-
+                if (!code) {
+                    console.log(code);
+                    $(`#content-data`).append(`<article class="entry">
+                        <h2 class="entry-title">
+                            <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
+                        </h2> 
+                        <div class="entry-meta">
+                            <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                                </li>
+                                <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                                        href="blog-single.html">${i.d_sd} download</a></li>
+                            </ul>
+                        </div>
+                        <div class="entry-content">
+                            <p>
+                                ${i.d_detail}
+                            </p>
+                            <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
+                            <div class="read-more">
+                                <a class="pointer" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}> Download </a>
+                            </div>
+                        </div>`)
+                } else {
+                    $(`#content-data`).append(`<article class="entry">
+                    <h2 class="entry-title">
+                        <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
+                    </h2>
+                    <div class="entry-meta">
+                        <ul>
+                            <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
+                            <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                            </li>
+                            <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                                    href="blog-single.html">${i.d_sd} download</a></li>
+                        </ul>
+                    </div>
+                    <div class="entry-content">
+                        <p>
+                            ${i.d_detail}
+                        </p>
+                        <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
+                        <div class="read-more">
+                            <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" >Download</button>
+                        </div>
+                    </div>`)
+                }
             })
         }
+
         if (arr.length == 0) {
             var content = $(`
             <div class="section-title">
@@ -492,7 +566,6 @@ let load_data = (page) => {
 
         $('#data_val').text(arr.length)
         pageLength(arr.length)
-
     })
 }
 
@@ -674,11 +747,6 @@ let pageLength = (number) => {
     } else {
         $(`#listpage li:first-child`).addClass('active')
     }
-}
-
-let gotodownload = (id_data) => {
-    localStorage.setItem('id_data', id_data);
-    window.location.href = './../detail/index.html';
 }
 
 $('.mobile-nav-toggle').on('click', function (e) {

@@ -13,3 +13,11 @@ grant_type=client_credentials
 ###
 Client ID:JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s
 Client Secret:U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU
+
+###
+POST http://localhost/ds-api/getdata
+content-type: application/json
+
+{
+    "cmuitaccount": "ssakda.homhuan@cmu.ac.th"
+}

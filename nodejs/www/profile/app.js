@@ -1,9 +1,4 @@
-// let val1
-// let val2
-// console.log(val1, val2)
-//test
-// const urlapi = `https://engrids.soc.cmu.ac.th/api/ds-api`
-// const urlapi = `http://localhost:3000/ds-api`
+sessionStorage.clear();
 
 let getCookie = (cname) => {
     let name = cname + "=";

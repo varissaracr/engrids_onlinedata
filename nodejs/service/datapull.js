@@ -97,7 +97,6 @@ app.post("/ds_chekauth/gettoken", loginMiddleware, (req, res) => {
     res.status(200).json(req.status)
 })
 
-
 ////formuser////
 app.post('/fuser-api/userid', (req, res) => {
     const { username, password } = req.body
@@ -113,6 +112,7 @@ app.post('/fuser-api/userid', (req, res) => {
         }
     })
 })
+
 app.post('/fuser-api/userid/option', (req, res) => {
     const { id_user } = req.body
     datapool.query(`select form_limit,quset_limit,ans_limit,file_limit,img_limit,map_limit from formuser where id_user = '${id_user}';`, (e, r) => {
@@ -138,9 +138,11 @@ app.get('/ds-api/get', (req, res) => {
     })
 })
 
-app.get('/ds-api/getdata', (req, res) => {
+app.post('/ds-api/getdata', (req, res) => {
     // const { staid } = req.body
-    datapool.query(`SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd, d_meta as d_datafiles  FROM datasource where d_access='publish' order by d_tnow desc;`, (e, r) => {
+    const sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd, d_meta as d_datafiles  
+    FROM datasource WHERE d_access='publish' ORDER BY d_tnow desc;`
+    datapool.query(sql, (e, r) => {
         res.status(200).json({
             data: r.rows
         })

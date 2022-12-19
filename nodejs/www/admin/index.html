@@ -124,43 +124,62 @@
         <section id="blog" class="blog">
             <div class="container" data-aos="fade-up">
 
-                <div class="row">
+                <!-- <div class="row"> -->
 
-                    <div class="col-lg-12">
-                        <article class="entry">
-                            <div class="d-flex justify-content-between mb-2">
-                                <h2 class="entry-title font-noto">
-                                    ตารางรายการข้อมูล
-                                </h2>
-                                <button type="button" class="btn btn-success" onclick="AddData()"><i
-                                        class="bi bi-plus-circle"></i> เพิ่มข้อมูล</button>
-                            </div>
+                <div class="col-sm-12">
+                    <article class="entry">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h2 class="entry-title font-noto">
+                                ผู้ใช้
+                            </h2>
+                        </div>
 
-                            <div class="entry-content">
-                                <table id="TableData" class="table table-striped" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>ลำดับ</th>
-                                            <th>ชื่อ</th>
-                                            <th>นามสกุล</th>
-                                            <th>คณะ</th>
-                                            <th>ชื่อชุดข้อมูล</th>
-                                            <th>คำอธิบาย</th>
-                                            <th>วันที่บันทึก</th>
-                                            <th>จัดการข้อมูล</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                            <br>
-                            <hr>
-                            <div class="entry-content" id="History-data">
-
-                            </div>
-
-                        </article><!-- End blog entry -->
-                    </div><!-- End blog entries list -->
+                        <div class="entry-content">
+                            <table id="TableUser" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ชื่อ</th>
+                                        <th>นามสกุล</th>
+                                        <th>หน่วยงาน</th>
+                                        <th>cmu account</th>
+                                        <th>สิทธิ์ผู้ใช้</th>
+                                        <!-- <th>วันที่ลงทะเบียน</th> -->
+                                        <th>จัดการผู้ใช้</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </article>
                 </div>
+
+                <div class="col-sm-12">
+                    <article class="entry">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h2 class="entry-title font-noto">
+                                ตารางรายการข้อมูล
+                            </h2>
+                        </div>
+
+                        <div class="entry-content">
+                            <table id="TableData" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>ชื่อ</th>
+                                        <th>นามสกุล</th>
+                                        <th>คณะ</th>
+                                        <th>ชื่อชุดข้อมูล</th>
+                                        <th>คำอธิบาย</th>
+                                        <th>วันที่บันทึก</th>
+                                        <th>จัดการข้อมูล</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </article><!-- End blog entry -->
+                </div><!-- End blog entries list -->
+                <!-- </div> -->
 
             </div>
         </section><!-- End Blog Section -->

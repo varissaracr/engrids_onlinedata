@@ -33,7 +33,7 @@ let gotoLogin = () => {
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
         '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
-        '&state=manage'
+        '&state=admin'
     window.location.href = url;
 }
 
@@ -52,7 +52,7 @@ const loginPopup = () => {
         // '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
         '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
-        '&state=manage'
+        '&state=admin'
     window.location.href = url;
 };
 
@@ -77,9 +77,58 @@ let editData = (d_id) => {
     window.location.href = './../edit/index.html';
 }
 
+let editUser = (d_id) => {
+    sessionStorage.setItem('d_id', d_id);
+    window.location.href = './../edit/index.html';
+}
+
 let gotodownload = (d_id) => {
     sessionStorage.setItem('d_id', d_id);
     window.open('./../detail/index.html', '_blank');
+}
+
+let deleteData = (d_id) => {
+    axios.post(`/ds-api/deletedata`, { d_id }).then(r => {
+        var Sucss = r.data.data;
+        if (Sucss == 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'ลบข้อมูลสำเร็จ',
+                text: 'ข้อมูลของคุณถูกลบสำเร็จ',
+                customClass: {
+                    container: 'font-noto',
+                    title: 'font-noto',
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    dtable.ajax.reload();
+                    // window.location.reload()
+                }
+            })
+        }
+    })
+}
+
+let deleteUser = (cmuitaccount) => {
+    axios.post(`/ds-api/deletedata`, { cmuitaccount }).then(r => {
+        var Sucss = r.data.data;
+        if (Sucss == 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'ลบผู้ใช้สำเร็จ',
+                text: 'ข้อมูลของคุณถูกลบสำเร็จ',
+                customClass: {
+                    container: 'font-noto',
+                    title: 'font-noto',
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    utable.ajax.reload();
+                    // window.location.reload()
+                }
+            })
+        }
+    })
 }
 
 if (code) {
@@ -117,10 +166,51 @@ $.extend(true, $.fn.dataTable.defaults, {
     }
 });
 
+
+let utable = $('#TableUser').DataTable({
+    ajax: {
+        async: true,
+        type: "POST",
+        url: '/ds-api/listuser',
+        data: { cmuitaccount },
+        dataSrc: 'data'
+    },
+
+    columns: [
+        {
+            data: null, render: function (data, type, row, meta) {
+                return meta.row + 1
+            }
+        },
+        { data: 'firstname_th' },
+        { data: 'lastname_th' },
+        { data: 'organization_name' },
+        { data: 'cmuitaccount' },
+        { data: 'auth' },
+        // {
+        //     data: 'dt', render: function (data, type, row, meta) {
+        //         var t = new Date(row.d_tnow).toISOString().split('T')
+        //         var date = new Date(t).toLocaleDateString('th-TH')
+        //         return date
+        //     }
+        // },
+        {
+            data: null, title: "จัดการข้อมูล",
+            render: function (data, type, row, meta) {
+                return `<button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.d_id}')">แก้ไขข้อมูลผู้ใช้</button>
+                        <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteUser('${row.d_id}')">ลบผู้ใช้</button>`
+            },
+        },
+    ],
+    // columnDefs: [
+    //     { className: 'text-center', targets: [0, 1, 3, 4] },
+    // ],
+});
+
 let dtable = $('#TableData').DataTable({
     ajax: {
         async: true,
-        type: "post",
+        type: "POST",
         url: '/ds-api/listmember',
         data: { cmuitaccount },
         dataSrc: 'data'
@@ -157,34 +247,13 @@ let dtable = $('#TableData').DataTable({
     ],
 });
 
-dtable.on('order.dt search.dt', function () {
-    // dtable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-    //     cell.innerHTML = i + 1;
-    // });
-}).draw();
-// dtable.columns.adjust().draw();
+// dtable.on('order.dt search.dt', function () {
+//     // dtable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+//     //     cell.innerHTML = i + 1;
+//     // });
+// }).draw();
 
-let deleteData = (d_id) => {
-    axios.post(`/ds-api/deletedata`, { d_id }).then(r => {
-        var Sucss = r.data.data;
-        if (Sucss == 'success') {
-            Swal.fire({
-                icon: 'success',
-                title: 'ลบข้อมูลสำเร็จ',
-                text: 'ข้อมูลของคุณถูกลบสำเร็จ',
-                customClass: {
-                    container: 'font-noto',
-                    title: 'font-noto',
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    dtable.ajax.reload();
-                    // window.location.reload()
-                }
-            })
-        }
-    })
-}
+
 
 let accessData = (id, name) => {
     Swal.fire({

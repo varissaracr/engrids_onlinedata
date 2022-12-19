@@ -19,5 +19,14 @@ POST http://localhost/ds-api/getdata
 content-type: application/json
 
 {
-    "cmuitaccount": "ssakda.homhuan@cmu.ac.th"
+    "cmuitaccount": "sakda.homhuan@cmu.ac.th"
+}
+
+
+###
+POST http://localhost/ds-api/listuser
+content-type: application/json
+
+{
+    "cmuitaccount": "sakda.homhuan@cmu.ac.th"
 }

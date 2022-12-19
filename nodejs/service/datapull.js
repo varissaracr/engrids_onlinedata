@@ -161,11 +161,7 @@ app.get('/ds-api/getdata', (req, res) => {
             data: r.rows
         })
     })
-})
-
-// app.get('/', function (req, res) {
-//     res.sendFile(__dirname + '/index.html')
-// })
+});
 
 app.post('/ds-api/save', async (req, res) => {
     const { data } = req.body;
@@ -183,10 +179,8 @@ app.post('/ds-api/save', async (req, res) => {
 })
 
 app.post('/ds-api/postdata', (req, res) => {
-    // const { staid } = req.body
     let sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_meta as d_datafiles FROM datasource WHERE d_access='publish' order by d_tnow desc;`;
     datapool.query(sql, (e, r) => {
-        // console.log(r);
         res.status(200).json({
             data: r.rows
         })
@@ -195,7 +189,6 @@ app.post('/ds-api/postdata', (req, res) => {
 
 app.post('/ds-api/listdata', (req, res) => {
     const { d_iduser } = req.body;
-    // console.log(d_iduser);
     const sql = `select d_id,d_name,d_detail,d_access,d_tnow,d_sd from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`
     datapool.query(sql, (e, r) => {
         res.status(200).json({
@@ -205,8 +198,6 @@ app.post('/ds-api/listdata', (req, res) => {
 })
 
 app.post('/ds-api/listmember', checkUser, (req, res) => {
-    const { cmuitaccount } = req.body
-    // console.log(d_iduser);
     const sql = `SELECT d.d_row, d.d_name,d.d_detail, d.d_groups, d.d_keywords, 
                     d.d_id, d.d_username, d.d_tnow, d.d_sd, d.d_meta, d.d_tnow,
                     f.firstname_th, f.lastname_th, f.organization_name, auth

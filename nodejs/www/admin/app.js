@@ -72,10 +72,6 @@ let gotoIndex = () => {
     location.href = "./index.html";
 }
 
-let AddData = () => {
-    window.location.href = './../input/index.html';
-}
-
 let editData = (d_id) => {
     sessionStorage.setItem('d_id', d_id);
     window.location.href = './../edit/index.html';
@@ -87,8 +83,7 @@ let gotodownload = (d_id) => {
 }
 
 if (code) {
-    $('#profile').html(`
-    <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+    $('#profile').html(`<li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
         <ul>
             <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
             <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
@@ -134,7 +129,6 @@ let dtable = $('#TableData').DataTable({
     columns: [
         {
             data: null, render: function (data, type, row, meta) {
-                console.log(data);
                 return meta.row + 1
             }
         },
@@ -241,5 +235,4 @@ let accessData = (id, name) => {
             })
         }
     })
-
 }

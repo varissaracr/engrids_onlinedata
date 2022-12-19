@@ -72,6 +72,16 @@ let gotoIndex = () => {
     location.href = "./index.html";
 }
 
+let AddData = () => {
+    window.location.href = './../input/index.html';
+}
+
+let editData = (id_data) => {
+    console.log(id_data);
+    sessionStorage.setItem('id_data', id_data);
+    window.location.href = './../edit/index.html';
+}
+
 if (code) {
     $('#profile').html(`
     <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
@@ -164,13 +174,7 @@ dtable.on('order.dt search.dt', function () {
 }).draw();
 // dtable.columns.adjust().draw();
 
-let AddData = () => {
-    window.location.href = './../input/index.html';
-}
-let editData = (id) => {
-    sessionStorage.setItem('id_data', id_data);
-    window.location.href = './../edit/index.html';
-}
+
 
 let deleteData = (id) => {
     axios.post(`/ds-api/deletedata`, { d_id: id }).then(r => {

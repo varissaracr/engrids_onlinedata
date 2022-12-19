@@ -11,12 +11,12 @@ const storage = multer.diskStorage({
         cb(null, './www/uploads/')
     },
     filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        const uniqueSuffix = Date.now()
         cb(null, uniqueSuffix + '-' + file.originalname)
     }
 })
 
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage, limits: { fieldSize: 25 * 1024 * 1024 } })
 app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
     console.log(req.file.filename, req.body.d_id)
     const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;

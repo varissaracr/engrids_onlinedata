@@ -134,6 +134,7 @@ let dtable = $('#TableData').DataTable({
     columns: [
         {
             data: null, render: function (data, type, row, meta) {
+                console.log(data);
                 return meta.row + 1
             }
         },

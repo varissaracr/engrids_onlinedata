@@ -196,7 +196,7 @@ app.post('/ds-api/postdata', (req, res) => {
 app.post('/ds-api/listdata', (req, res) => {
     const { d_iduser } = req.body;
     // console.log(d_iduser);
-    const sql = `select d_name,d_id,d_access,d_tnow,d_sd from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`
+    const sql = `select d_id,d_name,d_detail,d_access,d_tnow,d_sd from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`
     datapool.query(sql, (e, r) => {
         res.status(200).json({
             data: r.rows

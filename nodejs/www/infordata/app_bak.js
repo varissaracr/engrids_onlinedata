@@ -53,6 +53,10 @@ let gotoProfile = () => {
     location.href = "./../profile/index.html";
 }
 
+let gotoAdmin = () => {
+    window.open('./../admin/index.html');
+}
+
 let gotoManage_user = () => {
     location.href = "./../manage_user/index.html";
 }

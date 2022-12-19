@@ -60,6 +60,10 @@ let gotoProfile = () => {
     location.href = "./../profile/index.html";
 }
 
+let gotoAdmin = () => {
+    window.open('./index.html');
+}
+
 let gotoManage = () => {
     location.href = "./../manage/index.html";
 }
@@ -110,7 +114,8 @@ let deleteData = (d_id) => {
 }
 
 let deleteUser = (cmuitaccount) => {
-    axios.post(`/ds-api/deletedata`, { cmuitaccount }).then(r => {
+
+    axios.post(`/ds-api/deleteuser`, { cmuitaccount }).then(r => {
         var Sucss = r.data.data;
         if (Sucss == 'success') {
             Swal.fire({
@@ -140,6 +145,18 @@ if (code) {
             <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
         </ul>
     </li>`)
+
+    if (auth == "admin") {
+        $('#profile').html(`<li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+            <ul>
+                <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
+                <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
+                <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
+                <li><a href="#" onclick="gotoAdmin()"><span class="ff-noto">การจัดการผู้ใช้</span></a></li>
+                <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
+            </ul>
+        </li>`)
+    }
 } else {
     $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
     gotoLogin()
@@ -197,8 +214,8 @@ let utable = $('#TableUser').DataTable({
         {
             data: null, title: "จัดการข้อมูล",
             render: function (data, type, row, meta) {
-                return `<button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.d_id}')">แก้ไขข้อมูลผู้ใช้</button>
-                        <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteUser('${row.d_id}')">ลบผู้ใช้</button>`
+                return `<button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.cmuitaccount}')">แก้ไขข้อมูลผู้ใช้</button>
+                        <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteUser('${row.cmuitaccount}')">ลบผู้ใช้</button>`
             },
         },
     ],

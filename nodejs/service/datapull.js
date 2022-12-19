@@ -51,11 +51,11 @@ let selectMemberOne = (profile) => {
 
 const checkUser = (req, res, next) => {
     const { cmuitaccount } = req.body;
-    // console.log(cmuitaccount)
+    console.log(cmuitaccount);
     const sql = `SELECT gid FROM formmember WHERE cmuitaccount='${cmuitaccount}' and auth='admin'`;
     datapool.query(sql, (e, r) => {
-        // console.log(r.rows.length);
         if (r.rows.length > 0) {
+
             res.cmuitaccount = cmuitaccount;
             next()
         } else {
@@ -215,7 +215,6 @@ app.post('/ds-api/listmember', checkUser, (req, res) => {
 
 app.post('/ds-api/listuser', checkUser, (req, res) => {
     // const { cmuitaccou } = req.body
-    // console.log(cmuitaccount);
     const sql = `SELECT f.firstname_th, f.lastname_th, f.cmuitaccount, f.organization_name, auth, dt FROM formmember f`;
 
     datapool.query(sql).then(r => {
@@ -225,9 +224,21 @@ app.post('/ds-api/listuser', checkUser, (req, res) => {
     });
 })
 
-app.post('/ds-api/deleteuser', checkUser, async (req, res) => {
+app.post('/ds-api/deleteuser', async (req, res) => {
     const { cmuitaccount } = req.body
-    await datapool.query(`DELETE FROM formmember WHERE cmuitaccount ='${cmuitaccount}'`).then(r => {
+
+    const sql = `DELETE FROM formmember WHERE cmuitaccount ='${cmuitaccount}'`;
+    console.log(sql);
+    await datapool.query(sql).then(r => {
+        res.status(200).json({
+            data: 'success'
+        })
+    })
+})
+
+app.post('/ds-api/deletedata', async (req, res) => {
+    const { d_id } = req.body
+    await datapool.query(`DELETE FROM datasource WHERE d_id ='${d_id}';`).then(r => {
         // console.log(r.rows)
         res.status(200).json({
             data: 'success'
@@ -294,15 +305,7 @@ app.post('/ds-api/update', async (req, res) => {
     })
 })
 
-app.post('/ds-api/deletedata', async (req, res) => {
-    const { d_id } = req.body
-    await datapool.query(`DELETE FROM datasource WHERE d_id ='${d_id}';`).then(r => {
-        // console.log(r.rows)
-        res.status(200).json({
-            data: 'success'
-        })
-    })
-})
+
 
 app.post('/ds-api/access', async (req, res) => {
     const { d_id, d_access } = req.body

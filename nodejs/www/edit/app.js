@@ -14,7 +14,7 @@ let getCookie = (cname) => {
     return "";
 }
 
-const id_data = sessionStorage.getItem('id_data');
+const d_id = sessionStorage.getItem('d_id');
 
 const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
@@ -584,7 +584,7 @@ let senddata = async () => {
     var check_data = isEmptyObject(obj_datafiles)
 
     const formDataObj = {
-        d_id: id_data,
+        d_id: d_id,
         d_name: $('#dname').val(),
         d_agency: $('#dagency').val(),
         d_detail: $('#ddetail').val(),
@@ -633,7 +633,7 @@ let senddata = async () => {
                             },
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                sessionStorage.removeItem(id_data);
+                                sessionStorage.removeItem(d_id);
                                 window.location.href = './../manage/index.html';
                             }
                         })
@@ -745,5 +745,5 @@ $('.mobile-nav-toggle').on('click', function (e) {
 })
 
 $(document).ready(function () {
-    load_data(id_data)
+    load_data(d_id)
 })

@@ -4,7 +4,7 @@ const datapool = require("./db").datapool;
 const qs = require("qs")
 const axios = require("axios")
 const crypto = require("crypto");
-const multer = require('multer')
+const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -26,8 +26,8 @@ app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
 })
 
 let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
-    let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, dt)
-    VALUES('${student_id}','${firstname_th}','${lastname_th}','${cmuitaccount}','${organization_code}','${organization_name}','${itaccounttype_th}', now())`
+    let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, auth, dt)
+    VALUES('${student_id}','${firstname_th}','${lastname_th}','${cmuitaccount}','${organization_code}','${organization_name}','${itaccounttype_th}', 'user',now())`
     datapool.query(sql).then(() => console.log("insert ok"))
 }
 
@@ -51,9 +51,10 @@ let selectMemberOne = (profile) => {
 
 const checkUser = (req, res, next) => {
     const { cmuitaccount } = req.body;
-    const sql = `SELECT gid FROM formmember WHERE cmuitaccount='${cmuitaccount}'`;
+    console.log(cmuitaccount)
+    const sql = `SELECT gid FROM formmember WHERE cmuitaccount='${cmuitaccount}' and auth='admin'`;
     datapool.query(sql, (e, r) => {
-        console.log(r.rows.length);
+        // console.log(r.rows.length);
         if (r.rows.length > 0) {
             next()
         } else {
@@ -203,31 +204,21 @@ app.post('/ds-api/listdata', (req, res) => {
     })
 })
 
-app.post('/ds-api/listmember', (req, res) => {
-    const { d_iduser } = req.body
+app.post('/ds-api/listmember', checkUser, (req, res) => {
+    const { cmuitaccount } = req.body
     // console.log(d_iduser);
-    const sql = `SELECT firstname_th, lastname_th, organization_name, cmuitaccount, auth, 
-                    TO_CHAR(dt, 'YYYY-MM-DD') as ndate FROM formmember`;
+    const sql = `SELECT d.d_row, d.d_name,d.d_detail, d.d_groups, d.d_keywords, 
+                    d.d_id, d.d_username, d.d_tnow, d.d_sd, d.d_meta, d.d_tnow,
+                    f.firstname_th, f.lastname_th, f.organization_name, auth
+                FROM datasource d
+                LEFT JOIN formmember f ON 
+                    d.d_iduser = f.cmuitaccount`;
 
     datapool.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
         })
-    })
-
-    // if (d_iduser !== 'administrator') {
-    //     datapool.query(`select d_name,d_id,d_access,d_tnow,d_sd from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`, (e, r) => {
-    //         res.status(200).json({
-    //             data: r.rows
-    //         })
-    //     })
-    // } else {
-    //     datapool.query(`select d_name,d_id,d_access,d_tnow,d_sd from datasource order by d_tnow desc;`, (e, r) => {
-    //         res.status(200).json({
-    //             data: r.rows
-    //         })
-    //     })
-    // }
+    });
 })
 
 app.post('/ds-api/editdata', (req, res) => {

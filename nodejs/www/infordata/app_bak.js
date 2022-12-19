@@ -94,15 +94,15 @@ const Categories = urlParams.get('category')
 const Keyword = urlParams.get('keyword')
 const Fileform = urlParams.get('fileform')
 
-const id_data = urlParams.get('id_data')
+const d_id = urlParams.get('d_id')
 
 // console.log(Search, Categories, Keyword, Fileform);
-// const id_data = sessionStorage.getItem('id_data');
+// const d_id = sessionStorage.getItem('d_id');
 
-let gotodownload = (id_data) => {
-    // console.log(id_data);
+let gotodownload = (d_id) => {
+    // console.log(d_id);
     if (code) {
-        sessionStorage.setItem('id_data', id_data);
+        sessionStorage.setItem('d_id', d_id);
         window.location.href = './../detail/index.html';
     } else {
         content = `
@@ -786,7 +786,7 @@ const Toast = Swal.mixin({
 
 const datauser = {}
 
-let gotomanage = (id_data) => {
+let gotomanage = (d_id) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
         var id = datauser.userid
@@ -799,7 +799,7 @@ let gotomanage = (id_data) => {
     }
 
 }
-let gotoinput = (id_data) => {
+let gotoinput = (d_id) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
         var id = datauser.userid

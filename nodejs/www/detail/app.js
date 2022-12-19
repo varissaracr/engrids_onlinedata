@@ -14,7 +14,7 @@ let getCookie = (cname) => {
     return "";
 }
 
-const id_data = sessionStorage.getItem('id_data');
+const d_id = sessionStorage.getItem('d_id');
 
 const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
@@ -382,7 +382,7 @@ let detail_file = (i1, i2, i3, url, name) => {
 
 let SD_download = async (namefile) => {
 
-    await axios.post('/ds-api/sd', { d_id: id_data }).then(r => {
+    await axios.post('/ds-api/sd', { d_id: d_id }).then(r => {
         console.log(r.data.data)
     })
 
@@ -392,7 +392,7 @@ let SD_download = async (namefile) => {
     var data = {
         username: firstname_TH,
         id_user: cmuitaccount,
-        dataid: id_data,
+        dataid: d_id,
         dataname: document.title,
         datafile: namefile,
         d_tdate: new Date().toLocaleDateString('th-TH') + ' ' + time,
@@ -467,5 +467,5 @@ $('.mobile-nav-toggle').on('click', function (e) {
 })
 
 $(document).ready(function () {
-    load_data(id_data)
+    load_data(d_id)
 })

@@ -1,6 +1,4 @@
-
-var val1 = sessionStorage.getItem('value1');
-var val2 = sessionStorage.getItem('value2');
+sessionStorage.clear();
 
 let getCookie = (cname) => {
     let name = cname + "=";
@@ -18,12 +16,13 @@ let getCookie = (cname) => {
     return "";
 }
 
-const id_data = sessionStorage.getItem('id_data');
 const code = getCookie("open_code");
 const firstname_TH = getCookie("open_firstname_TH");
 const lastname_TH = getCookie("open_lastname_TH");
 const student_id = getCookie("open_student_id");
 const organization_name_TH = getCookie("open_organization_name_TH");
+const cmuitaccount = getCookie("open_cmuitaccount");
+const auth = getCookie("open_auth");
 
 let refreshPage = () => {
     location.reload(true);
@@ -73,6 +72,20 @@ let gotoIndex = () => {
     location.href = "./index.html";
 }
 
+let AddData = () => {
+    window.location.href = './../input/index.html';
+}
+
+let editData = (d_id) => {
+    sessionStorage.setItem('d_id', d_id);
+    window.location.href = './../edit/index.html';
+}
+
+let gotodownload = (d_id) => {
+    sessionStorage.setItem('d_id', d_id);
+    window.open('./../detail/index.html', '_blank');
+}
+
 if (code) {
     $('#profile').html(`
     <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
@@ -114,7 +127,7 @@ let dtable = $('#TableData').DataTable({
         async: true,
         type: "post",
         url: '/ds-api/listmember',
-        data: { d_iduser: "aa" },
+        data: { cmuitaccount },
         dataSrc: 'data'
     },
 
@@ -127,26 +140,20 @@ let dtable = $('#TableData').DataTable({
         { data: 'firstname_th' },
         { data: 'lastname_th' },
         { data: 'organization_name' },
+        { data: 'd_name' },
+        { data: 'd_detail' },
         {
-            data: 'dt', render: function (data, type, row, meta) {
-                console.log(row);
-                var t = new Date(row.ndate).toISOString()
+            data: 'd_tnow', render: function (data, type, row, meta) {
+                var t = new Date(row.d_tnow).toISOString().split('T')
                 var date = new Date(t).toLocaleDateString('th-TH')
                 return date
             }
-        },
-        {
+        }, {
             data: null, title: "จัดการข้อมูล",
             render: function (data, type, row, meta) {
-                return `
-                <div class="form-check">
-  <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
-  <label class="form-check-label">Option 1</label>
-</div>
-                <button class="btn btn-margin font-Noto" style="background-color: #60d1be; color: #ffffff;" onclick="accessDate('${row.d_id}','${row.d_name}')">การเข้าถึง </button>
+                return ` <button class="btn btn-margin font-Noto" style="background-color: #60d1be; color: #ffffff;" onclick="accessData('${row.d_id}','${row.d_name}')">การเข้าถึง </button>
                         <button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
                         <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
-
             },
         },
     ],
@@ -162,18 +169,8 @@ dtable.on('order.dt search.dt', function () {
 }).draw();
 // dtable.columns.adjust().draw();
 
-
-
-let AddData = () => {
-    window.location.href = './../input/index.html';
-}
-let editData = (id) => {
-    sessionStorage.setItem('id_data', id);
-    window.location.href = './../edit/index.html';
-}
-
-let deleteData = (id) => {
-    axios.post(`/ds-api/deletedata`, { d_id: id }).then(r => {
+let deleteData = (d_id) => {
+    axios.post(`/ds-api/deletedata`, { d_id }).then(r => {
         var Sucss = r.data.data;
         if (Sucss == 'success') {
             Swal.fire({
@@ -189,23 +186,14 @@ let deleteData = (id) => {
                     dtable.ajax.reload();
                     // window.location.reload()
                 }
-
             })
         }
     })
-
 }
 
-let accessDate = (id, name) => {
+let accessData = (id, name) => {
     Swal.fire({
         title: 'กำหนดสิทธิ์ในการเข้าถึงข้อมูล',
-        // input: 'select',
-        // inputOptions: {
-        //     'private': 'Private',
-        //     'publish': 'Publish',
-        //     'grapes': 'Grapes',
-        //     'Others': 'Others'
-        // },
         html:
             `<select class="form-select" aria-label="Default select example" id="access">
                 <option hidden>เลือก...</option>

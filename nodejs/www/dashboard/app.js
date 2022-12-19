@@ -173,16 +173,16 @@ let load_data = () => {
     })
 }
 
-let gotodownload = (id_data) => {
-    sessionStorage.setItem('id_data', id_data);
-    window.location.href = `./../detail/index.html?id_data=${id_data}`;
+let gotodownload = (d_id) => {
+    sessionStorage.setItem('d_id', d_id);
+    window.location.href = `./../detail/index.html?d_id=${d_id}`;
 
 }
 // $('#login').click(function () { loginPopup() })
 
 const datauser = {}
 
-let gotomanage = (id_data) => {
+let gotomanage = (d_id) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
         var id = datauser.userid
@@ -196,7 +196,7 @@ let gotomanage = (id_data) => {
 
 }
 
-let gotoinput = (id_data) => {
+let gotoinput = (d_id) => {
     if (Object.values(datauser).length !== 0 || val1 || val2) {
         var name = datauser.username
         var id = datauser.userid

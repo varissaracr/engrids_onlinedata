@@ -76,10 +76,14 @@ let AddData = () => {
     window.location.href = './../input/index.html';
 }
 
-let editData = (id_data) => {
-    console.log(id_data);
-    sessionStorage.setItem('id_data', id_data);
+let editData = (d_id) => {
+    sessionStorage.setItem('d_id', d_id);
     window.location.href = './../edit/index.html';
+}
+
+let gotodownload = (d_id) => {
+    sessionStorage.setItem('d_id', d_id);
+    window.open('./../detail/index.html', '_blank');
 }
 
 if (code) {
@@ -138,7 +142,8 @@ dtable = $('#TableData').DataTable({
                 return date
             }
         },
-        { data: 'd_name', width: '300px' },
+        { data: 'd_name' },
+        { data: 'd_detail' },
         { data: 'd_access' },
         { data: 'd_sd' },
         {
@@ -154,16 +159,6 @@ dtable = $('#TableData').DataTable({
     columnDefs: [
         { className: 'text-center', targets: [0, 1, 3, 4] },
     ],
-    // order: [[2, 'asc']],
-    // searching: false,
-    // fixedColumns: {
-    //     right: 0
-    // },
-    // autoWidth: false,
-    // scrollX: true,
-    // scrollY: '65vh',
-    // scrollCollapse: true,
-    // paging: false,
 
 });
 
@@ -174,10 +169,8 @@ dtable.on('order.dt search.dt', function () {
 }).draw();
 // dtable.columns.adjust().draw();
 
-
-
-let deleteData = (id) => {
-    axios.post(`/ds-api/deletedata`, { d_id: id }).then(r => {
+let deleteData = (d_id) => {
+    axios.post(`/ds-api/deletedata`, { d_id }).then(r => {
         var Sucss = r.data.data;
         if (Sucss == 'success') {
             Swal.fire({
@@ -197,7 +190,6 @@ let deleteData = (id) => {
             })
         }
     })
-
 }
 
 let accessDate = (id, name) => {
@@ -258,87 +250,6 @@ let accessDate = (id, name) => {
     })
 }
 
-let Htable;
-let HistoryData = (id) => {
-    var content = $(`
-    <h2 class="entry-title font-noto">
-        ตารางประวัติการดาวน์โหลดข้อมูล
-    </h2>
-    <table id="TableHistory" class="table table-striped" style="width:100%">
-    <thead>
-        <tr>
-            <th></th>
-            <th>วันที่ดาวน์โหลดข้อมูล</th>
-            <th>ชื่อชุดข้อมูล</th>
-            <th>ชื่อไฟล์</th>
-            <th>ผู้ใช้งาน</th>
-        </tr>
-    </thead>
-    </table>`).hide().fadeIn(1000)
-    $(`#History-data`).append(content)
-
-    $.extend(true, $.fn.dataTable.defaults, {
-        "language": {
-            "sProcessing": "กำลังดำเนินการ...",
-            "sLengthMenu": "แสดง_MENU_ แถว",
-            "sZeroRecords": "ไม่พบข้อมูล",
-            "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
-            "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
-            "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
-            "sInfoPostFix": "",
-            "sSearch": "ค้นหา:",
-            "sUrl": "",
-            "oPaginate": {
-                "sFirst": "เริ่มต้น",
-                "sPrevious": "ก่อนหน้า",
-                "sNext": "ถัดไป",
-                "sLast": "สุดท้าย"
-            },
-            "emptyTable": "ไม่พบข้อมูล..."
-        }
-    });
-    Htable = $('#TableHistory').DataTable({
-        ajax: {
-            async: true,
-            type: "post",
-            url: '/ds-api/hitstory/getdata',
-            data: { id_user: id },
-            dataSrc: 'data'
-        },
-
-        columns: [
-            { data: null, title: "No.", width: '50px' },
-            { data: 'd_tdate' },
-            { data: 'dataname' },
-            { data: 'datafile' },
-            { data: 'username' },
-        ],
-        columnDefs: [
-            { className: 'text-center', targets: [0] },
-        ],
-
-    });
-
-    Htable.on('order.dt search.dt', function () {
-        Htable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-            cell.innerHTML = i + 1;
-        });
-    }).draw();
-}
-// Htable.ajax.reload();
-// setInterval(function () {
-//     console.log("Oooo Yeaaa!");
-// }, 15000);
-
-let gotoinput = () => {
-    window.location.href = './../input/index.html';
-}
-
-let logout = () => {
-    sessionStorage.clear();
-    window.location.href = './../dashboard/index.html';
-}
-
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
     if (auth == 'admin') {
@@ -390,7 +301,3 @@ $('.mobile-nav-toggle').on('click', function (e) {
     })
 })
 
-let gotodownload = (id_data) => {
-    sessionStorage.setItem('id_data', id_data);
-    window.open('./../detail/index.html', '_blank');
-}

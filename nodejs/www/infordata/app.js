@@ -90,13 +90,13 @@ const Categories = urlParams.get('category')
 const Keyword = urlParams.get('keyword')
 const Fileform = urlParams.get('fileform')
 
-const id_data = urlParams.get('id_data')
+const d_id = urlParams.get('d_id')
 
 
-let gotodownload = (id_data) => {
-    // console.log(id_data);
+let gotodownload = (d_id) => {
+    // console.log(d_id);
     if (code) {
-        sessionStorage.setItem('id_data', id_data);
+        sessionStorage.setItem('d_id', d_id);
         window.location.href = './../detail/index.html';
     } else {
         content = `

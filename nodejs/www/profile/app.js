@@ -16,14 +16,26 @@ let getCookie = (cname) => {
     return "";
 }
 
-const code = getCookie("open_code");
-const firstname_TH = getCookie("open_firstname_TH");
-const lastname_TH = getCookie("open_lastname_TH");
-const student_id = getCookie("open_student_id");
-const organization_name_TH = getCookie("open_organization_name_TH");
-const cmuitaccount = getCookie("open_cmuitaccount");
-const itaccounttype = getCookie("open_itaccounttype_th");
-const auth = getCookie("open_auth");
+var code = getCookie("open_code");
+var firstname_TH = getCookie("open_firstname_TH");
+var lastname_TH = getCookie("open_lastname_TH");
+var student_id = getCookie("open_student_id");
+var organization_name_TH = getCookie("open_organization_name_TH");
+var cmuitaccount = getCookie("open_cmuitaccount");
+var itaccounttype = getCookie("open_itaccounttype_th");
+var auth = getCookie("open_auth");
+var open_auth = getCookie("open_auth");
+
+let adminview = sessionStorage.getItem("adminview");
+if (adminview == "yes") {
+    firstname_TH = sessionStorage.getItem("open_firstname_TH");
+    lastname_TH = sessionStorage.getItem("open_lastname_TH");
+    student_id = sessionStorage.getItem("open_student_id");
+    organization_name_TH = sessionStorage.getItem("open_organization_name_TH");
+    cmuitaccount = sessionStorage.getItem("open_cmuitaccount");
+    itaccounttype = sessionStorage.getItem("open_itaccounttype_th");
+    open_auth = sessionStorage.getItem("open_auth");
+}
 
 let refreshPage = () => {
     location.reload(true);
@@ -50,15 +62,12 @@ let gotoLogout = () => {
     gotoIndex()
 }
 
-
-
-
 let gotoProfile = () => {
     location.href = "./../profile/index.html";
 }
 
 let gotoAdmin = () => {
-    window.open('./../admin/index.html');
+    location.href = './../admin/index.html';
 }
 
 let gotoManage_user = () => {
@@ -74,19 +83,16 @@ let gotoInput = () => {
 }
 
 let gotoIndex = () => {
-    location.href = "./index.html";
+    location.href = "./../dashboard/index.html";
 }
 
 let loadData = () => {
-
     document.getElementById("std_name").value = `${firstname_TH} ${lastname_TH}`;
     document.getElementById("std_id").value = `${student_id}`;
     document.getElementById("std_org").value = `${organization_name_TH}`;
-    document.getElementById("std_org").value = `${organization_name_TH}`;
-    document.getElementById("std_org").value = `${organization_name_TH}`;
-
-    const organization_name_TH = getCookie("open_organization_name_TH");
-    const auth = getCookie("open_auth");
+    document.getElementById("std_acc").value = `${cmuitaccount}`;
+    document.getElementById("std_acctype").value = `${itaccounttype}`;
+    document.getElementById("std_auth").value = `${open_auth}`;
 }
 
 if (code) {

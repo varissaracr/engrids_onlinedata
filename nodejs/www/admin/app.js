@@ -22,6 +22,7 @@ const lastname_TH = getCookie("open_lastname_TH");
 const student_id = getCookie("open_student_id");
 const organization_name_TH = getCookie("open_organization_name_TH");
 const cmuitaccount = getCookie("open_cmuitaccount");
+const itaccounttype = getCookie("open_itaccounttype_th");
 const auth = getCookie("open_auth");
 
 let refreshPage = () => {
@@ -64,7 +65,7 @@ let gotoProfile = () => {
 }
 
 let gotoAdmin = () => {
-    window.open('./index.html');
+    location.href = './index.html';
 }
 
 let gotoManage = () => {
@@ -81,12 +82,22 @@ let gotoIndex = () => {
 
 let editData = (d_id) => {
     sessionStorage.setItem('d_id', d_id);
-    window.location.href = './../edit/index.html';
+    // window.location.href = './../edit/index.html';
+    location.href = './../edit/index.html';
 }
 
-let editUser = (cmuitaccount) => {
-    sessionStorage.setItem('cmuitaccount', cmuitaccount);
-    window.location.href = './../profile/index.html';
+let editUser = (firstname_TH, lastname_TH, student_id, organization_name_TH, open_cmuitaccount, open_itaccounttype_th, open_auth) => {
+    sessionStorage.setItem('open_firstname_TH', firstname_TH);
+    sessionStorage.setItem('open_lastname_TH', lastname_TH);
+    sessionStorage.setItem('open_student_id', student_id);
+    sessionStorage.setItem('open_organization_name_TH', organization_name_TH);
+    sessionStorage.setItem('open_cmuitaccount', open_cmuitaccount);
+    sessionStorage.setItem('open_itaccounttype_th', open_itaccounttype_th);
+    sessionStorage.setItem('open_auth', open_auth);
+    sessionStorage.setItem('adminview', "yes");
+    // sessionStorage.setItem('open_dd', cmuitaccount);
+    // window.location.href = './../profile/index.html';
+    location.href = './../profile/index.html';
 }
 
 let gotodownload = (d_id) => {
@@ -203,10 +214,12 @@ let utable = $('#TableUser').DataTable({
         //         return date
         //     }
         // },
+
+
         {
             data: null, title: "จัดการข้อมูล",
             render: function (data, type, row, meta) {
-                return `<button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.cmuitaccount}')">ข้อมูลผู้ใช้</button>
+                return `<button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.firstname_th, row.lastname_th, row.organization_name, row.cmuitaccount, row.cmuitaccount, row.itaccounttype_th, row.auth, row.dd}')">ข้อมูลผู้ใช้</button>
                         <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteUser('${row.cmuitaccount}')">ลบผู้ใช้</button>`
             },
         },

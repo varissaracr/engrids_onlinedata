@@ -57,7 +57,7 @@ let gotoProfile = () => {
 }
 
 let gotoAdmin = () => {
-    window.open('./../admin/index.html');
+    location.href = './../admin/index.html';
 }
 
 let gotoManage_user = () => {

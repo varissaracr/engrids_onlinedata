@@ -29,9 +29,9 @@ $(window).on('load', function () {
 });
 
 if (code) {
-    axios.post('/ds_chekauth/gettoken', { code }).then(r => {
+    axios.post('/ds-chekauth/gettoken', { code }).then(r => {
         // console.log(r);
-        setCookie(code, r.data.data.firstname_TH, r.data.data.lastname_TH, r.data.data.student_id, r.data.data.organization_name_TH, r.data.data.cmuitaccount, r.data.data.itaccounttype_th, r.data.auth, 30)
+        setCookie(code, r.data.data.firstname_TH, r.data.data.lastname_TH, r.data.data.student_id, r.data.data.organization_name_TH, r.data.data.cmuitaccount, r.data.data.itaccounttype_TH, r.data.auth, 30)
         window.location.replace("./../" + state);
     })
 }

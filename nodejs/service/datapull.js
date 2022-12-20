@@ -107,7 +107,7 @@ const loginMiddleware = (req, res, next) => {
     })
 }
 
-app.post("/ds_chekauth/gettoken", loginMiddleware, (req, res) => {
+app.post("/ds-chekauth/gettoken", loginMiddleware, (req, res) => {
     // console.log(req.status);
     res.status(200).json(req.status)
 })
@@ -215,7 +215,7 @@ app.post('/ds-api/listmember', checkUser, (req, res) => {
 
 app.post('/ds-api/listuser', checkUser, (req, res) => {
     // const { cmuitaccou } = req.body
-    const sql = `SELECT f.firstname_th, f.lastname_th, f.cmuitaccount, f.organization_name, auth, dt FROM formmember f`;
+    const sql = `SELECT f.firstname_th, f.lastname_th, f.cmuitaccount, f.itaccounttype_th, f.organization_name, auth, dt, TO_CHAR(dt, 'DD-MM-YYYY') as dd FROM formmember f`;
 
     datapool.query(sql).then(r => {
         res.status(200).json({

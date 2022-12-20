@@ -81,9 +81,9 @@ let editData = (d_id) => {
     window.location.href = './../edit/index.html';
 }
 
-let editUser = (d_id) => {
-    sessionStorage.setItem('d_id', d_id);
-    window.location.href = './../edit/index.html';
+let editUser = (cmuitaccount) => {
+    sessionStorage.setItem('cmuitaccount', cmuitaccount);
+    window.location.href = './../profile/index.html';
 }
 
 let gotodownload = (d_id) => {
@@ -136,18 +136,8 @@ let deleteUser = (cmuitaccount) => {
     })
 }
 
-if (code) {
+if (code && auth == "admin") {
     $('#profile').html(`<li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
-        <ul>
-            <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
-            <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
-            <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
-            <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
-        </ul>
-    </li>`)
-
-    if (auth == "admin") {
-        $('#profile').html(`<li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
             <ul>
                 <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
                 <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
@@ -156,7 +146,6 @@ if (code) {
                 <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
             </ul>
         </li>`)
-    }
 } else {
     $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
     gotoLogin()
@@ -214,7 +203,7 @@ let utable = $('#TableUser').DataTable({
         {
             data: null, title: "จัดการข้อมูล",
             render: function (data, type, row, meta) {
-                return `<button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.cmuitaccount}')">แก้ไขข้อมูลผู้ใช้</button>
+                return `<button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.cmuitaccount}')">ข้อมูลผู้ใช้</button>
                         <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteUser('${row.cmuitaccount}')">ลบผู้ใช้</button>`
             },
         },

@@ -21,6 +21,8 @@ const firstname_TH = getCookie("open_firstname_TH");
 const lastname_TH = getCookie("open_lastname_TH");
 const student_id = getCookie("open_student_id");
 const organization_name_TH = getCookie("open_organization_name_TH");
+const cmuitaccount = getCookie("open_cmuitaccount");
+const itaccounttype = getCookie("open_itaccounttype_th");
 const auth = getCookie("open_auth");
 
 let refreshPage = () => {
@@ -44,6 +46,11 @@ let gotoLogout = () => {
     document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
     gotoIndex()
 }
+
+
+document.cookie = "open_cmuitaccount=; max-age=0; path=/;";
+document.cookie = "open_itaccounttype_th=; max-age=0; path=/;";
+document.cookie = "open_auth=; max-age=0; path=/;";
 
 let gotoProfile = () => {
     location.href = "./../profile/index.html";
@@ -70,9 +77,15 @@ let gotoIndex = () => {
 }
 
 let loadData = () => {
-    document.getElementById("std_name").value = `${firstname_TH} ${lastname_TH}`
-    document.getElementById("std_id").value = `${student_id}`
-    document.getElementById("std_org").value = `${organization_name_TH}`
+
+    document.getElementById("std_name").value = `${firstname_TH} ${lastname_TH}`;
+    document.getElementById("std_id").value = `${student_id}`;
+    document.getElementById("std_org").value = `${organization_name_TH}`;
+    document.getElementById("std_org").value = `${organization_name_TH}`;
+    document.getElementById("std_org").value = `${organization_name_TH}`;
+
+    const organization_name_TH = getCookie("open_organization_name_TH");
+    const auth = getCookie("open_auth");
 }
 
 if (code) {

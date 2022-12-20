@@ -46,6 +46,9 @@ let gotoLogout = () => {
     document.cookie = "open_lastname_TH=; max-age=0; path=/;";
     document.cookie = "open_student_id=; max-age=0; path=/;";
     document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
+    document.cookie = "open_cmuitaccount=; max-age=0; path=/;";
+    document.cookie = "open_itaccounttype_th=; max-age=0; path=/;";
+    document.cookie = "open_auth=; max-age=0; path=/;";
     gotoIndex()
 }
 

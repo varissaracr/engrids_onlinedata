@@ -31,4 +31,4 @@ RUN pip install rasterstats
 RUN pip install requests
 RUN pip install slugify
 RUN pip install schedule
-RUN pip install shutil
+# RUN pip install shutil

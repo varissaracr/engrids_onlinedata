@@ -50,16 +50,18 @@ def shp2pgsql(shpname, shpzip):
     zip = os.path.join(path, shpzip)
     dir = os.path.join(path, shpname)
     shutil.unpack_archive(zip, dir)
-
+    print(zip, flush=True)
+    print(dir, flush=True)
     files = os.listdir(dir)
     for f in files:
+        print(f, flush=True)
         if f.endswith(".shp"):
-            cmd = f'ogr2ogr -f "PostgreSQL" "PG:host={host} port={port} user={username} dbname={db} password={password}" "{dir}{f}" -lco GEOMETRY_NAME=geom -lco FID=gid -lco SPATIAL_INDEX=GIST -nlt PROMOTE_TO_MULTI -nln {shpname} -overwrite'
+            cmd = f'ogr2ogr -f "PostgreSQL" "PG:host={host} port={port} user={username} dbname={db} password={password}" "{dir}/{f}" -lco GEOMETRY_NAME=geom -lco FID=gid -lco SPATIAL_INDEX=GIST -nlt PROMOTE_TO_MULTI -nln {shpname} -overwrite'
             os.system(cmd)
             print(cmd, flush=True)
 
     shutil.rmtree(dir)
-    return json.dumps({"data": "a"})
+    return json.dumps({"data": "insert ok"})
 
 
 @app.route('/getpixelvalue/<string:index>/<string:yyyymmdd>/<float:latitude>/<float:longitude>')

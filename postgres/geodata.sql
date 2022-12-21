@@ -20,7 +20,7 @@ CREATE DATABASE geodb WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDE
 
 ALTER DATABASE geodb OWNER TO postgres;
 
-\connect geodata
+\connect geodb
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;

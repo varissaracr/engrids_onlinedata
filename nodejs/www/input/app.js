@@ -86,7 +86,7 @@ let pass = n => [...crypto.getRandomValues(new Uint8Array(n))]
 
 let createid = () => {
     var n = pass(32);
-    var d_id = n.slice(0, 8) + '-' + n.slice(8, 12) + '-' + n.slice(12, 16) + '-' + n.slice(16, 20) + '-' + n.slice(20, 32);
+    var d_id = "a" + n.slice(0, 8) + n.slice(8, 12) + n.slice(12, 16) + n.slice(16, 20) + n.slice(20, 32);
     document.getElementById("d_id").value = d_id;
 }
 

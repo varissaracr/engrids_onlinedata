@@ -138,7 +138,6 @@ let deleteData = (d_id) => {
 }
 
 let deleteUser = (cmuitaccount) => {
-
     axios.post(`/ds-api/deleteuser`, { cmuitaccount }).then(r => {
         var Sucss = r.data.data;
         if (Sucss == 'success') {

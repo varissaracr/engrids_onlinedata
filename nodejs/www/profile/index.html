@@ -95,64 +95,68 @@
             <div class="container">
 
                 <div class="section-title">
-                    <!-- <h2>Input Data</h2> -->
                     <h3 class="ff-noto">ข้อมูล <span class="ff-noto">ผู้ใช้</span></h3>
                     <p></p>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="d-flex justify-content-center pt-5 pb-4"
-                            style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; border-radius: 15px;">
-                            <div class="col-lg-10 mt-5 mt-lg-0">
-                                <div class="form-group row mb-2">
-                                    <label class="col-sm-2 col-form-label">ชื่อ-นามสกุล</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="std_name">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-2">
-                                    <label class="col-sm-2 col-form-label">รหัสนักศึกษา </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="std_id">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-2">
-                                    <label class="col-sm-2 col-form-label">คณะ </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="std_org">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-sm-6">
-                        <div class="d-flex justify-content-center pt-5 pb-4"
-                            style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; border-radius: 15px;">
-                            <div class="col-lg-10 mt-5 mt-lg-0">
+                <div class="d-flex justify-content-center">
+                    <!-- <div class="col-10"> -->
+                    <div class="row d-flex justify-content-center pt-5 pb-4"
+                        style="box-shadow: transparent 0 0 0 3px, rgba(18, 18, 18, .1) 0 6px 20px; border-radius: 30px;">
+                        <div class="col-lg-10 mt-lg-0 ">
+                            <div class="card-body">
                                 <div class="form-group row mb-2">
-                                    <label class="col-sm-2 col-form-label">cmu account</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="std_acc">
-                                    </div>
+                                    <label class="col-sm-2 col-form-label ">ชื่อ-นามสกุล: </label>
+                                    <label class="col-6 mt-2 ff-noto" style="font-size: 18px;"> <b id="firstname"></b>
+                                        <b id="lastname"></b></label>
                                 </div>
                                 <div class="form-group row mb-2">
-                                    <label class="col-sm-2 col-form-label">ประเภทบุคคลากร</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="std_acctype">
-                                    </div>
+                                    <label class="col-sm-2 col-form-label ">รหัสนักศึกษา: </label>
+                                    <label class="col-6 mt-2 ff-noto" style="font-size: 16px;"> <b
+                                            id="std_id"></b></label>
                                 </div>
                                 <div class="form-group row mb-2">
-                                    <label class="col-sm-2 col-form-label">สิทธิ์ผู้ใช้</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="std_auth">
-                                    </div>
+                                    <label class="col-sm-2 col-form-label ">คณะ: </label>
+                                    <label class="col-6 mt-2 ff-noto" style="font-size: 16px;"> <b
+                                            id="std_org"></b></label>
+                                </div>
+                                <div class="form-group row mb-2">
+                                    <label class="col-sm-2 col-form-label ">cmu account: </label>
+                                    <label class="col-6 mt-2 ff-noto" style="font-size: 16px;"> <b
+                                            id="std_acc"></b></label>
+                                </div>
+                                <div class="form-group row mb-2">
+                                    <label class="col-sm-2 col-form-label ">ประเภทบุคคลากร: </label>
+                                    <label class="col-6  mt-2 ff-noto" style="font-size: 16px;"> <b
+                                            id="std_acctype"></b></label>
+                                </div>
+                                <div class="form-group row mb-2">
+                                    <label class="col-sm-2 col-form-label ">สิทธิ์ผู้ใช้: </label>
+                                    <label class="col-6 ff-noto " style="font-size: 16px;"> <b class="btn-auth"
+                                            id="std_auth"></b></label>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row d-flex justify-content-center mt-4">
+                            <div class="col text-center">
+                                <a href="./../dashboard/index.html" class="btn-learn-more"> <span class="ff-noto"><i
+                                            class="fa-sharp fa-solid fa-house"></i> หน้าหลัก
+                                    </span></a>
+                                &nbsp;&nbsp;
+                                <a href="./../infordata/index.html" class="btn-learn-more"> <span class="ff-noto"><i
+                                            class="bi bi-stack"></i> ฐานข้อมูลสารสนเทศ
+                                    </span></a>
+                                &nbsp;&nbsp;
+                                <a href="./../manage/index.html" class="btn-learn-more"> <span class="ff-noto"><i
+                                            class="fa-sharp fa-solid fa-pencil"></i> จัดการข้อมูล
+                                    </span></a>
+                            </div>
+                        </div>
                     </div>
+                    <!-- </div> -->
                 </div>
-
+            </div>
             </div>
         </section>
 

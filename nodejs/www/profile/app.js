@@ -87,13 +87,21 @@ let gotoIndex = () => {
 }
 
 let loadData = () => {
-    document.getElementById("std_name").value = `${firstname_TH} ${lastname_TH}`;
+    // document.getElementById("std_name").value = `${firstname_TH} ${lastname_TH}`;
     document.getElementById("std_id").value = `${student_id}`;
     document.getElementById("std_org").value = `${organization_name_TH}`;
     document.getElementById("std_acc").value = `${cmuitaccount}`;
     document.getElementById("std_acctype").value = `${itaccounttype}`;
     document.getElementById("std_auth").value = `${open_auth}`;
 }
+
+$('#firstname').text(firstname_TH)
+$('#lastname').text(lastname_TH)
+$('#std_id').text(student_id)
+$('#std_org').text(organization_name_TH)
+$('#std_acc').text(cmuitaccount)
+$('#std_acctype').text(itaccounttype)
+$('#std_auth').text(open_auth)
 
 if (code) {
     $('#profile').html(`

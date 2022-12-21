@@ -246,6 +246,18 @@ app.post('/ds-api/deletedata', async (req, res) => {
     })
 })
 
+app.post('/ds-api/setadmin', async (req, res) => {
+    const { cmuitaccount } = req.body
+    const sql = `UPDATE formmember set auth = 'admin' WHERE cmuitaccount ='${cmuitaccount}';`
+    await datapool.query(sql).then(r => {
+        // console.log(r.rows)
+        res.status(200).json({
+            data: 'success'
+        })
+    })
+})
+
+
 app.post('/ds-api/editdata', (req, res) => {
     const { d_id } = req.body
     datapool.query(`select * from datasource where d_id='${d_id}';`, (e, r) => {

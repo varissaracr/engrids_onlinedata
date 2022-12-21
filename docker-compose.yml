@@ -13,6 +13,19 @@ services:
     volumes:
       # - ./postgres/geodb.sql:/docker-entrypoint-initdb.d/geodb.sql
       - ./postgres/:/docker-entrypoint-initdb.d
+  flask:
+    container_name: ds_flask
+    build: ./flask
+    restart: always
+    depends_on:
+      - postgis
+      # - geoserver
+    volumes:
+      - ./flask:/app/flask
+      - ./nodejs/www/uploads/:/app/uploads/
+    ports:
+      - "3100:3100"
+    command: bash -c "cd flask && python3 app.py"
   nodejs:
     image: node
     container_name: ds_nodejs
@@ -20,6 +33,7 @@ services:
     restart: always
     depends_on:
       - postgis
+      - flask
     environment:
       - NODE_ENV=production
     volumes:

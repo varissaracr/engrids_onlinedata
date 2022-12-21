@@ -16,9 +16,9 @@ SET row_security = off;
 -- Name: geodata; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE geodata WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+CREATE DATABASE geodb WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
 
-ALTER DATABASE geodata OWNER TO postgres;
+ALTER DATABASE geodb OWNER TO postgres;
 
 \connect geodata
 

@@ -1,5 +1,5 @@
 conn = {
-    "dbName": "geodata",
+    "dbName": "geodb",
     "dbUser": "postgres",
     "dbPass": "1234",
     "dbHost": "ds_postgis",

@@ -336,7 +336,6 @@ $(`#geo_other`).hide()
 $(`#DT_other`).hide()
 $(`#linkupload`).hide()
 
-
 let add_link = () => {
     var n = $("#listlink-file").children(".form-inline").length
     // console.log(n)
@@ -398,7 +397,6 @@ let senddata = async () => {
                 });
                 $(`#listdata-file`).children("input[name=data-name]").each(function (e) {
                     var type = $(this).val().split(".")
-
                     name.push($(this).val());
                     types.push(type[1]);
                 });
@@ -503,11 +501,13 @@ let senddata = async () => {
                             if (result.isConfirmed) {
                                 window.location.href = './../manage/index.html';
                             }
-
                         })
                     }
                     $("#forminput").removeClass('was-validated');
                     console.log(Sucss)
+                });
+                await axios.post(`/ds-api/shp2pgsql`, { d_id: $('#d_id').val() }).then(r => {
+                    console.log(r);
                 })
 
             } else if (
@@ -537,6 +537,7 @@ let senddata = async () => {
         })
     }
 }
+
 let req_form = () => {
     var form = $("#forminput")
     // console.log(form[0])

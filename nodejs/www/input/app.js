@@ -506,10 +506,6 @@ let senddata = async () => {
                     $("#forminput").removeClass('was-validated');
                     console.log(Sucss)
                 });
-                await axios.post(`/ds-api/shp2pgsql`, { d_id: $('#d_id').val() }).then(r => {
-                    console.log(r);
-                })
-
             } else if (
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel

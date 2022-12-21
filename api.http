@@ -30,3 +30,6 @@ content-type: application/json
 {
     "cmuitaccount": "sakda.homhuan@cmu.ac.th"
 }
+
+###
+GET http://localhost:3100/

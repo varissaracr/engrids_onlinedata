@@ -16,12 +16,33 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage, limits: { fieldSize: 25 * 1024 * 1024 } })
+const fileFilter = (req, file, cb) => {
+    console.log(req.body);
+    // console.log(file);
+}
+
+const upload = multer({ storage: storage, fileFilter: fileFilter, limits: { fieldSize: 25 * 1024 * 1024 } })
+
 app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
-    console.log(req.file.filename, req.body.d_id)
+    // console.log(req.body);
     const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
     datapool.query(sql).then(() => {
         console.log("insert ok");
+    })
+
+    console.log(req.file.filename, req.body.d_id)
+
+    // axios.get(`http://flask:3100/${shpname}/${shpzip}`).then(r => {
+    //     console.log(r.data);
+    // })
+
+})
+
+app.get('/ds-api/hello', (req, res) => {
+    // fetch()
+    // shp2pgsql/shpname/Archive.zip
+    axios.get('http://flask:3100/').then(r => {
+        console.log(r.data);
     })
 })
 

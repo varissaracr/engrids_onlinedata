@@ -179,6 +179,12 @@ app.post('/ds-api/save', async (req, res) => {
     })
 })
 
+app.post('/ds-api/shp2pgsql', async (req, res) => {
+    const { d_id } = req.body;
+    console.log(d_id);
+
+})
+
 app.post('/ds-api/postdata', (req, res) => {
     let sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd,d_meta as d_datafiles FROM datasource WHERE d_access='publish' order by d_tnow desc;`;
     datapool.query(sql, (e, r) => {
@@ -289,6 +295,7 @@ app.post('/ds-api/checkdata', (req, res) => {
         }
     })
 })
+
 app.post('/ds-api/update', async (req, res) => {
     const { data } = req.body
     await datapool.query(`UPDATE datasource SET d_tnow=now() WHERE d_id ='${data.d_id}';`)
@@ -305,8 +312,6 @@ app.post('/ds-api/update', async (req, res) => {
     })
 })
 
-
-
 app.post('/ds-api/access', async (req, res) => {
     const { d_id, d_access } = req.body
     if (d_id) {
@@ -319,6 +324,7 @@ app.post('/ds-api/access', async (req, res) => {
         })
     }
 })
+
 app.post('/ds-api/sd', async (req, res) => {
     const { d_id } = req.body
     if (d_id) {
@@ -344,6 +350,7 @@ app.post('/ds-api/hitstory', async (req, res) => {
         })
     })
 })
+
 app.post('/ds-api/hitstory/getdata', async (req, res) => {
     const { id_user } = req.body;
     // console.log(data)
@@ -355,4 +362,5 @@ app.post('/ds-api/hitstory/getdata', async (req, res) => {
         })
     }
 })
+
 module.exports = app;

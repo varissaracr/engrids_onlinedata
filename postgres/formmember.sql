@@ -15,7 +15,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 225 (class 1259 OID 16483)
+-- TOC entry 224 (class 1259 OID 16467)
 -- Name: formmember; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -36,7 +36,7 @@ CREATE TABLE public.formmember (
 ALTER TABLE public.formmember OWNER TO postgres;
 
 --
--- TOC entry 224 (class 1259 OID 16482)
+-- TOC entry 225 (class 1259 OID 16472)
 -- Name: formmember_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -52,8 +52,8 @@ CREATE SEQUENCE public.formmember_gid_seq
 ALTER TABLE public.formmember_gid_seq OWNER TO postgres;
 
 --
--- TOC entry 3346 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3350 (class 0 OID 0)
+-- Dependencies: 225
 -- Name: formmember_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -61,7 +61,7 @@ ALTER SEQUENCE public.formmember_gid_seq OWNED BY public.formmember.gid;
 
 
 --
--- TOC entry 3195 (class 2604 OID 16486)
+-- TOC entry 3199 (class 2604 OID 16473)
 -- Name: formmember gid; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -69,24 +69,25 @@ ALTER TABLE ONLY public.formmember ALTER COLUMN gid SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3339 (class 0 OID 16483)
--- Dependencies: 225
+-- TOC entry 3342 (class 0 OID 16467)
+-- Dependencies: 224
 -- Data for Name: formmember; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO public.formmember (gid, student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th, auth, dt) VALUES (1, '', 'ศักดิ์ดา', 'หอมหวล', 'sakda.homhuan@cmu.ac.th', '04', 'คณะสังคมศาสตร์', 'บุคลากร', NULL, '2022-12-13 10:39:16.087218');
+INSERT INTO public.formmember (gid, student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th, auth, dt) VALUES (2, '590410061', 'วริสรา', 'ไชยวงค์', 'varissara_chaiwong@cmu.ac.th', '04', 'คณะสังคมศาสตร์', 'นักศึกษาเก่า', 'admin', '2022-12-21 06:12:26.997894');
 
 
 --
--- TOC entry 3347 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3351 (class 0 OID 0)
+-- Dependencies: 225
 -- Name: formmember_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.formmember_gid_seq', 1, true);
+SELECT pg_catalog.setval('public.formmember_gid_seq', 2, true);
 
 
--- Completed on 2022-12-13 17:46:27 +07
+-- Completed on 2022-12-21 13:16:30
 
 --
 -- PostgreSQL database dump complete

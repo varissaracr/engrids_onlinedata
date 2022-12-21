@@ -87,6 +87,7 @@ let editData = (d_id) => {
 }
 
 let editUser = (firstname_TH, lastname_TH, student_id, organization_name_TH, open_cmuitaccount, open_itaccounttype_th, open_auth) => {
+    console.log(firstname_TH, lastname_TH, student_id, organization_name_TH, open_cmuitaccount, open_itaccounttype_th, open_auth)
     sessionStorage.setItem('open_firstname_TH', firstname_TH);
     sessionStorage.setItem('open_lastname_TH', lastname_TH);
     sessionStorage.setItem('open_student_id', student_id);
@@ -103,14 +104,6 @@ let editUser = (firstname_TH, lastname_TH, student_id, organization_name_TH, ope
 let gotodownload = (d_id) => {
     sessionStorage.setItem('d_id', d_id);
     window.open('./../detail/index.html', '_blank');
-}
-
-let setadmin = (cmuitaccount) => {
-    axios.post('/ds-api/setadmin', { cmuitaccount }).then((r) => {
-        var Sucss = r.data.data;
-        if (Sucss == 'success') { utable.ajax.reload(); }
-    })
-
 }
 
 let deleteData = (d_id) => {
@@ -226,8 +219,9 @@ let utable = $('#TableUser').DataTable({
         {
             data: null, title: "จัดการข้อมูล",
             render: function (data, type, row, meta) {
-                return ` <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="setadmin('${row.cmuitaccount}')">จัดการแอดมิน</button>
-                <button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.firstname_th, row.lastname_th, row.organization_name, row.cmuitaccount, row.cmuitaccount, row.itaccounttype_th, row.auth, row.dd}')">ข้อมูลผู้ใช้</button>
+                // console.log(row)
+                return ` <button class="btn btn-margin font-Noto" style="background-color: #60d1be; color: #ffffff;"onclick="setadmin('${row.cmuitaccount}')">จัดการสิทธิ์ผู้ใช้</button>
+                <button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.firstname_th}','${row.lastname_th}','${row.student_id}','${row.organization_name}','${row.cmuitaccount}','${row.itaccounttype_th}','${row.auth}')">ข้อมูลผู้ใช้</button>
                         <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteUser('${row.cmuitaccount}')">ลบผู้ใช้</button>`
             },
         },
@@ -257,6 +251,7 @@ let dtable = $('#TableData').DataTable({
         { data: 'organization_name' },
         { data: 'd_name' },
         { data: 'd_detail' },
+        { data: 'd_access' },
         {
             data: 'd_tnow', render: function (data, type, row, meta) {
                 var t = new Date(row.d_tnow).toISOString().split('T')
@@ -282,6 +277,60 @@ let dtable = $('#TableData').DataTable({
 //     //     cell.innerHTML = i + 1;
 //     // });
 // }).draw();
+
+
+let setadmin = (cmuitaccount) => {
+    Swal.fire({
+        title: 'กำหนดสิทธิ์ใช้งาน',
+        html:
+            `<select class="form-select" aria-label="Default select example" id="auth">
+                <option hidden>เลือก...</option>
+                <option value="admin">admin</option>
+                <option value="user">user</option>
+            </select>
+            `,
+        customClass: {
+            container: 'font-noto',
+            title: 'font-noto',
+        },
+        confirmButtonText: 'ยืนยัน',
+        confirmButtonColor: '#60d1be',
+        cancelButtonText: 'ปิด',
+        cancelButtonColor: '#000000',
+        showCancelButton: true,
+        preConfirm: (value) => {
+            const auth = Swal.getPopup().querySelector('#auth').value
+            return { auth: auth }
+        }
+    }).then((result) => {
+        if (result.value) {
+            var data = {
+                cmuitaccount: cmuitaccount,
+                auth: result.value.auth
+            }
+            // console.log(data)
+            // console.log(result.value.auth)
+            axios.post('/ds-api/setuser', data).then((r) => {
+                var Sucss = r.data.data;
+
+                // console.log(Sucss)
+                if (Sucss == 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'กำหนดสิทธิ์เป็น ' + result.value.auth + ' สำเร็จ',
+                        confirmButtonText: 'ปิด',
+                        confirmButtonColor: '#000000',
+                        customClass: {
+                            container: 'font-noto',
+                            title: 'font-noto',
+                        },
+                    })
+                    utable.ajax.reload();
+                }
+            })
+        }
+    })
+}
 
 
 
@@ -335,3 +384,37 @@ let accessData = (id, name) => {
         }
     })
 }
+
+// $(document).ready(function () {
+//     $('#TableUser').DataTable({
+//         responsive: {
+//             details: {
+//                 display: $.fn.dataTable.Responsive.display.modal({
+//                     header: function (row) {
+//                         var data = row.data();
+//                         return 'Details for ' + data[0] + ' ' + data[1];
+//                     }
+//                 }),
+//                 renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+//             }
+//         }
+//     });
+// });
+
+// $(document).ready(function () {
+//     $('#TableUser').DataTable({
+//         responsive: {
+//             details: {
+//                 display: $.fn.dataTable.Responsive.display.modal({
+//                     header: function (row) {
+//                         var data = row.data();
+//                         return 'Details for ' + data[0] + ' ' + data[1];
+//                     }
+//                 }),
+//                 renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+//                     tableClass: 'table'
+//                 })
+//             }
+//         }
+//     });
+// });

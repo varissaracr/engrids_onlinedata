@@ -206,7 +206,7 @@ app.post('/ds-api/listdata', (req, res) => {
 
 app.post('/ds-api/listmember', checkUser, (req, res) => {
     const sql = `SELECT d.d_row, d.d_name,d.d_detail, d.d_groups, d.d_keywords, 
-                    d.d_id, d.d_username, d.d_tnow, d.d_sd, d.d_meta, d.d_tnow,
+                    d.d_id, d.d_username, d.d_tnow, d.d_sd, d.d_meta, d.d_tnow, d.d_access,
                     f.firstname_th, f.lastname_th, f.organization_name, auth
                 FROM datasource d
                 LEFT JOIN formmember f ON 
@@ -221,8 +221,8 @@ app.post('/ds-api/listmember', checkUser, (req, res) => {
 
 app.post('/ds-api/listuser', checkUser, (req, res) => {
     // const { cmuitaccou } = req.body
-    const sql = `SELECT f.firstname_th, f.lastname_th, f.cmuitaccount, f.itaccounttype_th, f.organization_name, auth, dt, TO_CHAR(dt, 'DD-MM-YYYY') as dd FROM formmember f`;
-
+    const sql = `SELECT f.firstname_th, f.lastname_th, f.student_id, f.cmuitaccount, f.itaccounttype_th, f.organization_name, auth, dt, TO_CHAR(dt, 'DD-MM-YYYY') as dd FROM formmember f`;
+    console.log(sql)
     datapool.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
@@ -264,9 +264,9 @@ app.post('/ds-api/setadmin', async (req, res) => {
     })
 })
 
-app.post('/ds-api/loaduser', async (req, res) => {
-    const { cmuitaccount } = req.body
-    const sql = `select student_id, firstname_TH, lastname_TH, organization_name, cmuitaccount, itaccounttype_th, auth from formmember WHERE cmuitaccount ='${cmuitaccount}';`
+app.post('/ds-api/setuser', async (req, res) => {
+    const { cmuitaccount, auth } = req.body
+    const sql = `UPDATE formmember set auth = '${auth}' WHERE cmuitaccount ='${cmuitaccount}';`
     console.log(sql)
     await datapool.query(sql).then(r => {
         // console.log(r.rows)
@@ -275,7 +275,6 @@ app.post('/ds-api/loaduser', async (req, res) => {
         })
     })
 })
-
 
 app.post('/ds-api/editdata', (req, res) => {
     const { d_id } = req.body

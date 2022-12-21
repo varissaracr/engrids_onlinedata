@@ -1,4 +1,4 @@
-sessionStorage.clear();
+// sessionStorage.clear();
 
 let getCookie = (cname) => {
     let name = cname + "=";
@@ -18,6 +18,7 @@ let getCookie = (cname) => {
 
 var code = getCookie("open_code");
 var firstname_TH = getCookie("open_firstname_TH");
+var firstname_THp = getCookie("open_firstname_TH");
 var lastname_TH = getCookie("open_lastname_TH");
 var student_id = getCookie("open_student_id");
 var organization_name_TH = getCookie("open_organization_name_TH");
@@ -28,7 +29,7 @@ var open_auth = getCookie("open_auth");
 
 let adminview = sessionStorage.getItem("adminview");
 if (adminview == "yes") {
-    firstname_TH = sessionStorage.getItem("open_firstname_TH");
+    firstname_THp = sessionStorage.getItem("open_firstname_TH");
     lastname_TH = sessionStorage.getItem("open_lastname_TH");
     student_id = sessionStorage.getItem("open_student_id");
     organization_name_TH = sessionStorage.getItem("open_organization_name_TH");
@@ -88,20 +89,22 @@ let gotoIndex = () => {
 
 let loadData = () => {
     // document.getElementById("std_name").value = `${firstname_TH} ${lastname_TH}`;
-    document.getElementById("std_id").value = `${student_id}`;
-    document.getElementById("std_org").value = `${organization_name_TH}`;
-    document.getElementById("std_acc").value = `${cmuitaccount}`;
-    document.getElementById("std_acctype").value = `${itaccounttype}`;
-    document.getElementById("std_auth").value = `${open_auth}`;
+    // document.getElementById("std_id").value = `${student_id}`;
+    // document.getElementById("std_org").value = `${organization_name_TH}`;
+    // document.getElementById("std_acc").value = `${cmuitaccount}`;
+    // document.getElementById("std_acctype").value = `${itaccounttype}`;
+    // document.getElementById("std_auth").value = `${open_auth}`;
+
+    $('#firstname').text(firstname_THp)
+    $('#lastname').text(lastname_TH)
+    $('#std_id').text(student_id)
+    $('#std_org').text(organization_name_TH)
+    $('#std_acc').text(cmuitaccount)
+    $('#std_acctype').text(itaccounttype)
+    $('#std_auth').text(open_auth)
 }
 
-$('#firstname').text(firstname_TH)
-$('#lastname').text(lastname_TH)
-$('#std_id').text(student_id)
-$('#std_org').text(organization_name_TH)
-$('#std_acc').text(cmuitaccount)
-$('#std_acctype').text(itaccounttype)
-$('#std_auth').text(open_auth)
+
 
 if (code) {
     $('#profile').html(`

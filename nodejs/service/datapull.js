@@ -11,17 +11,39 @@ const storage = multer.diskStorage({
         cb(null, './www/uploads/')
     },
     filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now()
-        cb(null, uniqueSuffix + '-' + file.originalname)
+        const ftype = file.mimetype.split("/");
+        const fname = req.body.d_id + "." + ftype[1]
+        cb(null, fname);
     }
-})
+});
 
 const upload = multer({ storage: storage, limits: { fieldSize: 25 * 1024 * 1024 } })
+
 app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
-    console.log(req.file.filename, req.body.d_id)
-    const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
-    datapool.query(sql).then(() => {
-        console.log("insert ok");
+    if (req.body.DT_RadioOptions == 'ข้อมูลภูมิสารสนเทศเชิงพื้นที่') {
+        console.log(req.file.filename);
+        const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
+        datapool.query(sql).then(() => {
+            console.log("insert ok");
+        })
+
+        const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`
+        console.log(url);
+        axios.get(url).then(r => {
+            console.log(r.data);
+        })
+    }
+
+    // console.log(req.file.filename, req.body.d_id)
+
+
+})
+
+app.get('/ds-api/hello', (req, res) => {
+    // fetch()
+    // shp2pgsql/shpname/Archive.zip
+    axios.get('http://flask:3100/').then(r => {
+        console.log(r.data);
     })
 })
 

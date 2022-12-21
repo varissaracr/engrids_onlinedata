@@ -33,9 +33,5 @@ const requestTime = function (req, res, next) {
     next()
 }
 
-app.get('/a', requestTime, (req, res) => {
-    let responseText = 'Hello World!<br>'
-    responseText += `<small>Requested at: ${req.reqTime}</small>`
-    res.send(responseText)
-})
+
 

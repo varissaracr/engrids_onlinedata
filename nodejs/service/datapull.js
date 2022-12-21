@@ -255,6 +255,19 @@ app.post('/ds-api/deletedata', async (req, res) => {
 app.post('/ds-api/setadmin', async (req, res) => {
     const { cmuitaccount } = req.body
     const sql = `UPDATE formmember set auth = 'admin' WHERE cmuitaccount ='${cmuitaccount}';`
+    console.log(sql)
+    await datapool.query(sql).then(r => {
+        // console.log(r.rows)
+        res.status(200).json({
+            data: 'success'
+        })
+    })
+})
+
+app.post('/ds-api/loaduser', async (req, res) => {
+    const { cmuitaccount } = req.body
+    const sql = `select student_id, firstname_TH, lastname_TH, organization_name, cmuitaccount, itaccounttype_th, auth from formmember WHERE cmuitaccount ='${cmuitaccount}';`
+    console.log(sql)
     await datapool.query(sql).then(r => {
         // console.log(r.rows)
         res.status(200).json({
@@ -279,20 +292,6 @@ app.post('/ds-api/editdata', (req, res) => {
     })
 })
 
-app.post('/ds-api/loaddata', (req, res) => {
-    const { d_id } = req.body
-    datapool.query(`select * from datasource where d_id='${d_id}';`, (e, r) => {
-        if (r.rows.length == 0) {
-            res.status(200).json({
-                data: 'false'
-            })
-        } else {
-            res.status(200).json({
-                data: r.rows
-            })
-        }
-    })
-})
 app.post('/ds-api/checkdata', (req, res) => {
     const { d_id } = req.body
     datapool.query(`select * from datasource where d_id='${d_id}' and d_access ='publish';`, (e, r) => {

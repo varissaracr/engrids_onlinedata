@@ -1,5 +1,3 @@
-const { default: axios } = require("axios");
-
 sessionStorage.clear();
 
 let getCookie = (cname) => {
@@ -108,7 +106,7 @@ let gotodownload = (d_id) => {
 }
 
 let setadmin = (cmuitaccount) => {
-    axios.post('/ds-api/setadmin', { cmuitaccount }).then(() => {
+    axios.post('/ds-api/setadmin', { cmuitaccount }).then((r) => {
         var Sucss = r.data.data;
         if (Sucss == 'success') { utable.ajax.reload(); }
     })
@@ -228,7 +226,7 @@ let utable = $('#TableUser').DataTable({
         {
             data: null, title: "จัดการข้อมูล",
             render: function (data, type, row, meta) {
-                return ` <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="setadmin('${row.cmuitaccount}')">set admin</button>
+                return ` <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="setadmin('${row.cmuitaccount}')">จัดการแอดมิน</button>
                 <button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editUser('${row.firstname_th, row.lastname_th, row.organization_name, row.cmuitaccount, row.cmuitaccount, row.itaccounttype_th, row.auth, row.dd}')">ข้อมูลผู้ใช้</button>
                         <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;"onclick="deleteUser('${row.cmuitaccount}')">ลบผู้ใช้</button>`
             },

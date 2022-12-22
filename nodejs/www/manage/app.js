@@ -95,27 +95,27 @@ let gotodownload = (d_id) => {
 
 if (code) {
     $('#profile').html(`
-    <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+    <li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="font-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
         <ul>
-            <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
-            <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
-            <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
-            <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
+            <li><a href="#" onclick="gotoProfile()"><span class="font-noto">โปรไฟล์</span> </a></li>
+            <li><a href="#" onclick="gotoInput()"><span class="font-noto">เพิ่มข้อมูล</span></a></li>
+            <li><a href="#" onclick="gotoManage()"><span class="font-noto">การจัดการข้อมูล</span></a></li>
+            <li><a href="#" onclick="gotoLogout()"><span class="font-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
         </ul>
     </li>`)
     if (auth == "admin") {
-        $('#profile').html(`<li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="ff-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
+        $('#profile').html(`<li class="dropdown" > <a class="active" href="#" > <i class="bi bi-person-circle" style="font-size: 22px;"></i> <span class="font-noto">&nbsp; ${firstname_TH}</span> <i class="bi bi-chevron-down"> </i> </a> 
             <ul>
-                <li><a href="#" onclick="gotoProfile()"><span class="ff-noto">โปรไฟล์</span> </a></li>
-                <li><a href="#" onclick="gotoInput()"><span class="ff-noto">เพิ่มข้อมูล</span></a></li>
-                <li><a href="#" onclick="gotoManage()"><span class="ff-noto">การจัดการข้อมูล</span></a></li>
-                <li><a href="#" onclick="gotoAdmin()"><span class="ff-noto">การจัดการผู้ใช้</span></a></li>
-                <li><a href="#" onclick="gotoLogout()"><span class="ff-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
+                <li><a href="#" onclick="gotoProfile()"><span class="font-noto">โปรไฟล์</span> </a></li>
+                <li><a href="#" onclick="gotoInput()"><span class="font-noto">เพิ่มข้อมูล</span></a></li>
+                <li><a href="#" onclick="gotoManage()"><span class="font-noto">การจัดการข้อมูล</span></a></li>
+                <li><a href="#" onclick="gotoAdmin()"><span class="font-noto">การจัดการผู้ใช้</span></a></li>
+                <li><a href="#" onclick="gotoLogout()"><span class="font-noto">ออกจากระบบ</span><i class="bi bi-door-closed" style="font-size: 18px;"></i></a></li>
             </ul>
         </li>`)
     }
 } else {
-    $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
+    $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="font-noto">เข้าสู่ระบบ</span></a>`);
     gotoLogin()
 }
 
@@ -152,7 +152,7 @@ dtable = $('#TableData').DataTable({
     },
 
     columns: [
-        { data: null, title: "No.", width: '50px' },
+        { data: null, title: "ลำดับ", width: '50px' },
         {
             data: 'd_tnow', render: function (data, type, row, meta) {
                 var t = new Date(row.d_tnow).toISOString().split('T')
@@ -165,18 +165,19 @@ dtable = $('#TableData').DataTable({
         { data: 'd_access' },
         { data: 'd_sd' },
         {
-            data: null, title: "tool",
+            data: null, title: "จัดการข้อมูล",
             render: function (data, type, row, meta) {
                 return `
-                    <button class="btn btn-margin btn btn-success font-Noto" onclick="accessDate('${row.d_id}','${row.d_name}')">การเข้าถึง</button>
-                    <button class="btn btn-margin btn btn-warning font-Noto" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
-                    <button class="btn btn-margin btn btn-danger font-Noto" onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
+                    <button class="btn btn-margin font-Noto" style="background-color: #60d1be; color: #ffffff;" onclick="accessDate('${row.d_id}','${row.d_name}')">การเข้าถึง</button>
+                    <button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
+                    <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;" onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
             },
         },
     ],
-    columnDefs: [
-        { className: 'text-center', targets: [0, 1, 3, 4] },
-    ],
+    scrollX: true,
+    // columnDefs: [
+    //     { className: 'text-center', targets: [0, 1, 3, 4] },
+    // ],
 
 });
 
@@ -270,52 +271,66 @@ let accessDate = (id, name) => {
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;
-    if (auth == 'admin') {
+    if (code && auth == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
-        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
-        <a type="button" class="btn-memu" onclick="gotoLogout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ </a>
+        <div class="cd-accordion__item cd-accordion__item--has-children">
+            <input class="cd-accordion__input" type="checkbox" name="group-1" id="group-1">
+                <label class="cd-accordion__label cd-accordion__label--icon-folder btn-memu" for="group-1"><a class=""><i class="bi bi-person-circle" style="font-size: 22px;"></i> ${firstname_TH} </a></label>
+                    <ul class="cd-accordion__sub cd-accordion__sub--l2">
+                        <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i> โปรไฟล์</a>
+                        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> นำเข้าข้อมูล </a>
+                        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-pencil-square"></i> จัดการข้อมูล </a>
+                        <a class="btn-memu" href="./../admin/index.html"><i class="bi bi-person-square"></i> จัดการผู้ใช้ </a>
+                    </ul>
+        </div>
+        </div>
+        <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i> ออกจากระบบ </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i> ติดต่อเรา </a>
       </div>`
     } else if (code) {
         content = `
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="gotoLogout()"><i class="bi bi-door-closed"></i> <span>ออกจากระบบ</span> </a>
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+        <div class="d-flex flex-column " id="memu_mobile">
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ </a>
+        <div class="cd-accordion__item cd-accordion__item--has-children">
+        <input class="cd-accordion__input" type="checkbox" name="group-1" id="group-1">
+            <label class="cd-accordion__label cd-accordion__label--icon-folder btn-memu" for="group-1"><a class=""><i class="bi bi-person-circle" style="font-size: 22px;"></i> ${firstname_TH} </a></label>
+                <ul class="cd-accordion__sub cd-accordion__sub--l2">
+                    <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i> โปรไฟล์</a>
+                    <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> นำเข้าข้อมูล </a>
+                    <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-pencil-square"></i> จัดการข้อมูล </a>
+                </ul>
+    </div>
+        <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i> ออกจากระบบ </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i> ติดต่อเรา </a>
       </div>`
     } else {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-        <a type="button" class="btn-memu" onclick="loginPopup()"><i class="bi bi-door-open"></i><span>เข้าสู่ระบบ</span></a>
-       
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ</a>
+        <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i>ติดต่อเรา</a>
       </div>`
     }
-
-    $('#navbar').css({ display: 'none' })
     Swal.fire({
-        title: '<h3><span class="font-noto"><b>เมนู</b></span></h3><hr>',
+        title: '<h3><span class="font-noto"><b>เมนู</b></span></h3>',
         // icon: 'info',
-        html: content + '<hr>',
+        html: content + '',
         confirmButtonText: 'ปิด',
+        confirmButtonColor: '#000000',
+        // background: '#50d49f',
         customClass: {
             container: 'font-noto',
             title: 'font-noto',
         },
-        allowOutsideClick: false,
-        // allowEscapeKey: false,
         // showConfirmButton: false,
         // showCloseButton: false,
         // showCancelButton: true,
-        preConfirm: async () => {
-            window.location.reload()
-        }
     })
 })
+
 

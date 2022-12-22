@@ -119,9 +119,8 @@ let gotodownload = (d_id) => {
         window.location.href = './../detail/index.html';
     } else {
         content = `
-        <div style="text-align: left;">
-            กรุณาเข้าสู่ระบบก่อนดาวน์โหลด
-            <p></p>
+        <div style="text-align: left; >
+            <p style="font-size:26px;">กรุณาเข้าสู่ระบบก่อนดาวน์โหลด</p>
             <a class="btn-memu" href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i> เข้าสู่ระบบ </a>
         </div>`
 
@@ -510,7 +509,7 @@ let load_data = (page) => {
                         </p>
                         <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                         <div class="read-more">
-                            <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" >Download</button>
+                            <a class="pointer" id="downloadBtn" onclick="gotodownload('${i.d_id}')" >Download</a>
                         </div>
                     </div>`)
                 }
@@ -523,7 +522,7 @@ let load_data = (page) => {
                 var group = JSON.parse(i.d_groups)
                 // console.log(i.d_tnow)
                 if (!code) {
-                    console.log(code);
+                    // console.log(code);
                     $(`#content-data`).append(`<article class="entry">
                         <h2 class="entry-title">
                             <a class="pointer" onclick="gotodownload('${i.d_id}')">${i.d_name}</a>
@@ -543,7 +542,7 @@ let load_data = (page) => {
                             </p>
                             <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                             <div class="read-more">
-                                <a class="pointer" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}> Download </a>
+                                <a class="pointer" onclick="gotodownload('${i.d_id}')" ${code == '' ? 'disabled' : ''}> Download</a>
                             </div>
                         </div>`)
                 } else {
@@ -566,7 +565,7 @@ let load_data = (page) => {
                         </p>
                         <span class="ff-noto">กลุ่มชุดข้อมูล: ${group}</span>
                         <div class="read-more">
-                            <button class="btn btn-success" id="downloadBtn" onclick="gotodownload('${i.d_id}')" >Download</button>
+                            <a class="pointer" id="downloadBtn" onclick="gotodownload('${i.d_id}')" >Download</a>
                         </div>
                     </div>`)
                 }
@@ -771,20 +770,36 @@ $('.mobile-nav-toggle').on('click', function (e) {
     if (code && auth == 'admin') {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
-        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> <span>หน้าหลัก</span></a>
-        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> <span>ฐานข้อมูลสารสนเทศ</span></a>
-        <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i><span class="ff-noto">${firstname_TH}</span></a>
-        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> <span>นำเข้าข้อมูล</span> </a>
-        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-tools"></i> <span>จัดการข้อมูล</span> </a>
-        <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i><span class="ff-noto">ออกจากระบบ</span></a>
-        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i><span>ติดต่อเรา</span></a>
+        <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
+        <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ </a>
+        <div class="cd-accordion__item cd-accordion__item--has-children">
+            <input class="cd-accordion__input" type="checkbox" name="group-1" id="group-1">
+                <label class="cd-accordion__label cd-accordion__label--icon-folder " for="group-1"><a class="btn-memu"><i class="bi bi-person-circle" style="font-size: 22px;"></i> ${firstname_TH} </a></label>
+                    <ul class="cd-accordion__sub cd-accordion__sub--l2">
+                        <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i> โปรไฟล์</a>
+                        <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> นำเข้าข้อมูล </a>
+                        <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-pencil-square"></i> จัดการข้อมูล </a>
+                        <a class="btn-memu" href="./../admin/index.html"><i class="bi bi-person-square"></i> จัดการผู้ใช้ </a>
+                    </ul>
+        </div>
+        </div>
+        <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i> ออกจากระบบ </a>
+        <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i> ติดต่อเรา </a>
       </div>`
     } else if (code) {
         content = `
         <div class="d-flex flex-column " id="memu_mobile">
         <a class="btn-memu" href="./../dashboard/index.html"><i class="bi bi-house-door"></i> หน้าหลัก </a>
         <a class="btn-memu" href="./../infordata/index.html"><i class="bi bi-box"></i> ฐานข้อมูลสารสนเทศ </a>
-        <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i> ${firstname_TH} </a>
+        <div class="cd-accordion__item cd-accordion__item--has-children">
+        <input class="cd-accordion__input" type="checkbox" name="group-1" id="group-1">
+            <label class="cd-accordion__label cd-accordion__label--icon-folder " for="group-1"><a class="btn-memu"><i class="bi bi-person-circle" style="font-size: 22px;"></i> ${firstname_TH} </a></label>
+                <ul class="cd-accordion__sub cd-accordion__sub--l2">
+                    <a class="btn-memu" href="#" onclick="gotoProfile()"><i class="bx bxs-user-detail"></i> โปรไฟล์</a>
+                    <a class="btn-memu" href="./../input/index.html"><i class="bi bi-file-earmark-arrow-up"></i> นำเข้าข้อมูล </a>
+                    <a class="btn-memu" href="./../manage/index.html"><i class="bi bi-pencil-square"></i> จัดการข้อมูล </a>
+                </ul>
+    </div>
         <a class="btn-memu" href="#" onclick="gotoLogout()"><i class="bx bx-log-out"></i> ออกจากระบบ </a>
         <a class="btn-memu" href="https://engrids.soc.cmu.ac.th/" disabled><i class="bi bi-phone"></i> ติดต่อเรา </a>
       </div>`
@@ -808,8 +823,12 @@ $('.mobile-nav-toggle').on('click', function (e) {
             container: 'ff-noto',
             title: 'ff-noto',
         },
+        // showConfirmButton: false,
+        // showCloseButton: false,
+        // showCancelButton: true,
     })
 })
+
 
 $(window).on('load', function () {
     if ($('#preloader').length) {

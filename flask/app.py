@@ -7,11 +7,11 @@ import psycopg2 as pg2
 
 from auth import conn
 
-host = conn["dbHost"]
-db = conn["dbName"]
-username = conn["dbUser"]
-password = conn["dbPass"]
-port = conn["dbPort"]
+host = conn["Host"]
+db = conn["Name"]
+username = conn["User"]
+password = conn["Pass"]
+port = conn["Port"]
 pg = pg2.connect(database=db, user=username,
                  password=password, host=host, port=port)
 pg.autocommit = True

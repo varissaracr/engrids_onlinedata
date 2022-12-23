@@ -28,9 +28,10 @@ app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
         })
 
         const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`
-        console.log(url);
+
         axios.get(url).then(r => {
-            res.status(200).json(r.data)
+            // res.status(200).json(r.data)
+            console.log("insert ok");
         })
     }
     // console.log(req.file.filename, req.body.d_id)

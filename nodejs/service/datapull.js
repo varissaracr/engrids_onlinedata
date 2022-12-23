@@ -30,20 +30,18 @@ app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
         const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`
         console.log(url);
         axios.get(url).then(r => {
-            console.log(r.data);
+            res.status(200).json(r.data)
         })
     }
-
     // console.log(req.file.filename, req.body.d_id)
-
-
 })
 
+
 app.get('/ds-api/hello', (req, res) => {
-    // fetch()
-    // shp2pgsql/shpname/Archive.zip
-    axios.get('http://flask:3100/').then(r => {
-        console.log(r.data);
+    const url = `http://flask:3100/shp2pgsql/aODqnM5TFVPtb0Qa1HtPXOEwN5Ita20VR/aODqnM5TFVPtb0Qa1HtPXOEwN5Ita20VR.zip`
+    console.log(url);
+    axios.get(url).then(r => {
+        res.status(200).json(r.data)
     })
 })
 

@@ -10,12 +10,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
--- DROP DATABASE geodata;
---
--- TOC entry 4219 (class 1262 OID 17561)
--- Name: geodata; Type: DATABASE; Schema: -; Owner: postgres
---
-
 CREATE DATABASE geodb WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
 
 ALTER DATABASE geodb OWNER TO postgres;

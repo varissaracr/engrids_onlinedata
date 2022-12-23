@@ -1,3 +1,4 @@
+
 let getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -108,11 +109,29 @@ if (code) {
     gotoLogin()
 }
 
+let loadMap = (d_id) => {
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    let fs = L.featureGroup().addTo(map)
+    axios.post('/ds-api/loadgeojson', { d_id }).then(res => {
+        res.data.map(i => {
+            L.geoJSON(JSON.parse(i.geom)).addTo(fs);
+            // console.log(JSON.parse(i.geom));
+            // console.log(fs.getBounds());
+            map.fitBounds(fs.getBounds());
+        })
+    })
+}
+
 let load_data = (id) => {
     axios.post('/ds-api/loaddata', { d_id: id }).then(r => {
         var data = r.data.data;
-        console.log(data[0])
-        if (code) {
+        // console.log(data[0])
+        if (data[0].d_type == "ข้อมูลภูมิสารสนเทศเชิงพื้นที่") {
+            document.getElementById("mapp").innerHTML = `<div id="map"></div>`
             document.title = data[0].d_name;
             var t = new Date(data[0].d_tnow).toISOString().split('T')
             var date = new Date(t[0]).toLocaleDateString('th-TH')
@@ -130,55 +149,41 @@ let load_data = (id) => {
             var keywords = JSON.parse(data[0].d_keywords)
             keywords.map(i => {
                 var content = $(`
-            <div class="keyword mr-2" value="${i}">
-            <h2>${i}</h2>
-            </div>`)
+                    <div class="keyword mr-2" value="${i}">
+                    <h2>${i}</h2>
+                    </div>`)
                 $(`#v3`).append(content)
             })
-            genFiles(data[0].d_datafiles, data[0].d_type, date)
-        } else if (data[0].d_access !== 'publish' && auth == 'admin') {
-            document.title = data[0].d_name;
-            var t = new Date(data[0].d_tnow).toISOString().split('T')
-            var date = new Date(t[0]).toLocaleDateString('th-TH')
-            $('#dname').text(data[0].d_name)
-            $('#ddetail').text(data[0].d_detail)
-            $('#v1').text(data[0].d_id)
-            $('#v4').text(data[0].d_tmeta)
-            $('#v5').text(date)
-            $('#v6').text(data[0].d_type)
-            $('#v7').text(data[0].d_username)
-            $('#v8').text(data[0].d_source)
-            var group = JSON.parse(data[0].d_groups)
-            $('#v2').text(group.join())
-
-            var keywords = JSON.parse(data[0].d_keywords)
-            keywords.map(i => {
-                var content = $(`
-            <div class="keyword mr-2" value="${i}">
-            <h2>${i}</h2>
-            </div>`)
-                $(`#v3`).append(content)
-            })
+            loadMap(data[0].d_id)
             genFiles(data[0].d_datafiles, data[0].d_type, date)
         } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'ไม่สามารถเข้าถึงข้อมูลได้',
-                text: "กรุณาเข้าสู่ระบบ",
-                customClass: {
-                    container: 'ff-noto',
-                    title: 'ff-noto',
-                },
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = './../infordata/index.html';
-                }
+            document.title = data[0].d_name;
+            var t = new Date(data[0].d_tnow).toISOString().split('T')
+            var date = new Date(t[0]).toLocaleDateString('th-TH')
+            $('#dname').text(data[0].d_name)
+            $('#ddetail').text(data[0].d_detail)
+            $('#v1').text(data[0].d_id)
+            $('#v4').text(data[0].d_tmeta)
+            $('#v5').text(date)
+            $('#v6').text(data[0].d_type)
+            $('#v7').text(data[0].d_username)
+            $('#v8').text(data[0].d_source)
+            var group = JSON.parse(data[0].d_groups)
+            $('#v2').text(group.join())
+
+            var keywords = JSON.parse(data[0].d_keywords)
+            keywords.map(i => {
+                var content = $(`
+                    <div class="keyword mr-2" value="${i}">
+                    <h2>${i}</h2>
+                    </div>`)
+                $(`#v3`).append(content)
             })
+            genFiles(data[0].d_datafiles, data[0].d_type, date)
         }
     })
 }
+
 let genFiles = async (data, type, time) => {
     var json = JSON.parse(data)
     // console.log(json)
@@ -245,6 +250,7 @@ let genFiles = async (data, type, time) => {
     var ftime = $('#listfiles').children('.item-file:first').attr('date')
     await detail_file(ftime, ftype, fcode, furl, fname)
 }
+
 let dataURLtoFile = (dataUrl, fileName) => {
     var arr = dataUrl.split(','),
         mime = arr[0].match(/:(.*?);/)[1],

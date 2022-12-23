@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express.Router();
 const datapool = require("./db").datapool;
+const mappool = require("./db").mappool;
 const qs = require("qs")
 const axios = require("axios")
 const crypto = require("crypto");
@@ -28,22 +29,20 @@ app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
         })
 
         const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`
-        console.log(url);
+
         axios.get(url).then(r => {
-            console.log(r.data);
+            // res.status(200).json(r.data)
+            console.log("insert ok");
         })
     }
-
     // console.log(req.file.filename, req.body.d_id)
-
-
 })
 
-app.get('/ds-api/hello', (req, res) => {
-    // fetch()
-    // shp2pgsql/shpname/Archive.zip
-    axios.get('http://flask:3100/').then(r => {
-        console.log(r.data);
+app.post('/ds-api/json', (req, res) => {
+    const { lyr } = req.body;
+    const sql = `SELECT ST_AsGeoJSON(geom) FROM ${lyr}`;
+    datapool.query(sql).then(r => {
+        res.status(200).json(r.rows)
     })
 })
 
@@ -183,6 +182,26 @@ app.get('/ds-api/getdata', (req, res) => {
         res.status(200).json({
             data: r.rows
         })
+    })
+});
+
+app.post('/ds-api/loaddata', (req, res) => {
+    const { d_id } = req.body
+    const sql = `SELECT d_name,d_detail,d_type,d_source,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd, d_datafiles  
+    FROM datasource WHERE d_id='${d_id}' ORDER BY d_tnow desc;`
+    datapool.query(sql, (e, r) => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+});
+
+app.post('/ds-api/loadgeojson', (req, res) => {
+    const { d_id } = req.body
+    const sql = `SELECT ST_AsGeoJSON(geom) as geom FROM ${d_id}`;
+    console.log(sql);
+    mappool.query(sql, (e, r) => {
+        res.status(200).json(r.rows)
     })
 });
 

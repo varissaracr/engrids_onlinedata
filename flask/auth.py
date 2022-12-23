@@ -1,7 +1,7 @@
 conn = {
-    "dbName": "geodb",
-    "dbUser": "postgres",
-    "dbPass": "1234",
-    "dbHost": "ds_postgis",
-    "dbPort": "5432",
+    "Host": "ds_postgis",
+    "Name": "geodb",
+    "User": "postgres",
+    "Pass": "1234",
+    "Port": "5432"
 }

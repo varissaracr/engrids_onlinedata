@@ -7,11 +7,11 @@ import psycopg2 as pg2
 
 from auth import conn
 
-host = conn["dbHost"]
-db = conn["dbName"]
-username = conn["dbUser"]
-password = conn["dbPass"]
-port = conn["dbPort"]
+host = conn["Host"]
+db = conn["Name"]
+username = conn["User"]
+password = conn["Pass"]
+port = conn["Port"]
 pg = pg2.connect(database=db, user=username,
                  password=password, host=host, port=port)
 pg.autocommit = True
@@ -56,7 +56,7 @@ def shp2pgsql(shpname, shpzip):
     for f in files:
         print(f, flush=True)
         if f.endswith(".shp"):
-            cmd = f'ogr2ogr -f "PostgreSQL" "PG:host={host} port={port} user={username} dbname={db} password={password}" "{dir}/{f}" -lco GEOMETRY_NAME=geom -lco FID=gid -lco SPATIAL_INDEX=GIST -nlt PROMOTE_TO_MULTI -nln {shpname} -overwrite'
+            cmd = f'ogr2ogr -f "PostgreSQL" "PG:host={host} port={port} user={username} dbname={db} password={password}" "{dir}/{f}" -lco GEOMETRY_NAME=geom -lco FID=gid -lco SPATIAL_INDEX=GIST -lco precision=NO -nln {shpname} -overwrite'
             os.system(cmd)
             print(cmd, flush=True)
 

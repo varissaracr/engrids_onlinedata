@@ -207,11 +207,14 @@ app.post('/ds-api/loadgeojson', (req, res) => {
 
 app.post('/ds-api/save', async (req, res) => {
     const { data } = req.body;
-    await datapool.query(`INSERT INTO datasource(d_id, d_tnow)VALUES('${data.d_id}', now());`);
+    const sql = `INSERT INTO datasource(d_id, d_tnow)VALUES('${data.d_id}', now());`
+    console.log(sql);
+    await datapool.query(sql);
     let d;
     for (d in data) {
         if (data[d] !== '' && d !== 'd_id') {
             let sql = `UPDATE datasource SET ${d}='${data[d]}' WHERE d_id ='${data.d_id}'`;
+            console.log(sql);
             await datapool.query(sql)
         }
     }

@@ -14,6 +14,13 @@
     font-family: 'Noto Sans Thai', sans-serif;
 }
 
+#map {
+    width: 100%;
+    height: 320px;
+    z-index: 0;
+}
+
+
 .label-container {
     display: block;
     position: relative;

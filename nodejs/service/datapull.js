@@ -42,7 +42,12 @@ app.post('/ds-api/json', (req, res) => {
     const { lyr } = req.body;
     const sql = `SELECT ST_AsGeoJSON(geom) FROM ${lyr}`;
     datapool.query(sql).then(r => {
-        res.status(200).json(r.rows)
+        console.log(r);
+        if (r.rows) {
+            res.status(200).json(r.rows)
+        } else {
+            res.status(200)
+        }
     })
 })
 

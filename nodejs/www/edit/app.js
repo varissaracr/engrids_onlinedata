@@ -111,7 +111,7 @@ if (code) {
 }
 
 
-$('#username').text(firstname_TH + " " + lastname_TH)
+$('#username').text(firstname_TH)
 
 let loadMap = (d_id) => {
     var map = L.map('map').setView([51.505, -0.09], 13);

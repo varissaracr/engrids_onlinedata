@@ -32,7 +32,6 @@ app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
         const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`
 
         axios.get(url).then(r => {
-            // res.status(200).json(r.data)
             console.log("insert ok");
         })
     }
@@ -225,12 +224,6 @@ app.post('/ds-api/save', async (req, res) => {
     res.status(200).json({
         data: 'Save data'
     })
-})
-
-app.post('/ds-api/shp2pgsql', async (req, res) => {
-    const { d_id } = req.body;
-    console.log(d_id);
-
 })
 
 app.post('/ds-api/postdata', (req, res) => {

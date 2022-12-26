@@ -39,6 +39,8 @@ CORS(app, support_credentials=True)
 @cross_origin()
 def hello():
     # a = extract()
+    sql=f"gdalinfo --version" 
+    print(os.system(sql), flush=True)
     return json.dumps({"data": "a"})
 
 
@@ -56,12 +58,12 @@ def shp2pgsql(shpname, shpzip):
     for f in files:
         print(f, flush=True)
         if f.endswith(".shp"):
-            cmd = f'ogr2ogr -f "PostgreSQL" "PG:host={host} port={port} user={username} dbname={db} password={password}" "{dir}/{f}" -lco GEOMETRY_NAME=geom -lco FID=gid -lco SPATIAL_INDEX=GIST -lco precision=NO -nln {shpname} -overwrite'
+            cmd = f'ogr2ogr -f "PostgreSQL" "PG:host={host} port={port} user={username} dbname={db} password={password}" "{dir}/{f}" -lco GEOMETRY_NAME=geom -lco FID=gid -lco SPATIAL_INDEX=GIST -lco precision=NO -nlt PROMOTE_TO_MULTI -nln {shpname} -overwrite'
             os.system(cmd)
             print(cmd, flush=True)
 
-    shutil.rmtree(dir)
-    os.remove(zip)
+    # shutil.rmtree(dir)
+    # os.remove(zip)
     return json.dumps({"data": "insert ok"})
 
 

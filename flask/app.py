@@ -39,6 +39,8 @@ CORS(app, support_credentials=True)
 @cross_origin()
 def hello():
     # a = extract()
+    cmd = f'gdalinfo --version'
+    print(os.system(cmd), flush=True)
     return json.dumps({"data": "a"})
 
 

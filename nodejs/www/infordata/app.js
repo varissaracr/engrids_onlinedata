@@ -200,7 +200,7 @@ let load_data = (page) => {
         var New_post = data.slice(0, 4)
 
         data.map(i => {
-            console.log(i);
+            // console.log(i);
             if (Search || Categories || Keyword || Fileform) {
                 if (Search && Categories && Keyword && Fileform) {
                     var filsearch = i.d_name.search(Search);
@@ -666,7 +666,7 @@ let genKeyword = (data) => {
 }
 
 let genFileformat = (data) => {
-    console.log(data)
+    // console.log(data)
     let Files = ['docx', 'doc', 'xlsx', 'xls', 'csv', 'pdf', 'rar', 'zip']
     let Links = ['URL', 'API', 'GD']
 
@@ -723,7 +723,7 @@ let genFileformat = (data) => {
     })
 
     setTimeout(() => {
-        console.log(arr);
+        // console.log(arr);
     }, 1000);
 
 

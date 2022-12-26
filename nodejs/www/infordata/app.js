@@ -474,10 +474,10 @@ let load_data = (page) => {
                         </h2> 
                         <div class="entry-meta">
                             <ul>
-                                <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-person"></i>${i.d_username}</li>
+                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-clock"></i><span>${date}</span>
                                 </li>
-                                <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <a
                                         href="blog-single.html">${i.d_sd} download</a></li>
                             </ul>
                         </div>
@@ -497,10 +497,10 @@ let load_data = (page) => {
                     </h2>
                     <div class="entry-meta">
                         <ul>
-                            <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                            <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-person"></i>${i.d_username}</li>
+                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-clock"></i><span>${date}</span>
                             </li>
-                            <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <a
                                     href="blog-single.html">${i.d_sd} download</a></li>
                         </ul>
                     </div>
@@ -530,10 +530,10 @@ let load_data = (page) => {
                         </h2> 
                         <div class="entry-meta">
                             <ul>
-                                <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-person"></i>${i.d_username}</li>
+                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-clock"></i><span>${date}</span>
                                 </li>
-                                <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <a
                                         href="blog-single.html">${i.d_sd} download</a></li>
                             </ul>
                         </div>
@@ -553,10 +553,10 @@ let load_data = (page) => {
                     </h2>
                     <div class="entry-meta">
                         <ul>
-                            <li class="d-flex align-items-center"><i class="bi bi-person"></i>${i.d_username}</li>
-                            <li class="d-flex align-items-center"><i class="bi bi-clock"></i><span>${date}</span>
+                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-person"></i>${i.d_username}</li>
+                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-clock"></i><span>${date}</span>
                             </li>
-                            <li class="d-flex align-items-center"><i class="bi bi-download"></i> <a
+                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <a
                                     href="blog-single.html">${i.d_sd} download</a></li>
                         </ul>
                     </div>

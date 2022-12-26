@@ -6,7 +6,7 @@
 
 .ff-noto {
     /* font-family: 'Noto Sans Thai' sans-serif !important; */
-    font-family: 'Noto Sans Thai', sans-serif;
+    font-family: 'Noto Sans Thai', sans-serif !important;
 }
 
 .form-group {

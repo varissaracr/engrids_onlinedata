@@ -54,14 +54,14 @@ def shp2pgsql(shpname, shpzip):
     print(dir, flush=True)
     files = os.listdir(dir)
     for f in files:
-        # print(f, flush=True)
+        print(f, flush=True)
         if f.endswith(".shp"):
             cmd = f'ogr2ogr -f "PostgreSQL" "PG:host={host} port={port} user={username} dbname={db} password={password}" "{dir}/{f}" -lco GEOMETRY_NAME=geom -lco FID=gid -lco SPATIAL_INDEX=GIST -lco precision=NO -nln {shpname} -overwrite'
             os.system(cmd)
             print(cmd, flush=True)
 
     shutil.rmtree(dir)
-    shutil.rmtree(zip)
+    os.remove(zip)
     return json.dumps({"data": "insert ok"})
 
 

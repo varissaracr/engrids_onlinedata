@@ -13,7 +13,8 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const ftype = file.mimetype.split("/");
-        const fname = req.body.d_id + "." + ftype[1]
+        // console.log(ftype)
+        const fname = req.body.d_id + ".zip"
         cb(null, fname);
     }
 });
@@ -23,15 +24,14 @@ const upload = multer({ storage: storage, limits: { fieldSize: 25 * 1024 * 1024 
 app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
     if (req.body.DT_RadioOptions == 'ข้อมูลภูมิสารสนเทศเชิงพื้นที่') {
         console.log(req.file.filename);
-        const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
-        datapool.query(sql).then(() => {
-            console.log("insert ok");
-        })
+        // const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
+        // datapool.query(sql).then(() => {
+        //     console.log("insert ok");
+        // })
 
         const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`
 
         axios.get(url).then(r => {
-            // res.status(200).json(r.data)
             console.log("insert ok");
         })
     }
@@ -40,15 +40,21 @@ app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
 
 app.post('/ds-api/json', (req, res) => {
     const { lyr } = req.body;
-    const sql = `SELECT ST_AsGeoJSON(geom) FROM ${lyr}`;
-    datapool.query(sql).then(r => {
-        console.log(r);
-        if (r.rows) {
-            res.status(200).json(r.rows)
-        } else {
-            res.status(200)
-        }
+    const sql = `SELECT ST_SRID(geom) as srid FROM ${lyr}`;
+    mappool.query(sql).then(re => {
+
+        console.log(re.rows[0])
     })
+
+    // const sql = `SELECT ST_AsGeoJSON(geom) FROM ${lyr}`;
+    // mappool.query(sql).then(r => {
+    //     console.log(r);
+    //     if (r.rows) {
+    //         res.status(200).json(r.rows)
+    //     } else {
+    //         res.status(200)
+    //     }
+    // })
 })
 
 let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
@@ -213,25 +219,19 @@ app.post('/ds-api/loadgeojson', (req, res) => {
 app.post('/ds-api/save', async (req, res) => {
     const { data } = req.body;
     const sql = `INSERT INTO datasource(d_id, d_tnow)VALUES('${data.d_id}', now());`
-    console.log(sql);
+    // console.log(sql);
     await datapool.query(sql);
     let d;
     for (d in data) {
         if (data[d] !== '' && d !== 'd_id') {
             let sql = `UPDATE datasource SET ${d}='${data[d]}' WHERE d_id ='${data.d_id}'`;
-            console.log(sql);
+            // console.log(sql);
             await datapool.query(sql)
         }
     }
     res.status(200).json({
         data: 'Save data'
     })
-})
-
-app.post('/ds-api/shp2pgsql', async (req, res) => {
-    const { d_id } = req.body;
-    console.log(d_id);
-
 })
 
 app.post('/ds-api/postdata', (req, res) => {

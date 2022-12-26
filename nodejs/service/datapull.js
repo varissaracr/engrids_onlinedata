@@ -12,9 +12,9 @@ const storage = multer.diskStorage({
         cb(null, './www/uploads/')
     },
     filename: function (req, file, cb) {
-        const ftype = file.mimetype.split("/");
-        console.log(ftype);
-        const fname = req.body.d_id + "." + ftype[1]
+        // const ftype = file.mimetype.split("/");
+        // console.log(ftype);
+        const fname = req.body.d_id + ".zip"
         cb(null, fname);
     }
 });
@@ -37,19 +37,6 @@ app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
         })
     }
     // console.log(req.file.filename, req.body.d_id)
-})
-
-app.post('/ds-api/json', (req, res) => {
-    const { lyr } = req.body;
-    const sql = `SELECT ST_AsGeoJSON(geom) FROM ${lyr}`;
-    mappool.query(sql).then(r => {
-        console.log(r);
-        if (r.rows) {
-            res.status(200).json(r.rows)
-        } else {
-            res.status(200)
-        }
-    })
 })
 
 let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
@@ -204,10 +191,21 @@ app.post('/ds-api/loaddata', (req, res) => {
 
 app.post('/ds-api/loadgeojson', (req, res) => {
     const { d_id } = req.body
-    const sql = `SELECT ST_AsGeoJSON(geom) as geom FROM ${d_id}`;
-    console.log(sql);
-    mappool.query(sql, (e, r) => {
-        res.status(200).json(r.rows)
+    const sql = `SELECT ST_SRID(geom) as geom FROM ${d_id}`;
+    mappool.query(sql).then(re => {
+        if (re.rows[0]) {
+            if (re.rows[0].geom == "4326") {
+                const sql = `SELECT ST_AsGeoJSON(geom) as geom FROM ${d_id}`;
+                mappool.query(sql, (e, r) => {
+                    res.status(200).json(r.rows)
+                })
+            } else {
+                const sql = `SELECT ST_AsGeoJSON(ST_Transform(geom, 4326)) as geom FROM ${d_id}`;
+                mappool.query(sql, (e, r) => {
+                    res.status(200).json(r.rows)
+                })
+            }
+        }
     })
 });
 

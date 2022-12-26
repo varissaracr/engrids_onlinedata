@@ -200,6 +200,7 @@ let load_data = (page) => {
         var New_post = data.slice(0, 4)
 
         data.map(i => {
+            console.log(i);
             if (Search || Categories || Keyword || Fileform) {
                 if (Search && Categories && Keyword && Fileform) {
                     var filsearch = i.d_name.search(Search);
@@ -665,7 +666,7 @@ let genKeyword = (data) => {
 }
 
 let genFileformat = (data) => {
-    // console.log(data)
+    console.log(data)
     let Files = ['docx', 'doc', 'xlsx', 'xls', 'csv', 'pdf', 'rar', 'zip']
     let Links = ['URL', 'API', 'GD']
 
@@ -679,33 +680,53 @@ let genFileformat = (data) => {
     var arr2 = [];
 
     data.map(i => {
-        if (i.Files) {
-            var f = i.Files
-            f.map(e => {
-                var type = e.type
-                Files.map(res => {
-                    var match = type.match(res)
-                    if (match) {
-                        arr.push(match[0])
-                        arrFiles.push(match[0])
-                    }
-                })
-            })
-        } else if (i.Links) {
-            var l = i.Links
-            l.map(e => {
-                var type = e.type
-                Links.map(res => {
-                    var match = type.match(res)
-                    if (match) {
-                        arr.push(match[0])
-                        arrLinks.push(match[0])
-                    }
-                })
-            })
-        }
+        Files.map(f => {
+            if (i.type === f) {
+                arr.push(f)
+                arrFiles.push(f)
+            }
+        })
+
+        Links.map(f => {
+            if (i.type === f) {
+                arr.push(f)
+                arrLinks.push(f)
+            }
+        })
+
+        // if (i.Files) {
+        //     var f = i.Files
+        //     f.map(e => {
+        //         var type = e.type
+        //         Files.map(res => {
+        //             var match = type.match(res)
+        //             if (match) {
+        //                 arr.push(match[0])
+        //                 arrFiles.push(match[0])
+        //             }
+        //         })
+        //     })
+        // } else if (i.Links) {
+        //     var l = i.Links
+        //     l.map(e => {
+        //         var type = e.type
+        //         Links.map(res => {
+        //             var match = type.match(res)
+        //             if (match) {
+        //                 arr.push(match[0])
+        //                 arrLinks.push(match[0])
+        //             }
+        //         })
+        //     })
+        // }
 
     })
+
+    setTimeout(() => {
+        console.log(arr);
+    }, 1000);
+
+
     if (arr.length > 0) {
         Files.map(e => {
             var filter = arr.filter(i => i == e)

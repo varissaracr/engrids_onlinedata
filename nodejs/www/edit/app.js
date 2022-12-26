@@ -111,7 +111,24 @@ if (code) {
 }
 
 
-$('#username').text(firstname_TH + " " + lastname_TH)
+$('#username').text(firstname_TH)
+
+let loadMap = (d_id) => {
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    let fs = L.featureGroup().addTo(map)
+    axios.post('/ds-api/loadgeojson', { d_id }).then(res => {
+        res.data.map(i => {
+            L.geoJSON(JSON.parse(i.geom)).addTo(fs);
+            // console.log(JSON.parse(i.geom));
+            // console.log(fs.getBounds());
+            map.fitBounds(fs.getBounds());
+        })
+    })
+}
 
 let load_data = (id) => {
     axios.post('/ds-api/editdata', { d_id: id }).then(r => {
@@ -146,6 +163,11 @@ let load_data = (id) => {
                 $(`input[name=DT_RadioOptions][value=other]`).prop("checked", true);
                 $('#DT_other').val(i)
             }
+
+            if (data[0].d_type == 'ข้อมูลภูมิสารสนเทศเชิงพื้นที่') {
+                document.getElementById("mapp").innerHTML = `<div id="map"></div>`;
+                loadMap(data[0].d_id);
+            }
         }
 
         if (data[0].d_bound) {
@@ -174,6 +196,7 @@ let load_data = (id) => {
             </div>`)
             $(`#addkeyword`).append(content)
         })
+
 
         genFiles(data[0].d_datafiles)
     })
@@ -611,9 +634,9 @@ let senddata = async () => {
         // d_tnow: Date.now(),
         d_source: $('#dsource').val(),
         d_datafiles: check_data == true ? JSON.stringify([obj_datafiles]) : "",
-        d_username: 'admin',
-        d_iduser: 'administrator',
-        d_access: 'private'
+        d_username: firstname_TH,
+        d_iduser: cmuitaccount,
+        d_access: auth
     };
 
     var req = req_form()

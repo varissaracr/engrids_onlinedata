@@ -42,7 +42,12 @@ app.post('/ds-api/json', (req, res) => {
     const { lyr } = req.body;
     const sql = `SELECT ST_AsGeoJSON(geom) FROM ${lyr}`;
     datapool.query(sql).then(r => {
-        res.status(200).json(r.rows)
+        console.log(r);
+        if (r.rows) {
+            res.status(200).json(r.rows)
+        } else {
+            res.status(200)
+        }
     })
 })
 
@@ -207,11 +212,14 @@ app.post('/ds-api/loadgeojson', (req, res) => {
 
 app.post('/ds-api/save', async (req, res) => {
     const { data } = req.body;
-    await datapool.query(`INSERT INTO datasource(d_id, d_tnow)VALUES('${data.d_id}', now());`);
+    const sql = `INSERT INTO datasource(d_id, d_tnow)VALUES('${data.d_id}', now());`
+    console.log(sql);
+    await datapool.query(sql);
     let d;
     for (d in data) {
         if (data[d] !== '' && d !== 'd_id') {
             let sql = `UPDATE datasource SET ${d}='${data[d]}' WHERE d_id ='${data.d_id}'`;
+            console.log(sql);
             await datapool.query(sql)
         }
     }

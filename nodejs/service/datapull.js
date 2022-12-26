@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const ftype = file.mimetype.split("/");
+        console.log(ftype);
         const fname = req.body.d_id + "." + ftype[1]
         cb(null, fname);
     }
@@ -22,11 +23,11 @@ const upload = multer({ storage: storage, limits: { fieldSize: 25 * 1024 * 1024 
 
 app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
     if (req.body.DT_RadioOptions == 'ข้อมูลภูมิสารสนเทศเชิงพื้นที่') {
-        console.log(req.file.filename);
-        const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
-        datapool.query(sql).then(() => {
-            console.log("insert ok");
-        })
+        // console.log(req.file.filename);
+        // const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
+        // datapool.query(sql).then(() => {
+        //     console.log("insert ok");
+        // })
 
         const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`
 
@@ -41,7 +42,7 @@ app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
 app.post('/ds-api/json', (req, res) => {
     const { lyr } = req.body;
     const sql = `SELECT ST_AsGeoJSON(geom) FROM ${lyr}`;
-    datapool.query(sql).then(r => {
+    mappool.query(sql).then(r => {
         console.log(r);
         if (r.rows) {
             res.status(200).json(r.rows)
@@ -213,13 +214,13 @@ app.post('/ds-api/loadgeojson', (req, res) => {
 app.post('/ds-api/save', async (req, res) => {
     const { data } = req.body;
     const sql = `INSERT INTO datasource(d_id, d_tnow)VALUES('${data.d_id}', now());`
-    console.log(sql);
+    // console.log(sql);
     await datapool.query(sql);
     let d;
     for (d in data) {
         if (data[d] !== '' && d !== 'd_id') {
             let sql = `UPDATE datasource SET ${d}='${data[d]}' WHERE d_id ='${data.d_id}'`;
-            console.log(sql);
+            // console.log(sql);
             await datapool.query(sql)
         }
     }

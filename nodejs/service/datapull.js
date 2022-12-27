@@ -80,7 +80,7 @@ const checkUser = (req, res, next) => {
 const loginMiddleware = (req, res, next) => {
     const data = {
         code: req.body.code,
-        redirect_uri: "http://localhost/login/index.html",
+        redirect_uri: "https://open.engrids.soc.cmu.ac.th/login/index.html",
         client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
         client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
         grant_type: "authorization_code"

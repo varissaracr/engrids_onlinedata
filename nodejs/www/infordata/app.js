@@ -477,8 +477,7 @@ let load_data = (page) => {
                                 <li class="d-flex align-items-center ff-noto"><i class="bi bi-person"></i>${i.d_username}</li>
                                 <li class="d-flex align-items-center ff-noto"><i class="bi bi-clock"></i><span>${date}</span>
                                 </li>
-                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <a
-                                        href="blog-single.html">${i.d_sd} download</a></li>
+                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <span>${i.d_sd} download</span></li>
                             </ul>
                         </div>
                         <div class="entry-content">
@@ -500,8 +499,7 @@ let load_data = (page) => {
                             <li class="d-flex align-items-center ff-noto"><i class="bi bi-person"></i>${i.d_username}</li>
                             <li class="d-flex align-items-center ff-noto"><i class="bi bi-clock"></i><span>${date}</span>
                             </li>
-                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <a
-                                    href="blog-single.html">${i.d_sd} download</a></li>
+                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <span>${i.d_sd} download</span></li>
                         </ul>
                     </div>
                     <div class="entry-content">
@@ -533,8 +531,7 @@ let load_data = (page) => {
                                 <li class="d-flex align-items-center ff-noto"><i class="bi bi-person"></i>${i.d_username}</li>
                                 <li class="d-flex align-items-center ff-noto"><i class="bi bi-clock"></i><span>${date}</span>
                                 </li>
-                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <a
-                                        href="blog-single.html">${i.d_sd} download</a></li>
+                                <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <span>${i.d_sd} download</span></li>
                             </ul>
                         </div>
                         <div class="entry-content">
@@ -556,8 +553,7 @@ let load_data = (page) => {
                             <li class="d-flex align-items-center ff-noto"><i class="bi bi-person"></i>${i.d_username}</li>
                             <li class="d-flex align-items-center ff-noto"><i class="bi bi-clock"></i><span>${date}</span>
                             </li>
-                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <a
-                                    href="blog-single.html">${i.d_sd} download</a></li>
+                            <li class="d-flex align-items-center ff-noto"><i class="bi bi-download"></i> <span>${i.d_sd} download</span></li>
                         </ul>
                     </div>
                     <div class="entry-content">

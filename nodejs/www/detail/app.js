@@ -404,7 +404,7 @@ let detail_file = (i1, i2, i3, url, name) => {
 let SD_download = async (namefile) => {
 
     await axios.post('/ds-api/sd', { d_id: d_id }).then(r => {
-        console.log(r.data.data)
+        // console.log(r.data.data)
     })
 
     var today = new Date();
@@ -420,7 +420,7 @@ let SD_download = async (namefile) => {
     }
 
     await axios.post('/ds-api/hitstory', { data: data }).then(r => {
-        console.log(r.data.data)
+        // console.log(r.data.data)
     })
 
 }

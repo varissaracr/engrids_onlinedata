@@ -194,12 +194,12 @@ app.post('/ds-api/loadgeojson', (req, res) => {
     mappool.query(sql).then(re => {
         if (re.rows[0]) {
             if (re.rows[0].geom == "4326") {
-                const sql = `SELECT ST_AsGeoJSON(geom) as geom FROM ${d_id}`;
+                const sql = `SELECT ST_AsGeoJSON(ST_Simplify(geom, 0.001)) as geom FROM ${d_id}`;
                 mappool.query(sql, (e, r) => {
                     res.status(200).json(r.rows)
                 })
             } else {
-                const sql = `SELECT ST_AsGeoJSON(ST_Transform(geom, 4326)) as geom FROM ${d_id}`;
+                const sql = `SELECT ST_AsGeoJSON(ST_Transform(ST_Simplify(geom, 0.001), 4326)) as geom FROM ${d_id}`;
                 mappool.query(sql, (e, r) => {
                     res.status(200).json(r.rows)
                 })

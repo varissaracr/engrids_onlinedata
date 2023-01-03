@@ -1,6 +1,8 @@
 # auth.js
 # db.js
 # Logs
+geodb.sql
+
 logs
 *.log
 npm-debug.log*

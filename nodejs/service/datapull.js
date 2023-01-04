@@ -286,7 +286,7 @@ app.post('/ds-api/deleteuser', async (req, res) => {
 app.post('/ds-api/deletedata', async (req, res) => {
     const { d_id } = req.body
     await datapool.query(`DELETE FROM datasource WHERE d_id ='${d_id}';`).then(r => {
-        // console.log(r.rows)
+        mappool.query(`DROP TABLE ${d_id}`);
         res.status(200).json({
             data: 'success'
         })
@@ -295,7 +295,7 @@ app.post('/ds-api/deletedata', async (req, res) => {
 
 app.post('/ds-api/setadmin', async (req, res) => {
     const { cmuitaccount } = req.body
-    const sql = `UPDATE formmember set auth = 'admin' WHERE cmuitaccount ='${cmuitaccount}';`
+    const sql = `UPDATE formmember SET auth = 'admin' WHERE cmuitaccount ='${cmuitaccount}';`
     console.log(sql)
     await datapool.query(sql).then(r => {
         // console.log(r.rows)
@@ -319,7 +319,7 @@ app.post('/ds-api/setuser', async (req, res) => {
 
 app.post('/ds-api/editdata', (req, res) => {
     const { d_id } = req.body
-    datapool.query(`select * from datasource where d_id='${d_id}';`, (e, r) => {
+    datapool.query(`SELECT * FROM datasource WHERE d_id='${d_id}';`, (e, r) => {
         if (r.rows.length == 0) {
             res.status(200).json({
                 data: 'false'

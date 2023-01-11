@@ -53,7 +53,7 @@ let gotoLogin = () => {
     sessionStorage.clear();
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=detail'
     window.location.href = url;
@@ -73,8 +73,8 @@ let gotoLogout = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        // '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        // '&redirect_uri=http://localhost/login/' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=detail'
     window.location.href = url;
@@ -133,6 +133,7 @@ let loadMap = (d_id) => {
 let load_data = (id) => {
     axios.post('/ds-api/editdata', { d_id: id }).then(r => {
         var data = r.data.data;
+        // console.log(data)
         $('#dname').val(data[0].d_name)
         $('#ddetail').val(data[0].d_detail)
         $('#dagency').val(data[0].d_agency)
@@ -165,25 +166,49 @@ let load_data = (id) => {
             }
 
             if (data[0].d_type == 'ข้อมูลภูมิสารสนเทศเชิงพื้นที่') {
-                document.getElementById("mapp").innerHTML = `<div id="map"></div>`;
-                loadMap(data[0].d_id);
-            }
-        }
-
-        if (data[0].d_bound) {
-            $('#dbound').prop('disabled', false)
-            var bound = ['ระดับประเทศ', 'ระดับจังหวัด', 'ระดับอำเภอ', 'ระดับตำบล', 'ไม่มี']
-            bound.map(i => {
-                var check = bound.includes(i);
-                if (check == true) {
-                    $('#dbound').val(data[0].d_bound)
+                if (JSON.parse(data[0].d_meta)[0].type == "zip") {
+                    // console.log(JSON.parse(data[0].d_meta)[0].type)
+                    document.getElementById("mapp").innerHTML = `<div id="map"></div>`;
+                    loadMap(data[0].d_id);
+                    $(`#inputlink`).hide()
+                }
+                else if (JSON.parse(data[0].d_meta)[0].type == "URL", "API", "GD") {
+                    console.log(JSON.parse(data[0].d_meta)[0].type)
+                    $(`#inputfile`).hide()
                 }
                 else {
-                    $('#dbound').val('other').change()
-                    $('#geo_other').val(data[0].d_bound)
+                    $(`#inputlink`).hide()
                 }
-            })
+            }
+            if (data[0].d_type == 'ข้อมูลระเบียน') {
+                var aa = JSON.parse(data[0].d_meta)[0].type
+                // console.log(aa)
+                if (aa == "URL" || aa == "API" || aa == "GD") {
+                    $(`#inputfile`).hide()
+                }
+                else {
+                    $(`#inputlink`).hide()
+                }
+            }
+
+
         }
+
+
+        // if (data[0].d_bound) {
+        //     $('#dbound').prop('disabled', false)
+        //     var bound = ['ระดับประเทศ', 'ระดับจังหวัด', 'ระดับอำเภอ', 'ระดับตำบล', 'ไม่มี']
+        //     bound.map(i => {
+        //         var check = bound.includes(i);
+        //         if (check == true) {
+        //             $('#dbound').val(data[0].d_bound)
+        //         }
+        //         else {
+        //             $('#dbound').val('other').change()
+        //             $('#geo_other').val(data[0].d_bound)
+        //         }
+        //     })
+        // }
 
         var keywords = JSON.parse(data[0].d_keywords)
         keywords.map((i, index) => {
@@ -334,6 +359,20 @@ $('#input-fcount-1').fileinput({
     }
 }).on('fileloaded', function (event, file, previewId, fileId, index, reader) {
     // console.log("fileloaded", index, fileId);
+
+    var maxsize = file.size >= 14680064;
+    if (maxsize) {
+        $(`#warningsize`).show()
+        $(`#disbtn`).show()
+        $(`#btn-add-file`).hide()
+
+    }
+    else {
+        $(`#warningsize`).hide()
+        $(`#btn-add-file`).show()
+        $(`#disbtn`).hide()
+    }
+
     var index_id = valFiles + (index + 1)
     var content_deplay = $(`
     <div class="d-flex justify-content-between w-100 p-2 dataNew" id="file_${index_id}">${index_id}. ${file.name}
@@ -378,6 +417,10 @@ $('#btn-close-modal').click(function () {
     $('#input-fcount-1').fileinput('reset');
     // $('#input-fcount-1').fileinput('refresh');
 })
+
+$(`#warningsize`).hide()
+$(`#disbtn`).hide()
+
 let dataURLtoFile = (dataUrl, fileName) => {
     var arr = dataUrl.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
@@ -455,7 +498,7 @@ $('#dbound').on('change', function () {
 })
 
 let inputFile = (target, type) => {
-    $(target).children("input[type=checkbox]").each(function () {
+    $(target).children("input[type=radio]").each(function () {
         var datafile_type = $(this).attr("datafile_type");
         if ($(this).is(":checked")) {
             // console.log("checked")
@@ -484,6 +527,11 @@ let inputFile = (target, type) => {
                     </div>
                 </div>`).hide().fadeIn(1000);
                 $('#listlink-file').append(content)
+                $(`#fileupload`).hide()
+            }
+            else if (datafile_type == 'file') {
+                $(`#linkupload`).hide()
+                // $(`#linkupload`).show()
             }
         } else {
             $(`#${type}upload`).hide().removeAttr('required');
@@ -497,7 +545,8 @@ let inputFile = (target, type) => {
 $(`#Gother`).hide()
 $(`#geo_other`).hide()
 $(`#DT_other`).hide()
-$(`#linkupload`).hide()
+// $(`#linkupload`).hide()
+
 
 
 let add_link = () => {
@@ -548,15 +597,16 @@ let senddata = async () => {
     // await $("#pre_form").children(".form-group").each(async function (e, i) { })
     await $(".label-container").children("input[type=checkbox]:checked").each(async function (e, i) {
         var value = $(this).attr("value");
+        if (value !== 'other') {
+            obj_groups.push(value)
+        } else {
+            var other = $('#Gother').val()
+            obj_groups.push(other)
+        }
+    })
+    await $(".form-check").children("input[type=radio]:checked").each(async function (e, i) {
         var datafile_type = $(this).attr("datafile_type");
-        if (value) {
-            if (value !== 'other') {
-                obj_groups.push(value)
-            } else {
-                var other = $('#Gother').val()
-                obj_groups.push(other)
-            }
-        } else if (datafile_type) {
+        if (datafile_type) {
             if (datafile_type == 'file') {
                 var files = [];
                 var name = [];

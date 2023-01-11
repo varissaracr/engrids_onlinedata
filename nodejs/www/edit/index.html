@@ -241,7 +241,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ขอบเขตเชิงภูมิศาสตร์/เชิงพื้นที่</label>
                                 <div class="col-sm-10 ">
                                     <select id="dbound" class="form-control" disabled>
@@ -256,7 +256,7 @@
                                     <input type="text" name="boundother" class="form-control w-100 mt-2" id="geo_other"
                                         placeholder="ระบุขอบเขต">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">คำสำคัญ <label class=""
                                         style="color: rgb(233, 0, 0);">*</label></label>
@@ -291,10 +291,17 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">รูปแบบข้อมูล</label>
                                 <div class="col-sm-10">
-                                    <label class="label-container mt-auto" onchange="inputFile(this,'file')">Files
+                                    <div class="form-check" id="inputfile" onchange="inputFile(this,'file')">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            datafile_type="file">
+                                        <label class="form-check-label" for="inputfile">
+                                            File
+                                        </label>
+                                    </div>
+                                    <!-- <label class="label-container mt-auto" onchange="inputFile(this,'file')">Files
                                         <input type="checkbox" datafile_type="file">
                                         <span class="checkmark"></span>
-                                    </label>
+                                    </label> -->
                                     <div class="p-2 mb-4" style=" border: 2px dashed #9b9b9b;" id="fileupload">
                                         <div class="d-flex flex-row justify-content-center mb-2"
                                             style="font-size: 24px;">
@@ -312,10 +319,17 @@
                                         </div>
                                         <div id="listdata-file"></div>
                                     </div>
-                                    <label class="label-container" onchange="inputFile(this,'link')">Link
+                                    <!-- <label class="label-container" onchange="inputFile(this,'link')">Link
                                         <input type="checkbox" datafile_type="link">
                                         <span class="checkmark"></span>
-                                    </label>
+                                    </label> -->
+                                    <div class="form-check" id="inputlink" onchange="inputFile(this,'link')">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id=""
+                                            datafile_type="link">
+                                        <label class="form-check-label" for="inputlink">
+                                            Link
+                                        </label>
+                                    </div>
                                     <div class="p-2" style=" border: 2px dashed #9b9b9b;" id="linkupload">
                                         <div class="d-flex flex-row justify-content-center mb-2"
                                             style="font-size: 24px;">
@@ -369,8 +383,11 @@
                             <span class="modal-title ff-noto" style="font-size:26;"
                                 id="exampleModalLongTitle"><b>อัปโหลดไฟล์</b>
                                 <label class="" style="color: rgb(185, 185, 185); font-size: 4;">(
-                                    ขนาดไฟล์ไม่เกิน 15
+                                    ขนาดไฟล์ไม่เกิน 14
                                     MB )</label>
+                                <div class="col-sm-12 col-form-label" id="warningsize" style="color: rgb(233, 0, 0);">**
+                                    กรุณาอัปโหลดไฟล์ขนาดไม่เกิน 14 MB **
+                                </div>
                             </span>
                         </div>
                         <div class="modal-body">
@@ -382,6 +399,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success ff-noto" id="btn-add-file">เพิ่มไฟล์</button>
+                            <button type="button" class="btn btn-success ff-noto" id="disbtn"
+                                disabled>เพิ่มไฟล์</button>
                             <button type="button" class="btn btn-secondary ff-noto" id="btn-close-modal">ปิด</button>
                         </div>
                     </div>

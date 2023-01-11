@@ -31,7 +31,7 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=input'
     window.location.href = url;
@@ -70,7 +70,7 @@ let gotoInput = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=dashboard'
     window.location.href = url;
@@ -191,7 +191,19 @@ $(document).ready(function () {
             }
         }
     }).on('fileloaded', function (event, file, previewId, fileId, index, reader) {
-        // console.log("fileloaded", index, fileId);
+        // console.log(file.size);
+        var maxsize = file.size >= 14680064;
+        if (maxsize) {
+            $(`#warningsize`).show()
+            $(`#disbtn`).show()
+            $(`#btn-send`).hide()
+
+        }
+        else {
+            $(`#warningsize`).hide()
+            $(`#btn-send`).show()
+            $(`#disbtn`).hide()
+        }
 
         var c = `<input type="hidden" id="datafile${index}_file" name="data-files" value="">
                 <input type="hidden" id="datafile${index}_name" name="data-name" value="">
@@ -212,6 +224,8 @@ $(document).ready(function () {
         $(`#listdata-file`).empty()
     })
 })
+$(`#warningsize`).hide()
+$(`#disbtn`).hide()
 
 
 let dataURLtoFile = (dataUrl, fileName) => {
@@ -268,6 +282,14 @@ let SH_other = (target) => {
     });
 }
 
+$('#dbound').on('change', function () {
+    if ($(this).val() == 'other') {
+        $(`#geo_other`).hide().fadeIn(1000).prop('required', 'true');
+    } else {
+        $(`#geo_other`).hide().removeAttr('required');
+    }
+})
+
 $('input[name=DT_RadioOptions]').on('change', function () {
     if ($(this).is(":checked")) {
         if ($(this).val() == 'other') {
@@ -283,18 +305,13 @@ $('input[name=DT_RadioOptions]').on('change', function () {
     }
 })
 
-$('#dbound').on('change', function () {
-    if ($(this).val() == 'other') {
-        $(`#geo_other`).hide().fadeIn(1000).prop('required', 'true');
-    } else {
-        $(`#geo_other`).hide().removeAttr('required');
-    }
-})
 let inputFile = (target, type) => {
-    $(target).children("input[type=checkbox]").each(function () {
+    // console.log(type)
+    $(target).children("input[type=radio]").each(function () {
         var datafile_type = $(this).attr("datafile_type");
+        // console.log(datafile_type)
         if ($(this).is(":checked")) {
-            // console.log("checked")
+            // console.log($(this).is(":checked"))
             $(`#${type}upload`).hide().fadeIn(1000).prop('required', 'true');
             if (datafile_type == 'link') {
                 var content = $(`
@@ -320,13 +337,16 @@ let inputFile = (target, type) => {
                     </div>
                 </div>`).hide().fadeIn(1000);
                 $('#listlink-file').append(content)
+                $(`#fileupload`).hide()
+            }
+            else if (datafile_type == 'file') {
+                $(`#linkupload`).hide()
             }
         } else {
             $(`#${type}upload`).hide().removeAttr('required');
-
-
             if (datafile_type == 'link') {
                 $('#listlink-file').empty();
+
             }
         }
     });
@@ -336,6 +356,8 @@ $(`#Gother`).hide()
 $(`#geo_other`).hide()
 $(`#DT_other`).hide()
 $(`#linkupload`).hide()
+$(`#fileupload`).hide()
+
 
 let add_link = () => {
     var n = $("#listlink-file").children(".form-inline").length
@@ -377,15 +399,17 @@ let senddata = async () => {
     // await $("#pre_form").children(".form-group").each(async function (e, i) { })
     await $(".label-container").children("input[type=checkbox]:checked").each(async function (e, i) {
         var value = $(this).attr("value");
+        if (value !== 'other') {
+            obj_groups.push(value)
+        } else {
+            var other = $('#Gother').val()
+            obj_groups.push(other)
+        }
+    })
+    await $(".form-check").children("input[type=radio]:checked").each(async function (e, i) {
         var datafile_type = $(this).attr("datafile_type");
-        if (value) {
-            if (value !== 'other') {
-                obj_groups.push(value)
-            } else {
-                var other = $('#Gother').val()
-                obj_groups.push(other)
-            }
-        } else if (datafile_type) {
+        // console.log(datafile_type)
+        if (datafile_type) {
             if (datafile_type == 'file') {
                 var files = [];
                 var name = [];
@@ -409,7 +433,7 @@ let senddata = async () => {
                     arrFiles.push({ filename: d, type: types[index], file: files[index], date: date[index] })
                     obj_meta.push({ name: d, type: types[index], date: date[index] })
                 })
-                // console.log(arrFiles)
+                // console.log(arrFiles) 
                 if (arrFiles.length > 0) {
                     obj_datafiles['Files'] = arrFiles
                 }
@@ -425,7 +449,7 @@ let senddata = async () => {
                     arrLinks.push({ name: linkname, type: type, link: link, date: date })
                     obj_meta.push({ name: linkname, type: type, date: date })
                 }
-                // console.log(arrLinks)
+                console.log(arrLinks)
                 if (arrLinks.length > 0) {
                     obj_datafiles['Links'] = arrLinks
                 }
@@ -505,7 +529,7 @@ let senddata = async () => {
                         })
                     }
                     $("#forminput").removeClass('was-validated');
-                    console.log(Sucss)
+                    // console.log(Sucss)
                 });
             } else if (
                 /* Read more about handling dismissals below */
@@ -522,6 +546,7 @@ let senddata = async () => {
                 })
             }
         })
+
     } else {
         Swal.fire({
             icon: 'error',
@@ -537,7 +562,7 @@ let senddata = async () => {
 
 let req_form = () => {
     var form = $("#forminput")
-    // console.log(form[0])
+    console.log(form[0])
 
     if (form[0].checkValidity() === false) {
         event.preventDefault()

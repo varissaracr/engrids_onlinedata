@@ -246,7 +246,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">ขอบเขตเชิงภูมิศาสตร์/เชิงพื้นที่</label>
                                 <div class="col-sm-10 ">
                                     <select id="dbound" class="form-control" disabled>
@@ -261,7 +261,7 @@
                                     <input type="text" name="boundother" class="form-control w-100 mt-2" id="geo_other"
                                         placeholder="ระบุขอบเขต">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">คำสำคัญ <label class=""
                                         style="color: rgb(233, 0, 0);">*</label></label>
@@ -289,14 +289,33 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">รูปแบบข้อมูล</label>
                                 <div class="col-sm-10">
-                                    <label class="label-container mt-auto" onchange="inputFile(this,'file')">Files
+                                    <div class="row">
+                                        <div class="form-check" onchange="inputFile(this,'file')">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                id="inputfile" datafile_type="file">
+                                            <label class="form-check-label" for="inputfile">
+                                                File
+                                            </label>
+                                        </div>
+                                        <div class="form-check" onchange="inputFile(this,'link')">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                id="inputlink" datafile_type="link">
+                                            <label class="form-check-label" for="inputlink">
+                                                Link
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- <label class="label-container mt-auto" onchange="inputFile(this,'file')">Files
                                         <input type="checkbox" checked="checked" datafile_type="file">
                                         <span class="checkmark"></span>
                                     </label>
+
                                     <label class="label-container" onchange="inputFile(this,'link')">Link
                                         <input type="checkbox" datafile_type="link">
                                         <span class="checkmark"></span>
-                                    </label>
+                                    </label> -->
+
                                     <div class="p-2" style=" border: 2px dashed #9b9b9b;" id="linkupload">
                                         <div class="d-flex flex-row justify-content-center mb-2"
                                             style="font-size: 24px;">
@@ -312,19 +331,27 @@
                                         <hr>
                                         <div id="listlink-file"></div>
                                     </div>
+                                    <hr>
+                                    <div class="form-group" id="fileupload">
+                                        <span class="ff-noto" style="font-size:26;"><b>อัปโหลดไฟล์</b></span>
+                                        <label class="" style="color: rgb(185, 185, 185); font-size: 4;">(
+                                            ขนาดไฟล์ไม่เกิน 14
+                                            MB )</label>
+                                        <div class="col-sm-12 col-form-label" id="warningsize"
+                                            style="color: rgb(233, 0, 0);">**
+                                            กรุณาอัปโหลดไฟล์ขนาดไม่เกิน 14 MB **
+                                        </div>
+                                        <div class="file-loading">
+
+                                            <input id="input-fcount-1" name="ufile" type="file" multiple>
+                                        </div>
+
+                                        <div id="listdata-file"></div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
-                            <div class="form-group" id="fileupload">
-                                <span class="ff-noto" style="font-size:26;"><b>อัปโหลดไฟล์</b></span>
-                                <label class="" style="color: rgb(185, 185, 185); font-size: 4;">(
-                                    ขนาดไฟล์ไม่เกิน 15
-                                    MB )</label>
-                                <div class="file-loading">
-                                    <input id="input-fcount-1" name="ufile" type="file" multiple>
-                                </div>
-                                <div id="listdata-file"></div>
-                            </div>
+
                             <hr>
                             <!-- <div id="filedownload"></div> -->
                             <div class="d-flex justify-content-center">
@@ -333,6 +360,8 @@
                                     </span></a>
                                 &nbsp;&nbsp;
                                 <button type="submit" class="btn-learn-more" id="btn-send"><span
+                                        class="ff-noto">ส่งข้อมูล</span></button>
+                                <button type="button" class="btn-disabled" id="disbtn" disabled><span
                                         class="ff-noto">ส่งข้อมูล</span></button>
                             </div>
                         </form>
@@ -365,6 +394,8 @@
                 <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
             </div>
         </div>
+
+
     </footer><!-- End Footer -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

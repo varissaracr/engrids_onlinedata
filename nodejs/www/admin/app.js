@@ -32,7 +32,7 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=admin'
     window.location.href = url;
@@ -53,8 +53,8 @@ let gotoLogout = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        // '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        // '&redirect_uri=http://localhost/login/' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=admin'
     window.location.href = url;
@@ -87,7 +87,7 @@ let editData = (d_id) => {
 }
 
 let editUser = (firstname_TH, lastname_TH, student_id, organization_name_TH, open_cmuitaccount, open_itaccounttype_th, open_auth) => {
-    console.log(firstname_TH, lastname_TH, student_id, organization_name_TH, open_cmuitaccount, open_itaccounttype_th, open_auth)
+    // console.log(firstname_TH, lastname_TH, student_id, organization_name_TH, open_cmuitaccount, open_itaccounttype_th, open_auth)
     sessionStorage.setItem('open_firstname_TH', firstname_TH);
     sessionStorage.setItem('open_lastname_TH', lastname_TH);
     sessionStorage.setItem('open_student_id', student_id);
@@ -274,12 +274,6 @@ let dtable = $('#TableData').DataTable({
     // ],
 });
 
-// dtable.on('order.dt search.dt', function () {
-//     // dtable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-//     //     cell.innerHTML = i + 1;
-//     // });
-// }).draw();
-
 
 let setadmin = (cmuitaccount) => {
     Swal.fire({
@@ -384,6 +378,110 @@ let accessData = (id, name) => {
         }
     })
 }
+
+let dwtable = $('#TableDownload').DataTable({
+    ajax: {
+        async: true,
+        type: "POST",
+        url: '/ds-api/hitstory/getdata',
+        data: { auth },
+        dataSrc: 'data'
+    },
+
+    columns: [
+        { data: null, title: "No.", width: '50px' },
+        { data: 'd_tdate' },
+        { data: 'dataname' },
+        { data: 'datafile' },
+        { data: 'username' },
+    ],
+    columnDefs: [
+        { className: 'text-center', targets: [0] },
+    ],
+    scrollX: true,
+
+});
+
+dwtable.on('order.dt search.dt', function () {
+    dwtable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+        cell.innerHTML = i + 1;
+    });
+}).draw();
+
+// }
+
+//     // columnDefs: [
+//     //     { className: 'text-center', targets: [0, 1, 3, 4] },
+//     // ],
+// });
+
+// let HistoryData = (id) => {
+//     console.log(id)
+//     var content = $(`
+//     <h2 class="entry-title font-noto">
+//         ตารางประวัติการดาวน์โหลดข้อมูล
+//     </h2>
+//     <table id="TableHistory" class="table table-striped" style="width:100%">
+//     <thead>
+//         <tr>
+//             <th></th>
+//             <th>วันที่ดาวน์โหลดข้อมูล</th>
+//             <th>ชื่อชุดข้อมูล</th>
+//             <th>ชื่อไฟล์</th>
+//             <th>ผู้ใช้งาน</th>
+//         </tr>
+//     </thead>
+//     </table>`).hide().fadeIn(1000)
+//     $(`#History-data`).append(content)
+
+//     $.extend(true, $.fn.dataTable.defaults, {
+//         "language": {
+//             "sProcessing": "กำลังดำเนินการ...",
+//             "sLengthMenu": "แสดง_MENU_ แถว",
+//             "sZeroRecords": "ไม่พบข้อมูล",
+//             "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+//             "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+//             "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+//             "sInfoPostFix": "",
+//             "sSearch": "ค้นหา:",
+//             "sUrl": "",
+//             "oPaginate": {
+//                 "sFirst": "เริ่มต้น",
+//                 "sPrevious": "ก่อนหน้า",
+//                 "sNext": "ถัดไป",
+//                 "sLast": "สุดท้าย"
+//             },
+//             "emptyTable": "ไม่พบข้อมูล..."
+//         }
+//     });
+//     Htable = $('#TableHistory').DataTable({
+//         ajax: {
+//             async: true,
+//             type: "post",
+//             url: '/ds-api/hitstory/getdata',
+//             data: { id_user: id },
+//             dataSrc: 'data'
+//         },
+
+//         columns: [
+//             { data: null, title: "No.", width: '50px' },
+//             { data: 'd_tdate' },
+//             { data: 'dataname' },
+//             { data: 'datafile' },
+//             { data: 'username' },
+//         ],
+//         columnDefs: [
+//             { className: 'text-center', targets: [0] },
+//         ],
+
+//     });
+
+//     Htable.on('order.dt search.dt', function () {
+//         Htable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+//             cell.innerHTML = i + 1;
+//         });
+//     }).draw();
+// }
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;

@@ -52,7 +52,7 @@ let gotoInput = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=detail'
     window.location.href = url;
@@ -72,8 +72,8 @@ let gotoLogout = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        // '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        // '&redirect_uri=http://localhost/login/' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=detail'
     window.location.href = url;
@@ -117,6 +117,7 @@ let loadMap = (d_id) => {
     }).addTo(map);
     let fs = L.featureGroup().addTo(map)
     axios.post('/ds-api/loadgeojson', { d_id }).then(res => {
+        // console.log(res.data)
         res.data.map(i => {
             L.geoJSON(JSON.parse(i.geom)).addTo(fs);
             // console.log(JSON.parse(i.geom));
@@ -402,7 +403,7 @@ let detail_file = (i1, i2, i3, url, name) => {
 }
 
 let SD_download = async (namefile) => {
-
+    // console.log(namefile)
     await axios.post('/ds-api/sd', { d_id: d_id }).then(r => {
         // console.log(r.data.data)
     })

@@ -7,6 +7,10 @@ const axios = require("axios")
 const crypto = require("crypto");
 const multer = require('multer');
 
+multer({
+    limits: { fieldSize: 25 * 1024 * 1024 }
+})
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './www/uploads/')
@@ -22,21 +26,17 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage, limits: { fieldSize: 25 * 1024 * 1024 } })
 
 app.post('/ds-api/upload', upload.single('ufile'), (req, res) => {
-    if (req.body.DT_RadioOptions == 'ข้อมูลภูมิสารสนเทศเชิงพื้นที่') {
-        // console.log(req.file.filename);
-        // const sql = `INSERT INTO filesource (d_id,d_fname)VALUES('${req.body.d_id}', '${req.file.filename}')`;
-        // datapool.query(sql).then(() => {
-        //     console.log("insert ok");
-        // })
+    console.log(req.body);
+    if (req.body.DT_RadioOptions == 'ข้อมูลภูมิสารสนเทศเชิงพื้นที่' && !req.body.linktype) {
 
-        const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`
-        // console.log(url);
+        const url = `http://flask:3100/shp2pgsql/${req.body.d_id}/${req.file.filename}`;
         axios.get(url).then(r => {
             console.log("insert ok");
         })
     }
-    // console.log(req.file.filename, req.body.d_id)
 })
+// console.log(req.file.filename, req.body.d_id)
+
 
 let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
     let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, auth, dt)
@@ -80,7 +80,7 @@ const checkUser = (req, res, next) => {
 const loginMiddleware = (req, res, next) => {
     const data = {
         code: req.body.code,
-        redirect_uri: "https://open.engrids.soc.cmu.ac.th/login/index.html",
+        redirect_uri: "http://localhost/login/index.html",
         client_id: "JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s",
         client_secret: "U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU",
         grant_type: "authorization_code"
@@ -168,7 +168,7 @@ app.get('/ds-api/get', (req, res) => {
 
 app.get('/ds-api/getdata', (req, res) => {
     // const { staid } = req.body
-    const sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd, d_meta as d_datafiles  
+    const sql = `SELECT d_name,d_detail,d_groups,d_keywords,d_id,d_username,d_tnow,d_sd, d_type, d_meta as d_datafiles  
     FROM datasource WHERE d_access='publish' ORDER BY d_tnow desc;`
     datapool.query(sql, (e, r) => {
         res.status(200).json({
@@ -194,12 +194,14 @@ app.post('/ds-api/loadgeojson', (req, res) => {
     mappool.query(sql).then(re => {
         if (re.rows[0]) {
             if (re.rows[0].geom == "4326") {
-                const sql = `SELECT ST_AsGeoJSON(ST_Simplify(geom, 0.008)) as geom FROM ${d_id}`;
+                const sql = `SELECT ST_AsGeoJSON(ST_Simplify(geom, 0.008)) as geom FROM ${d_id}
+                WHERE ST_Simplify(geom, 0.008) IS NOT NULL`;
                 mappool.query(sql, (e, r) => {
                     res.status(200).json(r.rows)
                 })
             } else {
-                const sql = `SELECT ST_AsGeoJSON(ST_Transform(ST_Simplify(geom, 0.001), 4326)) as geom FROM ${d_id}`;
+                const sql = `SELECT ST_AsGeoJSON(ST_Simplify(ST_Transform(geom, 4326), 0.008)) as geom FROM ${d_id}
+                WHERE ST_Simplify(ST_Transform(geom, 4326), 0.008) IS NOT NULL`;
                 mappool.query(sql, (e, r) => {
                     res.status(200).json(r.rows)
                 })
@@ -237,7 +239,7 @@ app.post('/ds-api/postdata', (req, res) => {
 
 app.post('/ds-api/listdata', (req, res) => {
     const { d_iduser } = req.body;
-    const sql = `select d_id,d_name,d_detail,d_access,d_tnow,d_sd from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`
+    const sql = `select d_id,d_name,d_detail,d_access,d_tnow,d_sd, d_type from datasource where d_iduser='${d_iduser}' order by d_tnow desc;`
     datapool.query(sql, (e, r) => {
         res.status(200).json({
             data: r.rows
@@ -283,15 +285,30 @@ app.post('/ds-api/deleteuser', async (req, res) => {
     })
 })
 
+// app.post('/ds-api/deletedata', async (req, res) => {
+//     const { d_id, d_type } = req.body
+//     await datapool.query(`DELETE FROM datasource WHERE d_id ='${d_id}';`).then(r => {
+//         mappool.query(`DROP TABLE ${d_id}`);
+//         res.status(200).json({
+//             data: 'success'
+//         })
+//     })
+// })
+
 app.post('/ds-api/deletedata', async (req, res) => {
-    const { d_id } = req.body
-    await datapool.query(`DELETE FROM datasource WHERE d_id ='${d_id}';`).then(r => {
-        mappool.query(`DROP TABLE ${d_id}`);
+    const { d_id, d_type } = req.body
+    console.log(d_id, d_type)
+    await datapool.query(`DELETE FROM datasource WHERE d_id ='${d_id}';`).then(() => {
+        if (d_type == 'ข้อมูลภูมิสารสนเทศเชิงพื้นที่') {
+            mappool.query(`DROP TABLE ${d_id}`);
+        }
         res.status(200).json({
             data: 'success'
         })
     })
 })
+
+
 
 app.post('/ds-api/setadmin', async (req, res) => {
     const { cmuitaccount } = req.body
@@ -393,7 +410,7 @@ app.post('/ds-api/sd', async (req, res) => {
 ////datahitstory////
 app.post('/ds-api/hitstory', async (req, res) => {
     const { data } = req.body;
-    // console.log(data)
+    console.log(data)
     await datapool.query(`INSERT INTO datahitstory (id_user,username,dataid,dataname,datafile,d_tdate) 
     VALUES('${data.id_user}','${data.username}','${data.dataid}','${data.dataname}','${data.datafile}','${data.d_tdate}');`).then(r => {
         res.status(200).json({
@@ -403,9 +420,9 @@ app.post('/ds-api/hitstory', async (req, res) => {
 })
 
 app.post('/ds-api/hitstory/getdata', async (req, res) => {
-    const { id_user } = req.body;
-    // console.log(data)
-    if (id_user == 'admin') {
+    const { auth } = req.body;
+    console.log(auth)
+    if (auth == 'admin') {
         await datapool.query(`SELECT username,dataname,datafile,d_tdate FROM datahitstory ORDER BY Hrow DESC;`).then(r => {
             res.status(200).json({
                 data: r.rows

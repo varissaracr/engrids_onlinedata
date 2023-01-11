@@ -31,7 +31,7 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=manage'
     window.location.href = url;
@@ -52,8 +52,8 @@ let gotoLogout = () => {
 const loginPopup = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s' +
-        // '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/' +
-        '&redirect_uri=https://open.engrids.soc.cmu.ac.th/login/index.html' +
+        // '&redirect_uri=http://localhost/login/' +
+        '&redirect_uri=http://localhost/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=manage'
     window.location.href = url;
@@ -150,7 +150,6 @@ dtable = $('#TableData').DataTable({
         data: { d_iduser: cmuitaccount },
         dataSrc: 'data'
     },
-
     columns: [
         { data: null, title: "ลำดับ", width: '50px' },
         {
@@ -162,6 +161,7 @@ dtable = $('#TableData').DataTable({
         },
         { data: 'd_name' },
         { data: 'd_detail' },
+        { data: 'd_type' },
         { data: 'd_access' },
         { data: 'd_sd' },
         {
@@ -170,7 +170,7 @@ dtable = $('#TableData').DataTable({
                 return `
                     <button class="btn btn-margin font-Noto" style="background-color: #60d1be; color: #ffffff;" onclick="accessDate('${row.d_id}','${row.d_name}')">การเข้าถึง</button>
                     <button class="btn btn-margin font-Noto" style="background-color: #84C7F2; color: #ffffff;" onclick="editData('${row.d_id}')">แก้ไขข้อมูล</button>
-                    <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;" onclick="deleteData('${row.d_id}')">ลบข้อมูล</button>`
+                    <button class="btn btn-margin font-Noto" style="background-color: #c41411; color: #ffffff;" onclick="deleteData('${row.d_id}','${row.d_type}')">ลบข้อมูล</button>`
             },
         },
     ],
@@ -188,8 +188,8 @@ dtable.on('order.dt search.dt', function () {
 }).draw();
 // dtable.columns.adjust().draw();
 
-let deleteData = (d_id) => {
-    axios.post(`/ds-api/deletedata`, { d_id }).then(r => {
+let deleteData = (d_id, d_type) => {
+    axios.post(`/ds-api/deletedata`, { d_id, d_type }).then(r => {
         var Sucss = r.data.data;
         if (Sucss == 'success') {
             Swal.fire({
@@ -268,6 +268,16 @@ let accessDate = (id, name) => {
         }
     })
 }
+
+let getdata = () => {
+    axios.get('/ds-api/getdata').then(r => {
+        var data = r.data.data;
+        // console.log(data);
+    })
+}
+
+getdata()
+
 
 $('.mobile-nav-toggle').on('click', function (e) {
     var content;

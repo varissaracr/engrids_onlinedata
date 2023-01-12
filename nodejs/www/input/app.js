@@ -341,10 +341,6 @@ let inputFile = (target, type) => {
             }
             else if (datafile_type == 'file') {
                 $(`#linkupload`).hide()
-            }
-        } else {
-            $(`#${type}upload`).hide().removeAttr('required');
-            if (datafile_type == 'link') {
                 $('#listlink-file').empty();
 
             }
@@ -449,7 +445,7 @@ let senddata = async () => {
                     arrLinks.push({ name: linkname, type: type, link: link, date: date })
                     obj_meta.push({ name: linkname, type: type, date: date })
                 }
-                console.log(arrLinks)
+                // console.log(arrLinks)
                 if (arrLinks.length > 0) {
                     obj_datafiles['Links'] = arrLinks
                 }
@@ -562,7 +558,7 @@ let senddata = async () => {
 
 let req_form = () => {
     var form = $("#forminput")
-    console.log(form[0])
+    // console.log(form[0])
 
     if (form[0].checkValidity() === false) {
         event.preventDefault()
